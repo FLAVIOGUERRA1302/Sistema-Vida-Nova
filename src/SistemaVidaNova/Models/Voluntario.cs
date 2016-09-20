@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SistemaVidaNova.Models
 {
-    public class Voluntario
+    public class Voluntario : IdentityUser
     {
-        [Key]
+       /* [Key]
         public int Id { get; set; }
         [Required]
         public string Email { get; set; }
-        [Required]
+        [Required]*/    
         public string Senha { get; set; }
         [Required]
         public string Nome { get; set; }
@@ -22,6 +23,8 @@ namespace SistemaVidaNova.Models
         public string Rg { get; set; }
         public string Celular { get; set; }
         public string Telefone { get; set; }
+        [Required]
+        public String Sexo { get; set; }
         [Required]
         public DateTime DataNascimento { get; set; }
         [Required]
@@ -39,5 +42,8 @@ namespace SistemaVidaNova.Models
         [Required]
         public bool Domingo { get; set; }
 
+        [Required]
+        public DateTime DataDeCadastro { get; set; }
+        public List<Endereco> Enderecos { get; set; }
     }
 }

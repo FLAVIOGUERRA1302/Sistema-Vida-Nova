@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SistemaVidaNova.Models
+@inject SignInManager<Voluntario> SignInManager
+@inject UserManager<Voluntario> UserManager
+@if (SignInManager.IsSignedIn(User))
+{
+    <div id="sidebar" class="sidebar-offcanvas">
+        <div class="col-md-12">
+            <ul class="nav nav-stacked">
+                <li class="active"><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+            </ul>
+        </div>
+    </div>
+}
+

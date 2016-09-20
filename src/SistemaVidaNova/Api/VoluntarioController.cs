@@ -30,7 +30,7 @@ namespace SistemaVidaNova.Api
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(string id)
         {
             Voluntario v =_context.Voluntario.SingleOrDefault(q => q.Id == id);
             if (v == null)
@@ -64,7 +64,7 @@ namespace SistemaVidaNova.Api
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]Voluntario voluntario)
+        public IActionResult Put(string id, [FromBody]Voluntario voluntario)
         {
             if(id != voluntario.Id)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
@@ -76,7 +76,7 @@ namespace SistemaVidaNova.Api
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(string id)
         {
             Voluntario voluntario = _context.Voluntario.Single(q => q.Id == id);
             _context.Voluntario.Remove(voluntario);

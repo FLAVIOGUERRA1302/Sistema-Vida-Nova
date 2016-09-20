@@ -1,0 +1,98 @@
+﻿
+@model SistemaVidaNova.Models.AccountViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Registrar";
+}
+
+<h2>@ViewData["Title"].</h2>
+
+<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <h4>Criar uma nova conta</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Nome" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Nome" class="form-control" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Rg" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Rg" class="form-control" />
+            <span asp-validation-for="Rg" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Cpf" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Cpf" class="form-control" />
+            <span asp-validation-for="Cpf" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Celular" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Celular" class="form-control" />
+            <span asp-validation-for="Celular" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Telefone" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Telefone" class="form-control" />
+            <span asp-validation-for="Telefone" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Sexo" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="Sexo" class="col-md-12">
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>                
+            </select>
+            <span asp-validation-for="Sexo" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="DataDeNascimento" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="DataDeNascimento" class="form-control" />
+            <span asp-validation-for="DataDeNascimento" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="ConfirmPassword" class="form-control" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+    </div>
+    
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Registrar</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -16,35 +16,44 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
-<body data-ng-app="app" id="app">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Sistema Vida Nova</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a href="#/voluntario">Voluntário</a></li>
-                    
-                </ul>
-            </div>
+<body data-ng-app="app" id="app" >
+    
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Vida Nova</a>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="About">Sobre</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contato</a></li>
+            </ul>
+            @await Html.PartialAsync("_LoginPartial")
+            
+        </div><!--/.nav-collapse -->
+    </div><!--/.navbar -->
+    <div class="row-offcanvas row-offcanvas-left">
+        
+        @await Html.PartialAsync("_MenuPartial")
+        
+    <div id="main" class="container body-content">
+           @RenderBody()
         <hr />
         <footer>
             <p>&copy; 2016 - Sistema Vida Nova</p>
         </footer>
-    </div>
+        </div>
+    </div><!--/row-offcanvas -->
 
+
+
+
+    
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

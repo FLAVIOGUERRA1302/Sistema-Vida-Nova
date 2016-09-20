@@ -1,0 +1,43 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Gerencie sua conta";
+    ViewData["imagePath"] = "images/fotos/"+ Model.Id+".jpg";
+}
+
+<h2>@ViewData["Title"].</h2>
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+<div>
+    <h4>Altere suas configurações de conta</h4>
+    <hr />
+    <div class="col-md-2">@Model.Nome<img asp- src="@ViewData["imagePath"]" alt="@Model.Nome" class="img-rounded" height="200" width="200"></div>
+    <div class="col-md-8">
+        <dl class="dl-horizontal">
+            <dt>Foto:</dt>
+            <dd>
+                <a asp-controller="Manage" asp-action="Foto" class="btn-bracketed">Altere</a>
+            </dd>
+            <dt>Perfil:</dt>
+            <dd>
+                <a asp-controller="Manage" asp-action="Perfil" class="btn-bracketed">Edite</a>
+            </dd>
+            <dt>Password:</dt>
+            <dd>
+                @if (Model.HasPassword)
+            {
+                    <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Altere</a>
+                }
+                else
+                {
+                    <a asp-controller="Manage" asp-action="SetPassword" class="btn-bracketed">Criar</a>
+                }
+            </dd>
+            <dt>External Logins:</dt>
+            <dd>
+                @Model.Logins.Count <a asp-controller="Manage" asp-action="ManageLogins" class="btn-bracketed">Gerencie</a>
+            </dd>
+
+        </dl>
+    </div>
+</div>
+
