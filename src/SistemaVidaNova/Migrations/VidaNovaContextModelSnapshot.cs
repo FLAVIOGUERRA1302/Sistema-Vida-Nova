@@ -151,6 +151,9 @@ namespace SistemaVidaNova.Migrations
                     b.Property<string>("Cep")
                         .IsRequired();
 
+                    b.Property<string>("Cidade")
+                        .IsRequired();
+
                     b.Property<string>("Complemento")
                         .IsRequired();
 
@@ -171,6 +174,81 @@ namespace SistemaVidaNova.Migrations
                     b.HasIndex("VoluntarioId");
 
                     b.ToTable("Endereco");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.Evento", b =>
+                {
+                    b.Property<int>("CodEvento")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Cor")
+                        .IsRequired();
+
+                    b.Property<string>("CorDaFonte")
+                        .IsRequired();
+
+                    b.Property<DateTime>("DataFim");
+
+                    b.Property<DateTime>("DataInicio");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired();
+
+                    b.Property<int?>("InteressadoCodInteressado");
+
+                    b.Property<string>("Relato");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired();
+
+                    b.Property<double>("ValorArrecadado");
+
+                    b.Property<double>("ValorDeEntrada");
+
+                    b.Property<string>("VoluntarioId");
+
+                    b.HasKey("CodEvento");
+
+                    b.HasIndex("InteressadoCodInteressado");
+
+                    b.HasIndex("VoluntarioId");
+
+                    b.ToTable("Evento");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.Interessado", b =>
+                {
+                    b.Property<int>("CodInteressado")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Celular");
+
+                    b.Property<int>("Email");
+
+                    b.Property<int>("Nome");
+
+                    b.Property<int>("Telefone");
+
+                    b.HasKey("CodInteressado");
+
+                    b.ToTable("Interessado");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.InteressadoEvento", b =>
+                {
+                    b.Property<int>("CodEvento");
+
+                    b.Property<int>("CodInetessado");
+
+                    b.Property<int?>("CodInteressado");
+
+                    b.HasKey("CodEvento", "CodInetessado");
+
+                    b.HasIndex("CodEvento");
+
+                    b.HasIndex("CodInteressado");
+
+                    b.ToTable("InteressadoEvento");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Voluntario", b =>
@@ -304,6 +382,29 @@ namespace SistemaVidaNova.Migrations
                         .WithMany("Enderecos")
                         .HasForeignKey("VoluntarioId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.Evento", b =>
+                {
+                    b.HasOne("SistemaVidaNova.Models.Interessado")
+                        .WithMany("Eventos")
+                        .HasForeignKey("InteressadoCodInteressado");
+
+                    b.HasOne("SistemaVidaNova.Models.Voluntario", "Voluntario")
+                        .WithMany("Eventos")
+                        .HasForeignKey("VoluntarioId");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.InteressadoEvento", b =>
+                {
+                    b.HasOne("SistemaVidaNova.Models.Evento", "Evento")
+                        .WithMany()
+                        .HasForeignKey("CodEvento")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SistemaVidaNova.Models.Interessado", "Interessado")
+                        .WithMany()
+                        .HasForeignKey("CodInteressado");
                 });
         }
     }

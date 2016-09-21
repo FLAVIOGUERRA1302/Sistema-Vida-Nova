@@ -16,11 +16,11 @@ namespace SistemaVidaNova.Models.AccountViewModels
         [Required]
         [StringLength(100, ErrorMessage = "O {0} tem que ter no mínimo {2} e no máximo {1} caracteres", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Senha")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirme o password")]
+        [Display(Name = "Confirme a senha")]
         [Compare("Password", ErrorMessage = "A confimação do password não confere.")]
         public string ConfirmPassword { get; set; }
 

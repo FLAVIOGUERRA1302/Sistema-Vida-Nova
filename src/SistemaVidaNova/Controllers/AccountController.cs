@@ -111,7 +111,17 @@ namespace SistemaVidaNova.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new Voluntario { UserName = model.Nome, Email = model.Email,Nome=model.Nome,Rg=model.Rg, Cpf=model.Cpf, Celular=model.Celular, Telefone=model.Telefone, Sexo=model.Sexo, DataNascimento=model.DataDeNascimento,DataDeCadastro = DateTime.Today,
+                var user = new Voluntario {
+                    UserName = model.Nome,
+                    Email = model.Email,
+                    Nome =model.Nome,
+                    Rg =model.Rg,
+                    Cpf =model.Cpf,
+                    Celular =model.Celular,
+                    Telefone =model.Telefone,
+                    Sexo =model.Sexo,
+                    DataNascimento =model.DataDeNascimento,
+                    DataDeCadastro = DateTime.Today,
                     Domingo= false,
                     SegundaFeira= false,
                     TercaFeira= false,

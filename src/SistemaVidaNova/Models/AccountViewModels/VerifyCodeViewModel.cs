@@ -16,10 +16,10 @@ namespace SistemaVidaNova.Models.AccountViewModels
 
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Remember this browser?")]
+        [Display(Name = "Lembrar este navegador?")]
         public bool RememberBrowser { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Lembrar de mim?")]
         public bool RememberMe { get; set; }
     }
 }

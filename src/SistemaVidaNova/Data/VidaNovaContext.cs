@@ -15,6 +15,12 @@ namespace SistemaVidaNova.Models
 
         public DbSet<Doador> Doador { get; set; }
         public DbSet<Voluntario> Voluntario { get; set; }
+        public DbSet<Interessado> Interessado { get; set; }
+        public DbSet<Evento> Evento { get; set; }
+
+        public DbSet<InteressadoEvento> InteressadoEvento { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,13 +29,15 @@ namespace SistemaVidaNova.Models
             modelBuilder.Entity<Voluntario>()
                 .HasAlternateKey(c => c.Email);
 
-          /*  modelBuilder.Entity<TUserRole>()
-            .HasKey(r => new { r.UserId, r.RoleId })
-            .ToTable("AspNetUserRoles");
+            modelBuilder.Entity<InteressadoEvento>()
+                .HasKey(t => new { t.CodEvento, t.CodInetessado });
+            /*  modelBuilder.Entity<TUserRole>()
+              .HasKey(r => new { r.UserId, r.RoleId })
+              .ToTable("AspNetUserRoles");
 
-            modelBuilder.Entity<TUserLogin>()
-                .HasKey(l => new { l.LoginProvider, l.ProviderKey, l.UserId })
-                .ToTable("AspNetUserLogins");*/
+              modelBuilder.Entity<TUserLogin>()
+                  .HasKey(l => new { l.LoginProvider, l.ProviderKey, l.UserId })
+                  .ToTable("AspNetUserLogins");*/
 
         }
 

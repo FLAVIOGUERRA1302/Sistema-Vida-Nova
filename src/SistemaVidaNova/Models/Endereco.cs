@@ -18,6 +18,8 @@ namespace SistemaVidaNova.Models
         [Required]
         public string Bairro { get; set; }
         [Required]
+        public string Cidade { get; set; }
+        [Required]
         public string Estado { get; set; }
         [Required]
         public string Numero { get; set; }

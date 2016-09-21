@@ -45,5 +45,6 @@ namespace SistemaVidaNova.Models
         [Required]
         public DateTime DataDeCadastro { get; set; }
         public List<Endereco> Enderecos { get; set; }
+        public List<Evento> Eventos { get; set; }
     }
 }
