@@ -8,9 +8,10 @@ using SistemaVidaNova.Models;
 namespace SistemaVidaNova.Migrations
 {
     [DbContext(typeof(VidaNovaContext))]
-    partial class VidaNovaContextModelSnapshot : ModelSnapshot
+    [Migration("20160922124358_migration_3")]
+    partial class migration_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")

@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace SistemaVidaNova.Api
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
+    [Authorize]
     public class InteressadoController : Controller
     {
         // GET: api/values
@@ -71,23 +71,23 @@ namespace SistemaVidaNova.Api
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]InteressadoDTO interessado)
+        public IActionResult Post([FromBody]InteressadoDTO i)
         {
             if (ModelState.IsValid)
             {
                 Interessado novo = new Interessado()
                 {
-                    Nome = interessado.Nome,
-                    Celular = interessado.Celular,
-                    Email = interessado.Email,
-                    Telefone = interessado.Telefone
+                    Nome = i.Nome,
+                    Celular = i.Celular,
+                    Email = i.Email,
+                    Telefone = i.Telefone
                 };
                 _context.Interessado.Add(novo);
                 try
                 {
                     _context.SaveChanges();
-                    interessado.Id = novo.CodInteressado;
-                    return new ObjectResult(interessado);
+                    i.Id = novo.CodInteressado;
+                    return new ObjectResult(i);
                 }
                 catch {
 

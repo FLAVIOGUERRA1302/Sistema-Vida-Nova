@@ -7,20 +7,23 @@ using SistemaVidaNova.Models;
 
 using SistemaVidaNova.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SistemaVidaNova.Api
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
+    [Authorize]
     public class EventoController : Controller
     {
         // GET: api/values
         private VidaNovaContext _context;
-        public EventoController(VidaNovaContext context)
+        private readonly UserManager<Voluntario> _userManager;
+        public EventoController(VidaNovaContext context,UserManager<Voluntario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -49,8 +52,15 @@ namespace SistemaVidaNova.Api
                                                      end = q.DataFim,
                                                      valorDeEntrada = q.ValorDeEntrada,
                                                      valorArrecadado = q.ValorArrecadado,
-                                                     relato = q.Relato
+                                                     relato = q.Relato,
+                                                     Voluntario = new VoluntarioDTO() {
+                                                          Id = q.Voluntario.Id,
+                                                           Nome= q.Voluntario.Nome
 
+                                                      }
+                                                     
+                                                      
+                                                     
                                                  }).ToList();
               return eventos;
         }
@@ -82,10 +92,11 @@ namespace SistemaVidaNova.Api
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]EventoDTO evento)
+        public async Task<IActionResult> Post([FromBody]EventoDTO evento)
         {
             if (ModelState.IsValid)
             {
+                Voluntario voluntario = await _userManager.GetUserAsync(HttpContext.User);
                 Evento novo = new Evento()
                 {
 
@@ -98,7 +109,7 @@ namespace SistemaVidaNova.Api
                 ValorDeEntrada = evento.valorDeEntrada,
                 ValorArrecadado = evento.valorArrecadado,
                 Relato = evento.relato,
-                 VoluntarioId = evento.Voluntario.Id
+                 Voluntario = voluntario
             };
                 _context.Evento.Add(novo);
                 try

@@ -14,8 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SistemaVidaNova.Api
 {
-    //[Authorize]
-    [AllowAnonymous]
+    [Authorize]    
     [Route("api/[controller]")]
     public class VoluntarioController : Controller
     {

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SistemaVidaNova.Controllers
 {
-    public class VoluntarioController : Controller
+    public class InteressadoController : Controller
     {
         // GET: /<controller>/
         public IActionResult Index()
@@ -16,12 +16,15 @@ namespace SistemaVidaNova.Controllers
             return View();
         }
 
-        public IActionResult Detalhe(int id)
+      
+
+        [HttpGet]
+        public IActionResult Detalhe(string id)
         {
             ViewBag.id = id;
             return View();
         }
 
-       
+
     }
 }

@@ -39,6 +39,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
                                 <li role="menuitem"><a href="#" ng-click="editar(voluntario)"><i class="glyphicon glyphicon-pencil"></i><span>Editar</span></a></li>
+                                <li role="menuitem"><a href="/Voluntario/Detalhe/{{voluntario.id}}" ><i class="glyphicon glyphicon-eye-open"></i><span>Detalhes</span></a></li>
                                 <li role="menuitem"><a href="#" ng-click="delete(voluntario)"><i class="glyphicon glyphicon-remove"></i><span>Excluir</span></a></li>
 
                             </ul>
@@ -104,7 +105,7 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Sexo</label>
                     <div class="col-md-10">
-                        <select class="col-md-12" ng-model="voluntario.sexo" required>
+                        <select class="col-md-12 form-control" ng-model="voluntario.sexo" required>
                             <option value="M">Masculino</option>
                             <option value="F">Feminino</option>
                         </select>
@@ -199,7 +200,7 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Sexo</label>
                     <div class="col-md-10">
-                        <select class="col-md-12"  ng-model="voluntario.sexo" required>
+                        <select class="col-md-12 form-control"  ng-model="voluntario.sexo" required>
                             <option value="M">Masculino</option>
                             <option value="F">Feminino</option>
                         </select>

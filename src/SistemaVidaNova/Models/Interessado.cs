@@ -11,13 +11,13 @@ namespace SistemaVidaNova.Models
         [Key]
         public int CodInteressado { get; set; }
         [Required]
-        public int Nome { get; set; }
+        public string Nome { get; set; }
         
-        public int Celular { get; set; }
+        public string Celular { get; set; }
         
-        public int Telefone { get; set; }
+        public string Telefone { get; set; }
         
-        public int Email { get; set; }
+        public string Email { get; set; }
 
         public List<Evento> Eventos { get; set; }
     }
