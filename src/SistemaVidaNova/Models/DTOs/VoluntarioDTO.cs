@@ -10,7 +10,7 @@ namespace SistemaVidaNova.Models.DTO
     public class VoluntarioDTO
     {
        
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [EmailAddress]
@@ -43,9 +43,11 @@ namespace SistemaVidaNova.Models.DTO
         [Required]
         public bool Domingo { get; set; }
 
-        
+        public Usuario usuario { get; set; }
+
         public DateTime DataDeCadastro { get; set; }
-        public List<Endereco> Enderecos { get; set; }
+        [Required]
+        public Endereco Endereco { get; set; }
         public List<EventoDTO> Eventos { get; set; }
     }
 }

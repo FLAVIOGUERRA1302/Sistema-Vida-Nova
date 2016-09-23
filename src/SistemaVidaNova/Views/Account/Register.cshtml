@@ -2,6 +2,7 @@
 @model SistemaVidaNova.Models.AccountViewModels.RegisterViewModel
 @{
     ViewData["Title"] = "Registrar";
+    Layout = "_LayoutAccount";
 }
 
 <h2>@ViewData["Title"].</h2>
@@ -24,13 +25,7 @@
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Rg" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Rg" class="form-control" />
-            <span asp-validation-for="Rg" class="text-danger"></span>
-        </div>
-    </div>
+    
     <div class="form-group">
         <label asp-for="Cpf" class="col-md-2 control-label"></label>
         <div class="col-md-10">
@@ -38,37 +33,7 @@
             <span asp-validation-for="Cpf" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Celular" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Celular" class="form-control" />
-            <span asp-validation-for="Celular" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Telefone" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Telefone" class="form-control" />
-            <span asp-validation-for="Telefone" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Sexo" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <select asp-for="Sexo" class="col-md-12 form-control">
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>                
-            </select>
-            <span asp-validation-for="Sexo" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="DataDeNascimento" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="DataDeNascimento" class="form-control" />
-            <span asp-validation-for="DataDeNascimento" class="text-danger"></span>
-        </div>
-    </div>
+    
     <div class="form-group">
         <label asp-for="Password" class="col-md-2 control-label"></label>
         <div class="col-md-10">

@@ -1,19 +1,44 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using SistemaVidaNova.Models
-@inject SignInManager<Voluntario> SignInManager
-@inject UserManager<Voluntario> UserManager
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
 @if (SignInManager.IsSignedIn(User))
 {
-    <div id="sidebar" class="sidebar-offcanvas">
-        <div class="col-md-12">
-            <ul class="nav nav-stacked">
-                <li class="active"><a asp-area="" asp-controller="Voluntario" asp-action="Index">Voluntário</a></li>
-                <li><a asp-area="" asp-controller="Interessado" asp-action="Index">Interessado</a></li>
-                <li><a asp-area="" asp-controller="Evento" asp-action="Index">Eventos</a></li>
-                <li><a asp-area="" asp-controller="Evento" asp-action="Calendario">Calendário</a></li>
-                
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Pesquisar">
+                    <span class="input-group-btn">
+                        <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li class="header">Menu Principal</li>
+                <li class="active treeview">
+                    <a href="#">
+                        <i class="fa fa-dashboard"></i> <span>Pessoas</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a href="/Interessado"><i class="fa fa-circle-o"></i> Interessados</a></li>
+                        <li><a href="/Voluntario"><i class="fa fa-circle-o"></i> Volutários</a></li>
+                    </ul>
+                </li>
+
             </ul>
-        </div>
-    </div>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
 }
 

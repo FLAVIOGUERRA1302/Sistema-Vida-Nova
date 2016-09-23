@@ -18,15 +18,15 @@ namespace SistemaVidaNova.Controllers
     [Authorize]
     public class ManageController : Controller
     {
-        private readonly UserManager<Voluntario> _userManager;
-        private readonly SignInManager<Voluntario> _signInManager;
+        private readonly UserManager<Usuario> _userManager;
+        private readonly SignInManager<Usuario> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
         public ManageController(
-        UserManager<Voluntario> userManager,
-        SignInManager<Voluntario> signInManager,
+        UserManager<Usuario> userManager,
+        SignInManager<Usuario> signInManager,
         IEmailSender emailSender,
         ISmsSender smsSender,
         ILoggerFactory loggerFactory)
@@ -44,12 +44,12 @@ namespace SistemaVidaNova.Controllers
         public async Task<IActionResult> Index(ManageMessageId? message = null)
         {
             ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                message == ManageMessageId.ChangePasswordSuccess ? "Sua senha foi alterada."
+                : message == ManageMessageId.SetPasswordSuccess ? "Sua senha foi setada."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.Error ? "Um erro ocorreu"
+                : message == ManageMessageId.AddPhoneSuccess ? "Seu número de telefone foi adicionado."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Se número de telefone foi removido"
                 : "";
 
             var user = await GetCurrentUserAsync();
@@ -65,7 +65,7 @@ namespace SistemaVidaNova.Controllers
                 Logins = await _userManager.GetLoginsAsync(user),
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
                 Id = user.Id,
-                Nome = user.Nome
+                Nome = user.UserName
             };
             return View(model);
         }
@@ -355,7 +355,7 @@ namespace SistemaVidaNova.Controllers
             Error
         }
 
-        private Task<Voluntario> GetCurrentUserAsync()
+        private Task<Usuario> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
         }

@@ -1,51 +1,25 @@
 ﻿angular.module('app')
-.controller('VoluntarioControl', ['$scope', 'VoluntarioService', '$uibModal', function ($scope, VoluntarioService, $uibModal) {
-    $scope.voluntarios = [];
-    VoluntarioService.Read().then(function (voluntarios) {
-        $scope.voluntarios = voluntarios;
-    });
-    
-    $scope.editar = function (voluntario) {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'VoluntarioUpdate.html',
-            controller: 'VoluntarioUpdateControl',
-            size: 'lg',
-            resolve: {
-                voluntario: function () {
-                    return voluntario;
-                }
-            }
-        });
+.controller('VoluntarioControl', ['$scope', 'VoluntarioService', '$uibModal', 'voluntarios', function ($scope, VoluntarioService, $uibModal, voluntarios) {
+    var itensPorPagina = 10;
+    $scope.voluntarios = voluntarios;
+   
 
-        modalInstance.result.then(function (result) {
-            var index = $scope.voluntarios.indexOf(voluntario);
-            $scope.voluntarios[index] = result;
-        }, function () {
-            //cancelou
-        });
+    $scope.totalItems = VoluntarioService.totalItems;
+    $scope.currentPage = 1;
 
-    }
-
-    $scope.novo = function () {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'VoluntarioCreate.html',
-            controller: 'VoluntarioCreateControl',
-            size: 'lg'
+    $scope.pageChanged = function () {
+        VoluntarioService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina)//id,skip,take
+        .then(function (voluntarios) {
+            $scope.voluntarios = voluntarios;
+            $scope.totalItems = VoluntarioService.totalItems;
+        }, function (erros) {
             
         });
-
-        modalInstance.result.then(function (result) {            
-            $scope.voluntarios.push(result);
-        }, function () {
-            //cancelou
-        });
-
-    }
+    };
+   
 
 }])
-.controller('VoluntarioUpdateControl', ['$scope', 'VoluntarioService', '$uibModalInstance', 'voluntario', function ($scope, VoluntarioService, $uibModalInstance, voluntario) {
+.controller('VoluntarioUpdateControl', ['$scope', 'VoluntarioService', 'voluntario', function ($scope, VoluntarioService,  voluntario) {
     $scope.voluntario = angular.copy(voluntario);
     if (!($scope.voluntario.dataNascimento instanceof Date))
         $scope.voluntario.dataNascimento = new Date($scope.voluntario.dataNascimento);
@@ -67,22 +41,41 @@
     }
     
 }])
-.controller('VoluntarioCreateControl', ['$scope', 'VoluntarioService', '$uibModalInstance', function ($scope, VoluntarioService, $uibModalInstance) {
+.controller('VoluntarioCreateControl', ['$scope', 'VoluntarioService', 'CepService', function ($scope, VoluntarioService, CepService) {
     $scope.voluntario = {};
     $scope.salvar = function () {
         VoluntarioService.Create($scope.voluntario)
             .then(function (voluntario) {
-                //$scope.voluntario = voluntario;
-                $uibModalInstance.close(voluntario);
+                
+                
             }, function (erros) {
-                //exibir erros
+                
             });
     }
-    $scope.cancelar = function () {
-        $uibModalInstance.dismiss('cancel');
-    }
-    $scope.valido = function () {
+    $scope.ufs = ufs;
+    $scope.buscaCep = function () {
+        if ($scope.voluntario && $scope.voluntario.endereco && $scope.voluntario.endereco.cep) {
+            CepService.Pesquisa($scope.voluntario.endereco.cep)
+            .then(function (endereco) {
 
-        return $scope.form.$valid;
+                if (endereco.estado)
+                    $scope.voluntario.endereco.estado = endereco.estado;
+                if (endereco.bairro)
+                    $scope.voluntario.endereco.bairro = endereco.bairro;
+                if (endereco.cidade)
+                    $scope.voluntario.endereco.cidade = endereco.cidade;
+                if (endereco.logradouro)
+                    $scope.voluntario.endereco.logradouro = endereco.logradouro;
+
+
+
+
+                $scope.msgErro = "";
+            }, function (erros) {
+                $scope.msgErro = "CEP não localizado";
+            });
+        }
     }
-}]);
+
+
+    }]);

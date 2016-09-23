@@ -154,8 +154,7 @@ namespace SistemaVidaNova.Migrations
                     b.Property<string>("Cidade")
                         .IsRequired();
 
-                    b.Property<string>("Complemento")
-                        .IsRequired();
+                    b.Property<string>("Complemento");
 
                     b.Property<string>("Estado")
                         .IsRequired();
@@ -166,12 +165,12 @@ namespace SistemaVidaNova.Migrations
                     b.Property<string>("Numero")
                         .IsRequired();
 
-                    b.Property<string>("VoluntarioId")
-                        .IsRequired();
+                    b.Property<int>("VoluntarioId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("VoluntarioId");
+                    b.HasIndex("VoluntarioId")
+                        .IsUnique();
 
                     b.ToTable("Endereco");
                 });
@@ -205,7 +204,7 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<double>("ValorDeEntrada");
 
-                    b.Property<string>("VoluntarioId");
+                    b.Property<int?>("VoluntarioId");
 
                     b.HasKey("CodEvento");
 
@@ -252,13 +251,11 @@ namespace SistemaVidaNova.Migrations
                     b.ToTable("InteressadoEvento");
                 });
 
-            modelBuilder.Entity("SistemaVidaNova.Models.Voluntario", b =>
+            modelBuilder.Entity("SistemaVidaNova.Models.Usuario", b =>
                 {
                     b.Property<string>("Id");
 
                     b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("Celular");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -266,14 +263,7 @@ namespace SistemaVidaNova.Migrations
                     b.Property<string>("Cpf")
                         .IsRequired();
 
-                    b.Property<DateTime>("DataDeCadastro");
-
-                    b.Property<DateTime>("DataNascimento");
-
-                    b.Property<bool>("Domingo");
-
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasAnnotation("MaxLength", 256);
 
                     b.Property<bool>("EmailConfirmed");
@@ -281,9 +271,6 @@ namespace SistemaVidaNova.Migrations
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("Nome")
-                        .IsRequired();
 
                     b.Property<string>("NormalizedEmail")
                         .HasAnnotation("MaxLength", 256);
@@ -297,6 +284,51 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName")
+                        .HasAnnotation("MaxLength", 256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.Voluntario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Celular");
+
+                    b.Property<string>("Cpf")
+                        .IsRequired();
+
+                    b.Property<DateTime>("DataDeCadastro");
+
+                    b.Property<DateTime>("DataNascimento");
+
+                    b.Property<bool>("Domingo");
+
+                    b.Property<string>("Email")
+                        .IsRequired();
+
+                    b.Property<string>("IdUsuario");
+
+                    b.Property<bool>("IsDeletado");
+
+                    b.Property<string>("Nome")
+                        .IsRequired();
+
                     b.Property<bool>("QuartaFeira");
 
                     b.Property<bool>("QuintaFeira");
@@ -306,11 +338,7 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<bool>("Sabado");
 
-                    b.Property<string>("SecurityStamp");
-
                     b.Property<bool>("SegundaFeira");
-
-                    b.Property<string>("Senha");
 
                     b.Property<string>("Sexo")
                         .IsRequired();
@@ -321,23 +349,28 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<bool>("TercaFeira");
 
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasAnnotation("MaxLength", 256);
-
                     b.HasKey("Id");
 
                     b.HasAlternateKey("Email");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                    b.HasIndex("IdUsuario");
 
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex");
+                    b.ToTable("Voluntario");
+                });
 
-                    b.ToTable("AspNetUsers");
+            modelBuilder.Entity("SistemaVidaNova.Models.VoluntarioEvento", b =>
+                {
+                    b.Property<int>("CodEvento");
+
+                    b.Property<int>("IdVoluntario");
+
+                    b.HasKey("CodEvento", "IdVoluntario");
+
+                    b.HasIndex("CodEvento");
+
+                    b.HasIndex("IdVoluntario");
+
+                    b.ToTable("VoluntarioEvento");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -350,7 +383,7 @@ namespace SistemaVidaNova.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SistemaVidaNova.Models.Voluntario")
+                    b.HasOne("SistemaVidaNova.Models.Usuario")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -358,7 +391,7 @@ namespace SistemaVidaNova.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SistemaVidaNova.Models.Voluntario")
+                    b.HasOne("SistemaVidaNova.Models.Usuario")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -371,7 +404,7 @@ namespace SistemaVidaNova.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SistemaVidaNova.Models.Voluntario")
+                    b.HasOne("SistemaVidaNova.Models.Usuario")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -380,8 +413,8 @@ namespace SistemaVidaNova.Migrations
             modelBuilder.Entity("SistemaVidaNova.Models.Endereco", b =>
                 {
                     b.HasOne("SistemaVidaNova.Models.Voluntario", "Voluntario")
-                        .WithMany("Enderecos")
-                        .HasForeignKey("VoluntarioId")
+                        .WithOne("Endereco")
+                        .HasForeignKey("SistemaVidaNova.Models.Endereco", "VoluntarioId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -391,7 +424,7 @@ namespace SistemaVidaNova.Migrations
                         .WithMany("Eventos")
                         .HasForeignKey("InteressadoCodInteressado");
 
-                    b.HasOne("SistemaVidaNova.Models.Voluntario", "Voluntario")
+                    b.HasOne("SistemaVidaNova.Models.Voluntario")
                         .WithMany("Eventos")
                         .HasForeignKey("VoluntarioId");
                 });
@@ -399,13 +432,33 @@ namespace SistemaVidaNova.Migrations
             modelBuilder.Entity("SistemaVidaNova.Models.InteressadoEvento", b =>
                 {
                     b.HasOne("SistemaVidaNova.Models.Evento", "Evento")
-                        .WithMany()
+                        .WithMany("Interessados")
                         .HasForeignKey("CodEvento")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SistemaVidaNova.Models.Interessado", "Interessado")
                         .WithMany()
                         .HasForeignKey("CodInteressado");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.Voluntario", b =>
+                {
+                    b.HasOne("SistemaVidaNova.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.VoluntarioEvento", b =>
+                {
+                    b.HasOne("SistemaVidaNova.Models.Evento", "Evento")
+                        .WithMany("Voluntarios")
+                        .HasForeignKey("CodEvento")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SistemaVidaNova.Models.Voluntario", "Voluntario")
+                        .WithMany()
+                        .HasForeignKey("IdVoluntario")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

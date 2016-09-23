@@ -47,7 +47,7 @@ namespace SistemaVidaNova
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<VidaNovaContext>(options => options.UseSqlServer(connection));
 
-            services.AddIdentity<Voluntario, IdentityRole>()
+            services.AddIdentity<Usuario, IdentityRole>()
                 .AddEntityFrameworkStores<VidaNovaContext>()
                 .AddDefaultTokenProviders();
 
@@ -57,7 +57,7 @@ namespace SistemaVidaNova
             services.AddDeveloperIdentityServer()
                 .AddInMemoryScopes(Config.GetScopes())
                 .AddInMemoryClients(Config.GetClients())
-                .AddAspNetIdentity<Voluntario   >();
+                .AddAspNetIdentity<Usuario>();
 
         }
 

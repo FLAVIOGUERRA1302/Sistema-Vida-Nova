@@ -31,10 +31,11 @@ namespace SistemaVidaNova.Models
                 
         public string Relato { get; set; }
 
-        public string VoluntarioId { get; set; }
+        
 
-        [ForeignKey("VoluntarioId")]
-        public Voluntario Voluntario { get; set; }
+        
+        public List<VoluntarioEvento> Voluntarios { get; set; }
+        public List<InteressadoEvento> Interessados { get; set; }
 
     }
 }

@@ -23,9 +23,9 @@ app.factory('VoluntarioService', ["$http", "$q", function ($http, $q) {
         return deferred.promise;
     }
 
-    s.Read = function (id) {
+    s.Read = function (id,skip,take) {
         var deferred = $q.defer();
-        if (id === undefined) id = "";
+        if (id === undefined || id == null) id = "";
         var req = {
             method: 'GET',
             url: '/api/Voluntario/' + id,
@@ -35,7 +35,11 @@ app.factory('VoluntarioService', ["$http", "$q", function ($http, $q) {
 
             dataType: 'json'
         };
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
         $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
             deferred.resolve(response.data);
         }, function errorCallback(response) {
             deferred.reject(response.data);
@@ -266,5 +270,38 @@ app.factory('EventoService', ["$http", "$q", function ($http, $q) {
 
     return s;
 
+
+}]);
+
+
+
+app.factory('CepService', ["$http", "$q", function ($http, $q) {
+    var s = {};
+
+    
+
+    s.Pesquisa = function (cep) {
+        var deferred = $q.defer();
+        
+        var req = {
+            method: 'GET',
+            url: 'http://api.postmon.com.br/v1/cep/' + cep,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        
+        $http(req).then(function successCallback(response) {            
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    return s;
 
 }]);

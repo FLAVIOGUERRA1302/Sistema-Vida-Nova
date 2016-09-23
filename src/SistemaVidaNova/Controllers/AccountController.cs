@@ -20,8 +20,8 @@ namespace SistemaVidaNova.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly UserManager<Voluntario> _userManager;
-        private readonly SignInManager<Voluntario> _signInManager;
+        private readonly UserManager<Usuario> _userManager;
+        private readonly SignInManager<Usuario> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
@@ -29,8 +29,8 @@ namespace SistemaVidaNova.Controllers
 
         public AccountController(
             IIdentityServerInteractionService interaction,
-            UserManager<Voluntario> userManager,
-            SignInManager<Voluntario> signInManager,
+            UserManager<Usuario> userManager,
+            SignInManager<Usuario> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory)
@@ -111,24 +111,12 @@ namespace SistemaVidaNova.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new Voluntario {
+                var user = new Usuario
+                {
                     UserName = model.Nome,
                     Email = model.Email,
-                    Nome =model.Nome,
-                    Rg =model.Rg,
-                    Cpf =model.Cpf,
-                    Celular =model.Celular,
-                    Telefone =model.Telefone,
-                    Sexo =model.Sexo,
-                    DataNascimento =model.DataDeNascimento,
-                    DataDeCadastro = DateTime.Today,
-                    Domingo= false,
-                    SegundaFeira= false,
-                    TercaFeira= false,
-                    QuartaFeira= false,
-                    QuintaFeira= false,
-                    SextaFeira= false,
-                    Sabado=false};
+                    Cpf = model.Cpf
+                };                    
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -230,7 +218,7 @@ namespace SistemaVidaNova.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new Voluntario { UserName = model.Email, Email = model.Email };
+                var user = new Usuario { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -509,7 +497,7 @@ namespace SistemaVidaNova.Controllers
             }
         }
 
-        private Task<Voluntario> GetCurrentUserAsync()
+        private Task<Usuario> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
         }

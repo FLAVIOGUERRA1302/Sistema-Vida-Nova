@@ -1,0 +1,92 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title">Atualizar</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+
+        <form name="form" >
+
+            <div class="form-group col-md-6">
+                <label class="control-label">Nome</label>
+                
+                    <input type="text" class="form-control" ng-model="voluntario.nome" required />
+                
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="control-label">Email</label>
+               
+                    <input type="email" class="form-control" ng-model="voluntario.email" required />
+                
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">CPF</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="voluntario.cpf" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">RG</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="voluntario.rg" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Celular</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="voluntario.celular" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Telefone</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="voluntario.telefone" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Sexo</label>
+                <div class="col-md-10">
+                    <select class="col-md-12 form-control" ng-model="voluntario.sexo" required>
+                        <option value="M">Masculino</option>
+                        <option value="F">Feminino</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Data de Nascimento</label>
+                <div class="col-md-10">
+                    <input type="date" class="form-control" ng-model="voluntario.dataNascimento" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Disponibilidade</label>
+                <div class="col-md-10">
+                    <dl class="dl-horizontal">
+                        <dd>
+                            <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.domingo"><span>Domingo</span></label>
+                            <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.SegundaFeira "><span>Segunda</span></label>
+                            <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.TercaFeira "><span>Terça</span></label>
+                            <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.QuartaFeira "><span>Quarta</span></label>
+                            <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.QuintaFeira "><span>Quinta</span></label>
+                            <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.SextaFeira "><span>Sexta</span></label>
+                            <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.Sabado "><span>Sabado</span></label>
+                        </dd>
+                    </dl>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="salvar()" ng-disabled="!valido()">Salvar</button>
+    <button class="btn btn-warning" type="button" ng-click="cancelar()">Cancelar</button>
+</div>

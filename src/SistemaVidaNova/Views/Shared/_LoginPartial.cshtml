@@ -1,29 +1,54 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using SistemaVidaNova.Models
-@inject SignInManager<Voluntario> SignInManager
-@inject UserManager<Voluntario> UserManager
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+@{
+    
+    ViewData["imagePath"] = "images/fotos/" + @UserManager.GetUserId(User) + ".jpg";
+}
+
+
 @if (SignInManager.IsSignedIn(User))
 {
-    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Olá @UserManager.GetUserName(User)!</a>
+    
+
+    <li class="dropdown user user-menu" ng-app="app2">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="@ViewData["imagePath"]" class="user-image" alt="User Image">
+            <span class="hidden-xs">@UserManager.GetUserName(User)</span>
+        </a>
+        <ul class="dropdown-menu">
+            <!-- User image -->
+            <li class="user-header">
+                <img src="@ViewData["imagePath"]" class="img-circle" alt="User Image" width="160" height="160">
+
+                <p>
+                    @UserManager.GetUserName(User)
+                    
+                </p>
             </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
+           
+            <!-- Menu Footer-->
+            <li class="user-footer">
+                <div class="pull-left">
+                    
+                    <a asp-area="" asp-controller="Manage" asp-action="Index" class="btn btn-default btn-flat">Perfil</a>
+                </div>
+                <div class="pull-right">                    
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right" target="_self">                        
+                        <button type="submit" class="btn btn-default btn-flat">Log off</button>
+                    </form>
+                </div>
             </li>
-            
         </ul>
-        
-        
-    </form>
+    </li>
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Registrar</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
-        
-    </ul>
     
+        
+        <li ng-app="app2"><a asp-area="" asp-controller="Account" asp-action="Login" target="_self">Log in</a></li>
+        
+    
+
 }

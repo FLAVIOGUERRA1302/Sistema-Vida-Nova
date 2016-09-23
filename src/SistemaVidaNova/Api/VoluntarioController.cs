@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SistemaVidaNova.Models;
@@ -19,11 +20,11 @@ namespace SistemaVidaNova.Api
     public class VoluntarioController : Controller
     {
         private VidaNovaContext _context;
-        private readonly UserManager<Voluntario> _userManager;
+        private readonly UserManager<Usuario> _userManager;
         private readonly ILogger _logger;
         public VoluntarioController(
             VidaNovaContext context,
-            UserManager<Voluntario> userManager,
+            UserManager<Usuario> userManager,
             ILoggerFactory loggerFactory)
         {
             _context = context;
@@ -33,36 +34,53 @@ namespace SistemaVidaNova.Api
 
         // GET: api/values
         [HttpGet]
-        public IEnumerable<VoluntarioDTO> Get()
+        public IEnumerable<VoluntarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtroNome)
         {
-            List<VoluntarioDTO> voluntarios = (from v in _context.Voluntario
-                                              select new VoluntarioDTO
-                                              {
-                                                  Id = v.Id,
-                                                  Email = v.Email,
-                                                  Nome = v.Nome,
-                                                  Cpf = v.Cpf,
-                                                  Rg = v.Rg,
-                                                  Celular = v.Celular,
-                                                  Telefone = v.Telefone,
-                                                  Sexo = v.Sexo,
-                                                  DataNascimento = v.DataNascimento,
-                                                  SegundaFeira = v.SegundaFeira,
-                                                  TercaFeira = v.TercaFeira,
-                                                  QuartaFeira = v.QuartaFeira,
-                                                  QuintaFeira = v.QuintaFeira,
-                                                  SextaFeira = v.SextaFeira,
-                                                  Sabado = v.Sabado,
-                                                  Domingo = v.Domingo,
-                                                  DataDeCadastro = v.DataDeCadastro
-                                              }).ToList();
 
+            if (skip == null)
+                skip = 0;
+            if (take == null)
+                take = 1000;
+            
+            IQueryable<Voluntario> query = _context.Voluntario
+                .Where(q => q.IsDeletado == false)
+                .OrderBy(q => q.Nome);
+
+            if (!String.IsNullOrEmpty(filtroNome))
+                query.Where(q => q.Nome.Contains(filtroNome));
+
+            this.Response.Headers.Add("totalItems", query.Count().ToString());
+
+            List<VoluntarioDTO> voluntarios = query
+                .Skip(skip.Value)
+                .Take(take.Value).Select(v => new VoluntarioDTO
+                {
+                    Id = v.Id,
+                    Email = v.Email,
+                    Nome = v.Nome,
+                    Cpf = v.Cpf,
+                    Rg = v.Rg,
+                    Celular = v.Celular,
+                    Telefone = v.Telefone,
+                    Sexo = v.Sexo,
+                    DataNascimento = v.DataNascimento,
+                    SegundaFeira = v.SegundaFeira,
+                    TercaFeira = v.TercaFeira,
+                    QuartaFeira = v.QuartaFeira,
+                    QuintaFeira = v.QuintaFeira,
+                    SextaFeira = v.SextaFeira,
+                    Sabado = v.Sabado,
+                    Domingo = v.Domingo,
+                    DataDeCadastro = v.DataDeCadastro
+                }).ToList();
+
+            
             return voluntarios;
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public IActionResult Get(int id)
         {
             Voluntario v =_context.Voluntario.SingleOrDefault(q => q.Id == id);
             if (v == null)
@@ -87,8 +105,8 @@ namespace SistemaVidaNova.Api
                 Sabado = v.Sabado,
                 Domingo = v.Domingo,
                 DataDeCadastro = v.DataDeCadastro,
-                Enderecos = v.Enderecos,
-                Eventos = v.Eventos.OrderByDescending(q=>q.DataInicio)
+                Endereco = v.Endereco
+               /* Eventos = v.Eventos.OrderByDescending(q=>q.DataInicio)
                     .Select(q=> new EventoDTO {
                             id=q.CodEvento,
                             descricao = q.Descricao,
@@ -97,8 +115,9 @@ namespace SistemaVidaNova.Api
                             end=q.DataFim,
                             valorDeEntrada = q.ValorDeEntrada,
                             valorArrecadado = q.ValorArrecadado
-                    }).ToList()
+                    }).ToList()*/
             };
+            this.Response.Headers.Add("totalItems", "1");
             return new ObjectResult(dto);
         }
 
@@ -108,12 +127,12 @@ namespace SistemaVidaNova.Api
         {
             if (ModelState.IsValid)
             {
-                Voluntario user = new Voluntario
+                Usuario user = await _userManager.GetUserAsync(HttpContext.User);
+                Voluntario voluntario = new Voluntario
                 {
-                    
+
                     Email = v.Email,
                     Nome = v.Nome,
-                    UserName=v.Nome,
                     Cpf = v.Cpf,
                     Rg = v.Rg,
                     Celular = v.Celular,
@@ -127,26 +146,23 @@ namespace SistemaVidaNova.Api
                     SextaFeira = v.SextaFeira,
                     Sabado = v.Sabado,
                     Domingo = v.Domingo,
-                    DataDeCadastro = DateTime.Today
+                    DataDeCadastro = DateTime.Today,
+                    IsDeletado = false,
+                    IdUsuario = user.Id
                 };
-                if(v.Enderecos!= null)
-                    user.Enderecos.AddRange(v.Enderecos);
 
-                var result = await _userManager.CreateAsync(user);
-                if (result.Succeeded)
-                {   
-                    _logger.LogInformation(3, "User created a new account without password.");
-                    v.Id = user.Id;
-                    return new ObjectResult(v);
-
-                }
-                foreach (var error in result.Errors)
+                voluntario.Endereco = v.Endereco;
+                _context.Voluntario.Add(voluntario);
+                    try
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    _context.SaveChanges();
+                    v.Id = voluntario.Id;
+                    return new ObjectResult(v);
                 }
-                return new BadRequestObjectResult(ModelState);
-
-
+                catch
+                {
+                    return new BadRequestResult();
+                }
             }
             else
             {
@@ -157,7 +173,7 @@ namespace SistemaVidaNova.Api
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public IActionResult Put(string id, [FromBody]VoluntarioDTO voluntario)
+        public IActionResult Put(int id, [FromBody]VoluntarioDTO voluntario)
         {
             if(id != voluntario.Id)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
@@ -166,8 +182,7 @@ namespace SistemaVidaNova.Api
                 Voluntario v = _context.Voluntario.Single(q => q.Id == id);
 
                 v.Email = voluntario.Email;
-                v.Nome = voluntario.Nome;
-                v.UserName = voluntario.Nome;
+                v.Nome = voluntario.Nome;                
                 v.Cpf = voluntario.Cpf;
                 v.Rg = voluntario.Rg;
                 v.Celular = voluntario.Celular;
@@ -182,53 +197,18 @@ namespace SistemaVidaNova.Api
                 v.Sabado = voluntario.Sabado;
                 v.Domingo = voluntario.Domingo;
 
+                v.Endereco.Logradouro = voluntario.Endereco.Logradouro;
+                v.Endereco.Numero = voluntario.Endereco.Numero;
+                v.Endereco.Bairro = voluntario.Endereco.Bairro;
+                v.Endereco.Estado = voluntario.Endereco.Estado;
+                v.Endereco.Cep = voluntario.Endereco.Cep;
+                v.Endereco.Cidade = voluntario.Endereco.Cidade;
+                v.Endereco.Complemento = voluntario.Endereco.Complemento;
+                
 
-                //atualiza os endereços
-                List<Endereco> enderecosCorretos = new List<Endereco>();
-                List<Endereco> enderecosAtualizados = new List<Endereco>();
-                //endereços atualizados
-                if (v.Enderecos == null)
-                    v.Enderecos = new List<Endereco>();
-                if (voluntario.Enderecos == null)
-                    voluntario.Enderecos = new List<Endereco>();
-                var pairs = from a in v.Enderecos
-                            join n in voluntario.Enderecos on a.Id equals n.Id
-                            select new
-                            {
-                                antigo = a,
-                                novo = n
-                            };
-                foreach (var p in pairs)
-                {
-                    p.antigo.Bairro = p.novo.Bairro;
-                    p.antigo.Cep = p.novo.Cep;
-                    p.antigo.Complemento = p.novo.Complemento;
-                    p.antigo.Estado = p.novo.Estado;
-                    p.antigo.Logradouro = p.novo.Logradouro;
-                    p.antigo.Numero = p.novo.Numero;
-                    p.antigo.Cidade = p.novo.Cidade;
 
-                    enderecosCorretos.Add(p.antigo);
-                    enderecosAtualizados.Add(p.novo);
-                }
-                //endereços excluido
-                var exluidos = v.Enderecos.Except(enderecosCorretos);
-                foreach (Endereco excluir in exluidos)
-                {
-                    v.Enderecos.Remove(excluir);
-                    _context.Remove(excluir);
-                }
 
-                //endereços novos
-                var novos = voluntario.Enderecos.Except(enderecosAtualizados);
-                foreach (Endereco end in voluntario.Enderecos)
-                {
-                    v.Enderecos.Add(end);
-                }
-                               
-
-                _context.SaveChanges();
-                voluntario.Enderecos = v.Enderecos; // para poder enviar os IDs novos
+                _context.SaveChanges();                
                 return new ObjectResult(voluntario);
             }
             else
@@ -239,10 +219,11 @@ namespace SistemaVidaNova.Api
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        public IActionResult Delete(int id)
         {
             Voluntario voluntario = _context.Voluntario.Single(q => q.Id == id);
-            _context.Voluntario.Remove(voluntario);
+            voluntario.IsDeletado = true;
+            
             try
             {
                 _context.SaveChanges();

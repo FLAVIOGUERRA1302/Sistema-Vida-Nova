@@ -4,9 +4,10 @@
 @using SistemaVidaNova.Models
 @using Microsoft.AspNetCore.Identity
 @model SistemaVidaNova.Models.AccountViewModels.LoginViewModel
-@inject SignInManager<Voluntario> SignInManager
+@inject SignInManager<Usuario> SignInManager
 
 @{
+    Layout = "_LayoutAccount";
     ViewData["Title"] = "Log in";
 }
 

@@ -34,8 +34,6 @@ namespace SistemaVidaNova.Models.DTO
         public string relato { get; set; }
         public string url { get; set; }
         
-        public VoluntarioDTO Voluntario { get; set; }
-        public InteressadoDTO Interessados { get; set; }
-
+        
     }
 }

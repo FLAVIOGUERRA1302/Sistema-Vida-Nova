@@ -32,29 +32,7 @@ namespace SistemaVidaNova.Models.AccountViewModels
         [Display(Name = "CPF")]
         public string Cpf { get; set; }
 
-        [Required]
-        [Display(Name = "RG")]
-        public string Rg { get; set; }
-
-        [Required]
-        [DataType(DataType.PhoneNumber)]
-        [Display(Name = "Celular")]
-        public string Celular { get; set; }
-
-        [Required]
-        [DataType(DataType.PhoneNumber)]
-        [Display(Name = "Telefone")]
-        public string Telefone { get; set; }
-
-        [Required]
-        [Display(Name = "Sexo")]
-        public string Sexo { get; set; }
-
-
-        [Required]
-        [Display(Name = "Data de Nascimento")]
-        public DateTime DataDeNascimento { get; set; }
-
+       
 
     }
 }

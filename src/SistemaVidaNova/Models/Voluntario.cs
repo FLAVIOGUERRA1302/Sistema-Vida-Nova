@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaVidaNova.Models
 {
-    public class Voluntario : IdentityUser
+    public class Voluntario 
     {
-       /* [Key]
+        [Key]
         public int Id { get; set; }
         [Required]
         public string Email { get; set; }
-        [Required]*/    
-        public string Senha { get; set; }
+        
         [Required]
         public string Nome { get; set; }
         [Required]
@@ -41,10 +41,19 @@ namespace SistemaVidaNova.Models
         public bool Sabado { get; set; }
         [Required]
         public bool Domingo { get; set; }
+        [Required]
+        public bool IsDeletado { get; set; }
 
         [Required]
         public DateTime DataDeCadastro { get; set; }
-        public List<Endereco> Enderecos { get; set; }
+
+        
+        public string IdUsuario { get; set; }
+        
+        [ForeignKey("IdUsuario")]
+        public Usuario Usuario { get; set; }
+
+        public Endereco Endereco { get; set; }
         public List<Evento> Eventos { get; set; }
     }
 }

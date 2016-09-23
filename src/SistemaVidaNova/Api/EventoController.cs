@@ -53,12 +53,7 @@ namespace SistemaVidaNova.Api
                                                      valorDeEntrada = q.ValorDeEntrada,
                                                      valorArrecadado = q.ValorArrecadado,
                                                      relato = q.Relato,
-                                                     Voluntario = new VoluntarioDTO() {
-                                                          Id = q.Voluntario.Id,
-                                                           Nome= q.Voluntario.Nome
-
-                                                      }
-                                                     
+                                                                                                         
                                                       
                                                      
                                                  }).ToList();
@@ -108,8 +103,8 @@ namespace SistemaVidaNova.Api
                 DataFim = evento.end,
                 ValorDeEntrada = evento.valorDeEntrada,
                 ValorArrecadado = evento.valorArrecadado,
-                Relato = evento.relato,
-                 Voluntario = voluntario
+                Relato = evento.relato
+                 
             };
                 _context.Evento.Add(novo);
                 try

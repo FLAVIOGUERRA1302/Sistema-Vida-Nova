@@ -7,18 +7,20 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SistemaVidaNova.Models
 {
-    public class VidaNovaContext : IdentityDbContext<Voluntario>
+    public class VidaNovaContext : IdentityDbContext<Usuario>
     {
         public VidaNovaContext(DbContextOptions<VidaNovaContext> options)
             : base(options)
         { }
 
         public DbSet<Doador> Doador { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Voluntario> Voluntario { get; set; }
         public DbSet<Interessado> Interessado { get; set; }
         public DbSet<Evento> Evento { get; set; }
 
         public DbSet<InteressadoEvento> InteressadoEvento { get; set; }
+        public DbSet<VoluntarioEvento> VoluntarioEvento { get; set; }
 
 
 
@@ -31,6 +33,11 @@ namespace SistemaVidaNova.Models
 
             modelBuilder.Entity<InteressadoEvento>()
                 .HasKey(t => new { t.CodEvento, t.CodInetessado });
+
+            modelBuilder.Entity<VoluntarioEvento>()
+                .HasKey(t => new { t.CodEvento, t.IdVoluntario });
+
+
             /*  modelBuilder.Entity<TUserRole>()
               .HasKey(r => new { r.UserId, r.RoleId })
               .ToTable("AspNetUserRoles");

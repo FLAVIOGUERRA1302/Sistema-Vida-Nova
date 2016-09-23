@@ -23,10 +23,11 @@ namespace SistemaVidaNova.Models
         public string Estado { get; set; }
         [Required]
         public string Numero { get; set; }
-        [Required]
+        
         public string Complemento { get; set; }
-        [Required]
-        public string VoluntarioId { get; set; }
+
+        
+        public int VoluntarioId { get; set; }
         
         [ForeignKey("VoluntarioId")]
         public Voluntario Voluntario { get; set; }
