@@ -19,34 +19,67 @@
    
 
 }])
-.controller('VoluntarioUpdateControl', ['$scope', 'VoluntarioService', 'voluntario', function ($scope, VoluntarioService,  voluntario) {
-    $scope.voluntario = angular.copy(voluntario);
+.controller('VoluntarioUpdateControl', ['$scope', 'VoluntarioService', 'voluntario', 'CepService', function ($scope, VoluntarioService, voluntario, CepService) {
+    $scope.voluntario = voluntario;//angular.copy(voluntario);
+    $scope.random = new Date().getTime();
+    $scope.ufs = ufs;
     if (!($scope.voluntario.dataNascimento instanceof Date))
         $scope.voluntario.dataNascimento = new Date($scope.voluntario.dataNascimento);
     $scope.salvar = function () {
         VoluntarioService.Update($scope.voluntario)
             .then(function (voluntario) {
-                //$scope.voluntario = voluntario;
-                $uibModalInstance.close(voluntario);
+                
             }, function (erros) {
                 //exibir erros
             });
     }
-    $scope.cancelar = function () {
-        $uibModalInstance.dismiss('cancel');
+    
+    
+
+    $scope.Upload = function () {
+        VoluntarioService.Upload($scope.voluntario, $scope.picFile)
+            .then(function (voluntario) {
+                $scope.random = new Date().getTime();
+                $scope.progresso = 0;
+                $scope.picFile = null;
+        }, function (erros) {
+            //exibir erros
+        }, function (progresso) {
+            $scope.progresso = progresso;
+        });
     }
-    $scope.valido = function () {
-        
-        return $scope.form.$valid;
+
+    $scope.buscaCep = function () {
+        if ($scope.voluntario && $scope.voluntario.endereco && $scope.voluntario.endereco.cep) {
+            CepService.Pesquisa($scope.voluntario.endereco.cep)
+            .then(function (endereco) {
+
+                if (endereco.estado)
+                    $scope.voluntario.endereco.estado = endereco.estado;
+                if (endereco.bairro)
+                    $scope.voluntario.endereco.bairro = endereco.bairro;
+                if (endereco.cidade)
+                    $scope.voluntario.endereco.cidade = endereco.cidade;
+                if (endereco.logradouro)
+                    $scope.voluntario.endereco.logradouro = endereco.logradouro;
+
+
+
+
+                $scope.msgErro = "";
+            }, function (erros) {
+                $scope.msgErro = "CEP não localizado";
+            });
+        }
     }
     
 }])
-.controller('VoluntarioCreateControl', ['$scope', 'VoluntarioService', 'CepService', function ($scope, VoluntarioService, CepService) {
+.controller('VoluntarioCreateControl', ['$scope', 'VoluntarioService', 'CepService', '$location', function ($scope, VoluntarioService, CepService, $location) {
     $scope.voluntario = {};
     $scope.salvar = function () {
         VoluntarioService.Create($scope.voluntario)
             .then(function (voluntario) {
-                
+                $location.path('/Voluntario/Editar/' + voluntario.id)
                 
             }, function (erros) {
                 

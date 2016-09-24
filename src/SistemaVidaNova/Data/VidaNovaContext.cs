@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace SistemaVidaNova.Models
 {
@@ -30,6 +31,9 @@ namespace SistemaVidaNova.Models
 
             modelBuilder.Entity<Voluntario>()
                 .HasAlternateKey(c => c.Email);
+
+            /*modelBuilder.Entity<Voluntario>()
+                .HasAlternateKey(c => c.Cpf);*/
 
             modelBuilder.Entity<InteressadoEvento>()
                 .HasKey(t => new { t.CodEvento, t.CodInetessado });

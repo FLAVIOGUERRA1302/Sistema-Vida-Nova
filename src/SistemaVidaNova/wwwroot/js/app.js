@@ -3,41 +3,21 @@
     'ui.bootstrap',
     'color.picker',
     'ngRoute',
-    'ui.utils.masks'
+    'ui.utils.masks',
+    'ngFileUpload'
 
 ]).config(function ($routeProvider, $locationProvider) {
 
     $routeProvider
-        .when('/', {
-            templateUrl: '/templates/Home/Index.html'
-
-        })
-        .when('/Interessado', {
-            templateUrl: '/templates/Interesado/List.html',
-            controller: 'InteressadoControl',
-            resolve: {
-                
-                interessados: function (InteressadoService) {
-                    return InteressadoService.Read();
-                }
-            }
-        })
-        .when('/Interessado/:id', {
-            templateUrl: '/templates/Interesado/Detalhe.html',
-            controller: 'InteressadoControl',
-            resolve: {
-                interessados: function (InteressadoService, $route) {
-                    return InteressadoService.Read($route.current.params.id);
-                }
-            }
-        })
+        
+       
     .when('/Voluntario', {
         templateUrl: '/templates/Voluntario/List.html',
         controller: 'VoluntarioControl',
         resolve: {
 
             voluntarios: function (VoluntarioService) {
-                return VoluntarioService.Read();
+                return VoluntarioService.Read(null,0,10);//id,skip,take
             }
         }
     })
@@ -67,7 +47,39 @@
 
 
 
+    .when('/Interessado', {
+        templateUrl: '/templates/Interessado/List.html',
+        controller: 'InteressadoControl',
+        resolve: {
 
+            interessados: function (InteressadoService) {
+                return InteressadoService.Read(null, 0, 10);//id,skip,take
+            }
+        }
+    })
+        .when('/Interessado/Criar', {
+            templateUrl: '/templates/Interessado/Create.html',
+            controller: 'InteressadoCreateControl'
+
+        })
+            .when('/Interessado/Editar/:id', {
+                templateUrl: '/templates/Interessado/Update.html',
+                controller: 'InteressadoUpdateControl',
+                resolve: {
+                    interessado: function (InteressadoService, $route) {
+                        return InteressadoService.Read($route.current.params.id);
+                    }
+                }
+            })
+        .when('/Interessado/:id', {
+            templateUrl: '/templates/Interessado/Detalhe.html',
+            controller: 'InteressadoUpdateControl',
+            resolve: {
+                interessado: function (InteressadoService, $route) {
+                    return InteressadoService.Read($route.current.params.id);
+                }
+            }
+        })
 
 
     .when('/Evento/Detalhe/:id', {
@@ -81,10 +93,6 @@
                 return delay.promise;
             }
         }
-    }).when('/novarota', {
-        templateUrl: '/Evento/Calendario',
-        controller: 'EventoControl'
-
     });
 
 

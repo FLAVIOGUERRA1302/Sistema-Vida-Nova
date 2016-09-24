@@ -1,88 +1,53 @@
 ﻿angular.module('app')
-.controller('InteressadoControl', ['$scope', 'InteressadoService', '$uibModal', function ($scope, InteressadoService, $uibModal) {
-    $scope.interessados = [];
-    InteressadoService.Read().then(function (interessados) {
-        $scope.interessados = interessados;
-    });
-    
-    $scope.editar = function (interessado) {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'InteressadoUpdate.html',
-            controller: 'InteressadoUpdateControl',
-            size: 'lg',
-            resolve: {
-                interessado: function () {
-                    return interessado;
-                }
-            }
+.controller('InteressadoControl', ['$scope', 'InteressadoService',  'interessados', function ($scope, InteressadoService,  interessados) {
+    var itensPorPagina = 10;
+    $scope.interessados = interessados;
+
+
+    $scope.totalItems = InteressadoService.totalItems;
+    $scope.currentPage = 1;
+
+    $scope.pageChanged = function () {
+        InteressadoService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina)//id,skip,take
+        .then(function (interessados) {
+            $scope.interessados = interessados;
+            $scope.totalItems = InteressadoService.totalItems;
+        }, function (erros) {
+
         });
+    };
 
-        modalInstance.result.then(function (result) {
-            var index = $scope.interessados.indexOf(interessado);
-            $scope.interessados[index] = result;
-        }, function () {
-            //cancelou
-        });
-
-    }
-
-    $scope.novo = function () {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'InteressadoCreate.html',
-            controller: 'InteressadoCreateControl',
-            size: 'lg'
-            
-        });
-
-        modalInstance.result.then(function (result) {            
-            $scope.interessados.push(result);
-        }, function () {
-            //cancelou
-        });
-
-    }
 
 }])
-.controller('InteressadoUpdateControl', ['$scope', 'InteressadoService', '$uibModalInstance', 'interessado', function ($scope, InteressadoService, $uibModalInstance, interessado) {
-    $scope.interessado = angular.copy(interessado);
-    if (!($scope.interessado.dataNascimento instanceof Date))
-        $scope.interessado.dataNascimento = new Date($scope.interessado.dataNascimento);
+.controller('InteressadoUpdateControl', ['$scope', 'InteressadoService', 'interessado',  function ($scope, InteressadoService, interessado) {
+    $scope.interessado = interessado;//angular.copy(interessado);
+    $scope.random = new Date().getTime();
+    
+    
     $scope.salvar = function () {
         InteressadoService.Update($scope.interessado)
             .then(function (interessado) {
-                //$scope.interessado = interessado;
-                $uibModalInstance.close(interessado);
+
             }, function (erros) {
                 //exibir erros
             });
     }
-    $scope.cancelar = function () {
-        $uibModalInstance.dismiss('cancel');
-    }
-    $scope.valido = function () {
-        
-        return $scope.form.$valid;
-    }
-    
+
+
+
 }])
-.controller('InteressadoCreateControl', ['$scope', 'InteressadoService', '$uibModalInstance', function ($scope, InteressadoService, $uibModalInstance) {
+.controller('InteressadoCreateControl', ['$scope', 'InteressadoService',  '$location', function ($scope, InteressadoService,  $location) {
     $scope.interessado = {};
     $scope.salvar = function () {
         InteressadoService.Create($scope.interessado)
             .then(function (interessado) {
-                //$scope.interessado = interessado;
-                $uibModalInstance.close(interessado);
+                $location.path('/Interessado/Editar/' + interessado.id)
+
             }, function (erros) {
-                //exibir erros
+
             });
     }
-    $scope.cancelar = function () {
-        $uibModalInstance.dismiss('cancel');
-    }
-    $scope.valido = function () {
+    
 
-        return $scope.form.$valid;
-    }
+
 }]);

@@ -16,6 +16,11 @@ namespace SistemaVidaNova.Controllers
             return View();
         }
 
+        public IActionResult Index(int id)
+        {
+            return View();
+        }
+
         public IActionResult Criar()
         {
             return View();
@@ -23,10 +28,16 @@ namespace SistemaVidaNova.Controllers
 
         public IActionResult Detalhe(int id)
         {
-            ViewBag.id = id;
+            
             return View();
         }
 
-       
+        public IActionResult Editar(int id)
+        {
+            
+            return View();
+        }
+
+
     }
 }

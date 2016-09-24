@@ -113,7 +113,8 @@ namespace SistemaVidaNova.Controllers
             {
                 var user = new Usuario
                 {
-                    UserName = model.Nome,
+                    Nome = model.Nome,
+                    UserName = model.Email,
                     Email = model.Email,
                     Cpf = model.Cpf
                 };                    

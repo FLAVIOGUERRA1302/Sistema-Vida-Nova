@@ -15,7 +15,9 @@
     "bootstrap-validator": "0.11.5",
     "admin-lte": "2.3.6",
     "angular-input-masks": "2.4.0",
-    "bootstrap": "3.3.6"
+    "bootstrap": "3.3.6",
+    "ng-file-upload": "12.2.11",
+    "string-mask": "0.3.0"
   },
   "resolutions": {
     "angular": "1.5.8"

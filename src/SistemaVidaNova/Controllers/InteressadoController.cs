@@ -11,20 +11,29 @@ namespace SistemaVidaNova.Controllers
     public class InteressadoController : Controller
     {
         // GET: /<controller>/
-        public IActionResult Index()
+        
+
+        public IActionResult Index(int id)
         {
             return View();
         }
 
-      
-
-        [HttpGet]
-        public IActionResult Detalhe(string id)
+        public IActionResult Criar()
         {
-            ViewBag.id = id;
             return View();
         }
 
+        public IActionResult Detalhe(int id)
+        {
+
+            return View();
+        }
+
+        public IActionResult Editar(int id)
+        {
+
+            return View();
+        }
 
     }
 }

@@ -20,4 +20,6 @@
 /// <reference path="lib/jquery-validation/dist/jquery.validate.js" />
 /// <reference path="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" />
 /// <reference path="lib/moment/moment.js" />
+/// <reference path="lib/ng-file-upload/ng-file-upload.js" />
+/// <reference path="lib/string-mask/src/string-mask.js" />
 /// <reference path="lib/tinycolor/tinycolor.js" />

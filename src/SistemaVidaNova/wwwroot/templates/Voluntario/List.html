@@ -4,7 +4,7 @@
 
 <div id="top" class="content-header">
     <div class="col-sm-3">
-        <h3 class="box-title">Lista de Voluntário</h3>
+        <h3 class="box-title">Lista de Voluntários</h3>
     </div>
 
     <div class="col-sm-6">
@@ -54,14 +54,14 @@
                         <tbody>
                             
                             <tr ng-repeat="v in voluntarios">
-                                <td><{{v.nome}}></td>
-                                <td><{{v.email}}></td>
-                                <td><{{v.telefone}}></td>
+                                <td>{{v.nome}}</td>
+                                <td>{{v.email}}</td>
+                                <td>{{v.telefone}}</td>
                                 <td class='actions'>
 
-                                    <a class='btn btn-success btn-xs' href='/Voluntario/Detalhe/{{v.id}}'>Visualizar</a>
+                                    <a class='btn btn-success btn-xs' href='/Voluntario/{{v.id}}'>Visualizar</a>
                                     <a class='btn btn-warning btn-xs' href='/Voluntario/Editar/{{v.id}}'>Editar</a>
-                                    <a class='btn btn-danger btn-xs' href='' ng-click="delete(voluntario)">Excluir</a>
+                                    <a class='btn btn-danger btn-xs' href='' ng-click="delete(v)">Excluir</a>
                                 </td>
                             </tr>
                             

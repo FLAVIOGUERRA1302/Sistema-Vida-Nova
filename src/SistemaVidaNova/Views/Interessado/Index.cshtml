@@ -3,8 +3,8 @@
 *@
 @{
 }
-<h1>Interessado</h1>
-<div ng-controller="InteressadoControl" >
+<h1>Voluntários</h1>
+<div ng-controller="VoluntarioControl" >
     <div class="row">
         <button class="btn btn-default" ng-click="novo()">Novo</button>
     </div>
@@ -18,17 +18,19 @@
                     <th>Email</th>
                     <th>Celular</th>
                     <th>Telefone</th>
-                    
+                    <th>Data de Nascimento</th>
+                    <th>Data de Cadastro</th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="interessado in interessados" >
-                    <td>{{interessado.nome}}</td>
-                    <td>{{interessado.email}}</td>
-                    <td>{{interessado.celular}}</td>
-                    <td>{{interessado.telefone}}</td>
-                    
+                <tr ng-repeat="voluntario in voluntarios" >
+                    <td>{{voluntario.nome}}</td>
+                    <td>{{voluntario.email}}</td>
+                    <td>{{voluntario.celular}}</td>
+                    <td>{{voluntario.telefone}}</td>
+                    <td>{{voluntario.dataNascimento | date :'dd/MM/yy'}}</td>
+                    <td>{{voluntario.dataDeCadastro | date :'dd/MM/yy'}}</td>
                     <td>
                         <div uib-dropdown>
                             <a class="btn  btn-xs close" uib-dropdown-toggle>
@@ -36,9 +38,9 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-                                <li role="menuitem"><a href="#" ng-click="editar(interessado)"><i class="glyphicon glyphicon-pencil"></i><span>Editar</span></a></li>
-                                <li role="menuitem"><a href="/Interessado/Detalhe/{{interessado.id}}" ><i class="glyphicon glyphicon-eye-open"></i><span>Detalhes</span></a></li>
-                                <li role="menuitem"><a href="#" ng-click="delete(interessado)"><i class="glyphicon glyphicon-remove"></i><span>Excluir</span></a></li>
+                                <li role="menuitem"><a href="#" ng-click="editar(voluntario)"><i class="glyphicon glyphicon-pencil"></i><span>Editar</span></a></li>
+                                <li role="menuitem"><a href="/Voluntario/Detalhe/{{voluntario.id}}" ><i class="glyphicon glyphicon-eye-open"></i><span>Detalhes</span></a></li>
+                                <li role="menuitem"><a href="#" ng-click="delete(voluntario)"><i class="glyphicon glyphicon-remove"></i><span>Excluir</span></a></li>
 
                             </ul>
                         </div>
@@ -49,7 +51,7 @@
     </div>
 </div>
 
-<script type="text/ng-template" id="InteressadoCreate.html">
+<script type="text/ng-template" id="VoluntarioCreate.html">
     <div class="modal-header">
         <h3 class="modal-title" >Novo</h3>
     </div>
@@ -61,34 +63,79 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Nome</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" ng-model="interessado.nome" required />
+                        <input type="text" class="form-control" ng-model="voluntario.nome" required />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Email</label>
                     <div class="col-md-10">
-                        <input type="email" class="form-control" ng-model="interessado.email" required />
+                        <input type="email" class="form-control" ng-model="voluntario.email" required />
                     </div>
                 </div>
 
-                
+                <div class="form-group">
+                    <label class="col-md-2 control-label">CPF</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" ng-model="voluntario.cpf" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">RG</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" ng-model="voluntario.rg" required />
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Celular</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" ng-model="interessado.celular" />
+                        <input type="text" class="form-control" ng-model="voluntario.celular" />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Telefone</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" ng-model="interessado.telefone" />
+                        <input type="text" class="form-control" ng-model="voluntario.telefone" />
                     </div>
                 </div>
 
-                
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Sexo</label>
+                    <div class="col-md-10">
+                        <select class="col-md-12 form-control" ng-model="voluntario.sexo" required>
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Data de Nascimento</label>
+                    <div class="col-md-10">
+                        <input type="date" class="form-control" ng-model="voluntario.dataNascimento" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Disponibilidade</label>
+                    <div class="col-md-10">
+                        <dl class="dl-horizontal">
+                            <dd>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.domingo"><span>Domingo</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.SegundaFeira "><span>Segunda</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.TercaFeira "><span>Terça</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.QuartaFeira "><span>Quarta</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.QuintaFeira "><span>Quinta</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.SextaFeira "><span>Sexta</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.Sabado "><span>Sabado</span></label>
+                            </dd>
+                        </dl>
+                    </div>
+
+                </div>
 
             </form>
         </div>
@@ -99,7 +146,7 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="InteressadoUpdate.html">
+<script type="text/ng-template" id="VoluntarioUpdate.html">
     <div class="modal-header">
         <h3 class="modal-title">Atualizar</h3>
     </div>
@@ -111,32 +158,79 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Nome</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" ng-model="interessado.nome" required/>
+                        <input type="text" class="form-control" ng-model="voluntario.nome" required/>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Email</label>
                     <div class="col-md-10">
-                        <input type="email" class="form-control" ng-model="interessado.email" required/>
+                        <input type="email" class="form-control" ng-model="voluntario.email" required/>
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="col-md-2 control-label">CPF</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" ng-model="voluntario.cpf"required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">RG</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" ng-model="voluntario.rg" required/>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Celular</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" ng-model="interessado.celular" />
+                        <input type="text" class="form-control" ng-model="voluntario.celular" />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Telefone</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" ng-model="interessado.telefone" />
+                        <input type="text" class="form-control" ng-model="voluntario.telefone" />
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Sexo</label>
+                    <div class="col-md-10">
+                        <select class="col-md-12 form-control"  ng-model="voluntario.sexo" required>
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Data de Nascimento</label>
+                    <div class="col-md-10">
+                        <input type="date" class="form-control" ng-model="voluntario.dataNascimento" required/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Disponibilidade</label>
+                    <div class="col-md-10">
+                        <dl class="dl-horizontal">
+                            <dd>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.domingo"><span>Domingo</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.SegundaFeira "><span>Segunda</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.TercaFeira "><span>Terça</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.QuartaFeira "><span>Quarta</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.QuintaFeira "><span>Quinta</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.SextaFeira "><span>Sexta</span></label>
+                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.Sabado "><span>Sabado</span></label>
+                            </dd>
+                        </dl>
+                    </div>
+                    
+                </div>
             
             </form>
         </div>

@@ -53,7 +53,7 @@ namespace SistemaVidaNova.Api
                 Celular = q.Celular,
                 Email = q.Email,
                 Nome = q.Nome,
-                Telefone = q.Telefone,
+                Telefone = q.Telefone/*,
                 Eventos = q.Eventos.OrderByDescending(e => e.DataInicio)
                     .Select(e => new EventoDTO
                     {
@@ -64,7 +64,7 @@ namespace SistemaVidaNova.Api
                         end = e.DataFim,
                         valorDeEntrada = e.ValorDeEntrada,
                         valorArrecadado = e.ValorArrecadado
-                    }).ToList()
+                    }).ToList()*/
             };
             return new ObjectResult(dto);
         }

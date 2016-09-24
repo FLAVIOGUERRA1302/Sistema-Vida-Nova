@@ -279,3 +279,14 @@ li.L7,
 li.L9 {
   /* */
 }
+
+input.ng-dirty.ng-invalid {
+  color: red;
+  border-color:red;
+  
+}
+
+input.ng-valid.ng-valid-required {
+  color: green
+}
+

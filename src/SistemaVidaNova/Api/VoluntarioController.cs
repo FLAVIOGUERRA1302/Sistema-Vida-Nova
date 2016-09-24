@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Linq.Dynamic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,11 @@ using SistemaVidaNova.Models.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Routing;
+
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,14 +28,17 @@ namespace SistemaVidaNova.Api
         private VidaNovaContext _context;
         private readonly UserManager<Usuario> _userManager;
         private readonly ILogger _logger;
+        private IHostingEnvironment _environment;
         public VoluntarioController(
             VidaNovaContext context,
             UserManager<Usuario> userManager,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IHostingEnvironment environment)
         {
             _context = context;
             _userManager = userManager;
             _logger = loggerFactory.CreateLogger<VoluntarioController>();
+            _environment = environment;
         }
 
         // GET: api/values
@@ -82,10 +91,14 @@ namespace SistemaVidaNova.Api
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Voluntario v =_context.Voluntario.SingleOrDefault(q => q.Id == id);
+            Voluntario v =_context.Voluntario
+                .Include(q=>q.Endereco)
+                .SingleOrDefault(q => q.Id == id);
+
             if (v == null)
                 return new NotFoundResult();
 
+            
             VoluntarioDTO dto = new VoluntarioDTO
             {
                 Id = v.Id,
@@ -124,7 +137,7 @@ namespace SistemaVidaNova.Api
         // POST api/values
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]VoluntarioDTO v)
-        {
+        {   
             if (ModelState.IsValid)
             {
                 Usuario user = await _userManager.GetUserAsync(HttpContext.User);
@@ -157,12 +170,16 @@ namespace SistemaVidaNova.Api
                 {
                     _context.SaveChanges();
                     v.Id = voluntario.Id;
-                    return new ObjectResult(v);
+                    var path = Path.Combine(_environment.WebRootPath, "images\\voluntarios\\");
+                    System.IO.File.Copy(path+"default.jpg", path+ voluntario.Id+".jpg", true);
+
                 }
                 catch
                 {
                     return new BadRequestResult();
                 }
+                               
+                return new ObjectResult(v);
             }
             else
             {
@@ -173,13 +190,15 @@ namespace SistemaVidaNova.Api
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]VoluntarioDTO voluntario)
+        public async Task<IActionResult> Put(int id, [FromBody]VoluntarioDTO voluntario)
         {
             if(id != voluntario.Id)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             if (ModelState.IsValid)
             {
-                Voluntario v = _context.Voluntario.Single(q => q.Id == id);
+                Voluntario v = _context.Voluntario.Include(q=>q.Endereco).SingleOrDefault(q => q.Id == id && q.IsDeletado==false);
+                if (v == null)
+                    return new BadRequestResult();
 
                 v.Email = voluntario.Email;
                 v.Nome = voluntario.Nome;                
@@ -208,13 +227,37 @@ namespace SistemaVidaNova.Api
 
 
 
-                _context.SaveChanges();                
+                _context.SaveChanges();
+
+
+                
+                
+
                 return new ObjectResult(voluntario);
             }
             else
             {
                 return new BadRequestObjectResult(ModelState);
             }
+        }
+
+
+        [HttpPost("{id}")]
+        public async Task<IActionResult> Post(int id)
+        {
+            var uploads = Path.Combine(_environment.WebRootPath, "images\\voluntarios");
+            var file = Request.Form.Files[0];
+
+            if (file.Length > 0)
+            {
+                using (var fileStream = new FileStream(Path.Combine(uploads, id+".jpg"), FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+            }
+               
+             
+            return new OkResult();
         }
 
         // DELETE api/values/5

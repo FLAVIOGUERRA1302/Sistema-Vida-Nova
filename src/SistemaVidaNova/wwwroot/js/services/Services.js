@@ -1,5 +1,5 @@
 ﻿var app = angular.module('app');
-app.factory('VoluntarioService', ["$http", "$q", function ($http, $q) {
+app.factory('VoluntarioService', ["$http", "$q", "Upload", function ($http, $q, Upload) {
     var s = {};
 
     s.Create = function (voluntario) {
@@ -25,7 +25,7 @@ app.factory('VoluntarioService', ["$http", "$q", function ($http, $q) {
 
     s.Read = function (id,skip,take) {
         var deferred = $q.defer();
-        if (id === undefined || id == null) id = "";
+        if (id === undefined || id === null) id = "";
         var req = {
             method: 'GET',
             url: '/api/Voluntario/' + id,
@@ -44,6 +44,8 @@ app.factory('VoluntarioService', ["$http", "$q", function ($http, $q) {
         }, function errorCallback(response) {
             deferred.reject(response.data);
         });
+
+        
 
         return deferred.promise;
     }
@@ -88,6 +90,25 @@ app.factory('VoluntarioService', ["$http", "$q", function ($http, $q) {
         return deferred.promise;
     }
 
+    s.Upload = function (voluntario,foto) {
+        var deferred = $q.defer();
+
+        Upload.upload({
+            //method: 'UPLOAD',
+            url: '/api/Voluntario/' + voluntario.id,
+            data: { file: foto }
+        }).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        }, function (evt) {
+            deferred.notify (Math.min(100, parseInt(100.0 *
+                                     evt.loaded / evt.total)));
+        });
+
+        return deferred.promise;
+    }
+
     return s;
 
 
@@ -117,9 +138,9 @@ app.factory('InteressadoService', ["$http", "$q", function ($http, $q) {
         return deferred.promise;
     }
 
-    s.Read = function (id) {
+    s.Read = function (id, skip, take) {
         var deferred = $q.defer();
-        if (id === undefined) id = "";
+        if (id === undefined || id === null) id = "";
         var req = {
             method: 'GET',
             url: '/api/Interessado/' + id,
@@ -129,11 +150,17 @@ app.factory('InteressadoService', ["$http", "$q", function ($http, $q) {
 
             dataType: 'json'
         };
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
         $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
             deferred.resolve(response.data);
         }, function errorCallback(response) {
             deferred.reject(response.data);
         });
+
+
 
         return deferred.promise;
     }
