@@ -17,7 +17,7 @@
 
                     <!-- formulario -->
                     <!-- <div class="form-group col-md-6"> :::CLASSE DETERMINA TAMANHO DO CAMPO 'TEXT',  MAXIMO 12, 6= METADE DA TELA -->
-                    <form action="viewVoluntario.php">
+                    <form action="">
                         <div class="box-body">
 
                             <div class="row">
@@ -44,7 +44,12 @@
 
                                 <div class="col-md-4">
                                     <p><strong>Telefone:</strong></p>
-                                    <p>{{voluntario.telefone}}</p>
+                                    <p>{{voluntario.telefone}}&nbsp;</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p><strong>Telefone:</strong></p>
+                                    <p>{{voluntario.celular}}&nbsp;</p>
                                 </div>
 
 
@@ -78,7 +83,7 @@
 
                                 <div class="col-md-4">
                                     <p><strong>Complemento:</strong></p>
-                                    <p>{{voluntario.endereco.complemento}}</p>
+                                    <p>{{voluntario.endereco.complemento}}&nbsp;</p>
                                 </div>
 
 

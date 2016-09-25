@@ -43,7 +43,7 @@ namespace SistemaVidaNova.Api
 
         // GET: api/values
         [HttpGet]
-        public IEnumerable<VoluntarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtroNome)
+        public IEnumerable<VoluntarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
         {
 
             if (skip == null)
@@ -55,8 +55,8 @@ namespace SistemaVidaNova.Api
                 .Where(q => q.IsDeletado == false)
                 .OrderBy(q => q.Nome);
 
-            if (!String.IsNullOrEmpty(filtroNome))
-                query.Where(q => q.Nome.Contains(filtroNome));
+            if (!String.IsNullOrEmpty(filtro))
+                query = query.Where(q => q.Nome.Contains(filtro));
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
 

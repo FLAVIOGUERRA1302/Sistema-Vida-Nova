@@ -23,7 +23,7 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", function ($http, $q, 
         return deferred.promise;
     }
 
-    s.Read = function (id,skip,take) {
+    s.Read = function (id,skip,take,filtro) {
         var deferred = $q.defer();
         if (id === undefined || id === null) id = "";
         var req = {
@@ -35,8 +35,12 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", function ($http, $q, 
 
             dataType: 'json'
         };
+        req.params = {};
         if (skip !== undefined && take !== undefined) {
             req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
         }
         $http(req).then(function successCallback(response) {
             s.totalItems = parseInt(response.headers('totalItems'));
@@ -138,7 +142,7 @@ app.factory('InteressadoService', ["$http", "$q", function ($http, $q) {
         return deferred.promise;
     }
 
-    s.Read = function (id, skip, take) {
+    s.Read = function (id, skip, take, filtro) {
         var deferred = $q.defer();
         if (id === undefined || id === null) id = "";
         var req = {
@@ -150,8 +154,12 @@ app.factory('InteressadoService', ["$http", "$q", function ($http, $q) {
 
             dataType: 'json'
         };
+        req.params = {};
         if (skip !== undefined && take !== undefined) {
             req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
         }
         $http(req).then(function successCallback(response) {
             s.totalItems = parseInt(response.headers('totalItems'));

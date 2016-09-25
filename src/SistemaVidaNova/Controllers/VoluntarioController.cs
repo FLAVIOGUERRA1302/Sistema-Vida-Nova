@@ -10,11 +10,8 @@ namespace SistemaVidaNova.Controllers
 {
     public class VoluntarioController : Controller
     {
-        // GET: /<controller>/
-        public IActionResult Index()
-        {
-            return View();
-        }
+      
+      
 
         public IActionResult Index(int id)
         {

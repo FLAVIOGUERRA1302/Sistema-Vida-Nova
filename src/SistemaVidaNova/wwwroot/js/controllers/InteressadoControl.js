@@ -8,7 +8,7 @@
     $scope.currentPage = 1;
 
     $scope.pageChanged = function () {
-        InteressadoService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina)//id,skip,take
+        InteressadoService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa)//id,skip,take,filtro
         .then(function (interessados) {
             $scope.interessados = interessados;
             $scope.totalItems = InteressadoService.totalItems;
@@ -16,6 +16,10 @@
 
         });
     };
+
+    $scope.pesquisar = function () {
+        $scope.pageChanged();
+    }
 
 
 }])

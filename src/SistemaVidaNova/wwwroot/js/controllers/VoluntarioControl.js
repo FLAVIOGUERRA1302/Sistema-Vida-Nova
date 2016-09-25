@@ -2,13 +2,15 @@
 .controller('VoluntarioControl', ['$scope', 'VoluntarioService', '$uibModal', 'voluntarios', function ($scope, VoluntarioService, $uibModal, voluntarios) {
     var itensPorPagina = 10;
     $scope.voluntarios = voluntarios;
-   
+    $scope.valorPesquisa = "";
 
     $scope.totalItems = VoluntarioService.totalItems;
     $scope.currentPage = 1;
 
+       
+
     $scope.pageChanged = function () {
-        VoluntarioService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina)//id,skip,take
+        VoluntarioService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa)//id,skip,take,filtro
         .then(function (voluntarios) {
             $scope.voluntarios = voluntarios;
             $scope.totalItems = VoluntarioService.totalItems;
@@ -17,6 +19,9 @@
         });
     };
    
+    $scope.pesquisar = function () {
+        $scope.pageChanged();
+    }
 
 }])
 .controller('VoluntarioUpdateControl', ['$scope', 'VoluntarioService', 'voluntario', 'CepService', function ($scope, VoluntarioService, voluntario, CepService) {

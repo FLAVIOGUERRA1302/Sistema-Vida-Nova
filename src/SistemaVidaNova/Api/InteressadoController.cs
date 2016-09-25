@@ -24,18 +24,33 @@ namespace SistemaVidaNova.Api
         }
 
         [HttpGet]
-        public IEnumerable<InteressadoDTO> Get()
+        public IEnumerable<InteressadoDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
         {
-            List<InteressadoDTO> interessados = (from q in _context.Interessado
-                                                 select new InteressadoDTO
-                                                 {
-                                                     Id = q.CodInteressado,
-                                                     Celular = q.Celular,
-                                                     Email = q.Email,
-                                                     Nome = q.Nome,
-                                                     Telefone = q.Telefone
 
-                                                 }).ToList();
+            if (skip == null)
+                skip = 0;
+            if (take == null)
+                take = 1000;
+
+            IQueryable<Interessado> query = _context.Interessado                
+                .OrderBy(q => q.Nome);
+
+            if (!String.IsNullOrEmpty(filtro))
+                query = query.Where(q => q.Nome.Contains(filtro));
+
+            this.Response.Headers.Add("totalItems", query.Count().ToString());
+
+            List<InteressadoDTO> interessados = query
+                .Skip(skip.Value)
+                .Take(take.Value).Select(v => new InteressadoDTO
+                {
+                    Id = v.CodInteressado,
+                    Email = v.Email,
+                    Nome = v.Nome,
+                    Celular = v.Celular,
+                    Telefone = v.Telefone
+                }).ToList();
+
               return interessados;
         }
 
