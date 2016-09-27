@@ -80,6 +80,7 @@ namespace SistemaVidaNova.Migrations
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    Nome = table.Column<string>(nullable: false),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     PasswordHash = table.Column<string>(nullable: true),
@@ -200,7 +201,6 @@ namespace SistemaVidaNova.Migrations
                     Rg = table.Column<string>(nullable: false),
                     Sabado = table.Column<bool>(nullable: false),
                     SegundaFeira = table.Column<bool>(nullable: false),
-                    Senha = table.Column<string>(nullable: false),
                     Sexo = table.Column<string>(nullable: false),
                     SextaFeira = table.Column<bool>(nullable: false),
                     Telefone = table.Column<string>(nullable: true),
@@ -209,6 +209,7 @@ namespace SistemaVidaNova.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Voluntario", x => x.Id);
+                    table.UniqueConstraint("AK_Voluntario_Cpf", x => x.Cpf);
                     table.UniqueConstraint("AK_Voluntario_Email", x => x.Email);
                     table.ForeignKey(
                         name: "FK_Voluntario_AspNetUsers_IdUsuario",
@@ -227,7 +228,7 @@ namespace SistemaVidaNova.Migrations
                     Bairro = table.Column<string>(nullable: false),
                     Cep = table.Column<string>(nullable: false),
                     Cidade = table.Column<string>(nullable: false),
-                    Complemento = table.Column<string>(nullable: false),
+                    Complemento = table.Column<string>(nullable: true),
                     Estado = table.Column<string>(nullable: false),
                     Logradouro = table.Column<string>(nullable: false),
                     Numero = table.Column<string>(nullable: false),
@@ -255,16 +256,22 @@ namespace SistemaVidaNova.Migrations
                     DataFim = table.Column<DateTime>(nullable: false),
                     DataInicio = table.Column<DateTime>(nullable: false),
                     Descricao = table.Column<string>(nullable: false),
+                    IdUsuario = table.Column<string>(nullable: false),
                     InteressadoCodInteressado = table.Column<int>(nullable: true),
                     Relato = table.Column<string>(nullable: true),
                     Titulo = table.Column<string>(nullable: false),
                     ValorArrecadado = table.Column<double>(nullable: false),
-                    ValorDeEntrada = table.Column<double>(nullable: false),
                     VoluntarioId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Evento", x => x.CodEvento);
+                    table.ForeignKey(
+                        name: "FK_Evento_AspNetUsers_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Evento_Interessado_InteressadoCodInteressado",
                         column: x => x.InteressadoCodInteressado,
@@ -284,12 +291,11 @@ namespace SistemaVidaNova.Migrations
                 columns: table => new
                 {
                     CodEvento = table.Column<int>(nullable: false),
-                    CodInetessado = table.Column<int>(nullable: false),
-                    CodInteressado = table.Column<int>(nullable: true)
+                    CodInteressado = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InteressadoEvento", x => new { x.CodEvento, x.CodInetessado });
+                    table.PrimaryKey("PK_InteressadoEvento", x => new { x.CodEvento, x.CodInteressado });
                     table.ForeignKey(
                         name: "FK_InteressadoEvento_Evento_CodEvento",
                         column: x => x.CodEvento,
@@ -301,7 +307,7 @@ namespace SistemaVidaNova.Migrations
                         column: x => x.CodInteressado,
                         principalTable: "Interessado",
                         principalColumn: "CodInteressado",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -363,6 +369,11 @@ namespace SistemaVidaNova.Migrations
                 table: "Endereco",
                 column: "VoluntarioId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Evento_IdUsuario",
+                table: "Evento",
+                column: "IdUsuario");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Evento_InteressadoCodInteressado",

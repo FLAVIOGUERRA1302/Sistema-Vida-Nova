@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SistemaVidaNova.Models;
 using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SistemaVidaNova.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;

@@ -32,11 +32,11 @@ namespace SistemaVidaNova.Models
             modelBuilder.Entity<Voluntario>()
                 .HasAlternateKey(c => c.Email);
 
-            /*modelBuilder.Entity<Voluntario>()
-                .HasAlternateKey(c => c.Cpf);*/
+            modelBuilder.Entity<Voluntario>()
+                .HasAlternateKey(c => c.Cpf);
 
             modelBuilder.Entity<InteressadoEvento>()
-                .HasKey(t => new { t.CodEvento, t.CodInetessado });
+                .HasKey(t => new { t.CodEvento, t.CodInteressado });
 
             modelBuilder.Entity<VoluntarioEvento>()
                 .HasKey(t => new { t.CodEvento, t.IdVoluntario });

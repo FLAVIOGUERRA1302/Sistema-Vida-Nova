@@ -1,0 +1,101 @@
+﻿
+
+
+
+<div id="top" class="content-header">
+    <div class="col-sm-3">
+        <h3 class="box-title">Lista de Eventos</h3>
+    </div>
+
+    <div class="col-sm-6">
+
+        <form ng-submit="pesquisar()">
+            <div class="input-group h2">
+                <input type="text" ng-model="valorPesquisa" name="pesquisar" class="form-control" id="exampleInputName2" placeholder="Pesquisar Evento">
+
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit" >
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+
+                </span>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-2">
+            <a href="/Evento/Criar" class="btn btn-primary pull-right h2">Novo Evento</a>
+        </div>
+    </div>
+</div>
+
+<div id="list" class="row">
+
+
+    <section class="content body">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box-body">
+
+                    <table class="table table-striped" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+
+                                <th>Título</th>
+                                <th>Data Inicio</th>
+                                <th>Data fim</th>
+                                <th>Hora Inicio</th>
+                                <th>Hora fim</th>                                
+                                <th>Valor arrecadado</th>
+                                <th>Criou</th>
+
+                                <th class="actions">Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr ng-repeat="evento in eventos">
+                                <td>{{evento.title}}</td>
+                                <td>{{evento.start | date :'dd/MM/yy'}}</td>
+                                <td>{{evento.end | date :'dd/MM/yy'}}</td>
+                                <td>{{evento.start | date :'HH:mm'}}</td>
+                                <td>{{evento.end | date :'HH:mm'}}</td>                                
+                                <td>{{evento.valorArrecadado}}</td>
+                                <td class='actions'>
+
+                                    <a class='btn btn-success btn-xs' href='/Evento/{{evento.id}}'>Visualizar</a>
+                                    <a class='btn btn-warning btn-xs' href='/Evento/Editar/{{evento.id}}'>Editar</a>
+                                    <a class='btn btn-danger btn-xs' href='' ng-click="delete(evento)">Excluir</a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                    <div class="col-lg-12">
+
+                        <button type="button" class="btn btn-success pull-right h2">Importar para Excel</button>
+
+                    </div>
+
+
+                    <nav class="text-center">
+
+                        <ul uib-pagination boundary-links="true" ng-change="pageChanged()" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+
+                    </nav>
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+</div>

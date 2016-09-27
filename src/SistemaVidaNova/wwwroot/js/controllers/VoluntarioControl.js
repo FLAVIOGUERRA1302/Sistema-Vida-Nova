@@ -1,5 +1,6 @@
 ﻿angular.module('app')
-.controller('VoluntarioControl', ['$scope', 'VoluntarioService', '$uibModal', 'voluntarios', function ($scope, VoluntarioService, $uibModal, voluntarios) {
+.controller('VoluntarioControl', ['$scope', 'VoluntarioService', '$uibModal', 'voluntarios', 'loadingDialod', function ($scope, VoluntarioService, $uibModal, voluntarios, loadingDialod) {
+    loadingDialod.close();
     var itensPorPagina = 10;
     $scope.voluntarios = voluntarios;
     $scope.valorPesquisa = "";
@@ -24,7 +25,8 @@
     }
 
 }])
-.controller('VoluntarioUpdateControl', ['$scope', 'VoluntarioService', 'voluntario', 'CepService', function ($scope, VoluntarioService, voluntario, CepService) {
+.controller('VoluntarioUpdateControl', ['$scope', 'VoluntarioService', 'voluntario', 'CepService', 'loadingDialod','$location', function ($scope, VoluntarioService, voluntario, CepService, loadingDialod,$location) {
+    loadingDialod.close();
     $scope.voluntario = voluntario;//angular.copy(voluntario);
     $scope.random = new Date().getTime();
     $scope.ufs = ufs;
@@ -33,7 +35,7 @@
     $scope.salvar = function () {
         VoluntarioService.Update($scope.voluntario)
             .then(function (voluntario) {
-                
+                $location.path('/Voluntario' + interessado.id)
             }, function (erros) {
                 //exibir erros
             });

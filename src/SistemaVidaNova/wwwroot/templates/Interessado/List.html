@@ -56,9 +56,9 @@
 
                             <tr ng-repeat="v in interessados">
                                 <td>{{v.nome}}</td>
-                                <th>{{v.celular}}</th>
+                                <th >{{v.celular  | brPhoneNumber}}</th>
                                 <td>{{v.email}}</td>
-                                <td>{{v.telefone}}</td>
+                                <td >{{v.telefone  | brPhoneNumber}}</td>
                                 <td class='actions'>
 
                                     <a class='btn btn-success btn-xs' href='/Interessado/{{v.id}}'>Visualizar</a>

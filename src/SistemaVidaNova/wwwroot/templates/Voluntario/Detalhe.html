@@ -30,7 +30,7 @@
 
                                 <div class="col-md-4">
                                     <p><strong>CPF:</strong></p>
-                                    <p>{{voluntario.cpf}}</p>
+                                    <p>{{voluntario.cpf | brCpf}}</p>
                                 </div>
 
 
@@ -44,12 +44,12 @@
 
                                 <div class="col-md-4">
                                     <p><strong>Telefone:</strong></p>
-                                    <p>{{voluntario.telefone}}&nbsp;</p>
+                                    <p>{{voluntario.telefone | brPhoneNumber}}&nbsp;</p>
                                 </div>
 
                                 <div class="col-md-4">
                                     <p><strong>Telefone:</strong></p>
-                                    <p>{{voluntario.celular}}&nbsp;</p>
+                                    <p>{{voluntario.celular | brPhoneNumber}}&nbsp;</p>
                                 </div>
 
 
@@ -65,7 +65,7 @@
 
                                 <div class="col-md-4">
                                     <p><strong>CEP:</strong></p>
-                                    <p>{{voluntario.endereco.cep}}</p>
+                                    <p>{{voluntario.endereco.cep | brCep}}</p>
                                 </div>
 
 

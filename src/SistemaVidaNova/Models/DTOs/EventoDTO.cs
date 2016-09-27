@@ -25,15 +25,15 @@ namespace SistemaVidaNova.Models.DTO
         public DateTime start { get; set; }
         [Required]
         public DateTime end { get; set; }
-        [Required]
-        public double valorDeEntrada { get; set; }
+        
         
         public double valorArrecadado { get; set; }
 
         [StringLength(5000, ErrorMessage = "O {0} tem que ter no máximo {1} caracteres")]
         public string relato { get; set; }
-        public string url { get; set; }
-        
+
+        public List<VoluntarioDTO> voluntarios;
+        public List<InteressadoDTO> interessados;
         
     }
 }

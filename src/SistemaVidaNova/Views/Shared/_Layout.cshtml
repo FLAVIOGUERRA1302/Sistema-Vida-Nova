@@ -28,6 +28,10 @@
         <link href="~/lib/admin-lte/dist/css/skins/skin-blue.css" rel="stylesheet" />
 
         <link rel="stylesheet" href="~/css/site.css" />
+        
+        <link href="~/lib/ng-dialog/css/ngDialog.css" rel="stylesheet" />
+        <link href="~/lib/ng-dialog/css/ngDialog-theme-default.css" rel="stylesheet" />
+
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -115,11 +119,13 @@
 
         <script src="~/lib/admin-lte/dist/js/app.js"></script>
 
+        <script src="~/lib/ng-dialog/js/ngDialog.min.js"></script>
 
-        <script src="~/lib/string-mask/src/string-mask.js"></script>
-        <script src="~/lib/angular-input-masks/angular-input-masks-standalone.js"></script>
+        <script src="~/lib/angular-br-filters/release/angular-br-filters.js"></script>
+
+        <script src="~/lib/angular-input-masks/angular-input-masks-dependencies.js"></script>
         <script src="~/lib/angular-input-masks/angular-input-masks.br.min.js"></script>
-
+        <script src="~/lib/angular-input-masks/angular-input-masks-standalone.js"></script>
         
         <script src="~/lib/ng-file-upload/ng-file-upload-shim.js"></script>
         <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
@@ -131,7 +137,7 @@
         <script src="~/js/controllers/HomeControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/VoluntarioControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/InteressadoControl.js" asp-append-version="true"></script>
-        <script src="~/js/controllers/EventoControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/EventoControl.js" asp-append-version="false"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"

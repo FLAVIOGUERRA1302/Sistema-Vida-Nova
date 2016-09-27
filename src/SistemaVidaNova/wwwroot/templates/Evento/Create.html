@@ -1,0 +1,120 @@
+﻿<section class="content-header">
+    <h1>
+        Cadastrar Evento
+    </h1>
+
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+                
+                <form method='post' ng-submit="salvar()" name="form">
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label class="control-label">Título</label>
+                                <input type="text" class="form-control" ng-model="evento.title" required />
+                            </div>
+                            
+
+                        </div>
+                        <div class="row">                           
+
+                            <div class="col-xs-12">
+
+                                <label for="email">Descrição</label>
+                                <textarea class="form-control" ng-model="evento.descricao" required />
+                            </div>
+
+                        </div>
+
+                        
+
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <label class="control-label">Data Início</label>
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yy" ng-model="evento.start" is-open="startOpened" ng-required="true" close-text="Fechar" required />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="startOpened=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="col-xs-2">
+                                <label class="control-label">Date Fim</label>
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yy" ng-model="evento.end" is-open="endOpened" ng-required="true" close-text="Fechar" required />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="endOpened=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+
+                            </div>
+
+                        
+                            <div class="col-xs-2">
+                                <label class="control-label">Hora Início</label>
+                                <div uib-timepicker ng-model="evento.start" hour-step="1" minute-step="5" show-meridian="false"></div>
+                            </div>
+
+                            <div class="col-xs-2">
+                                <label class="control-label">Hora Fim</label>
+                                <div uib-timepicker ng-model="evento.end" hour-step="1" minute-step="5" show-meridian="false"></div>
+
+                            </div>
+                            <div class="col-xs-2">
+                                <label class="control-label">Cor do Evento</label>
+                                <color-picker ng-model="evento.color" options="options"></color-picker>
+
+                            </div>
+
+                            <div class="col-xs-2">
+                                <label class="control-label">Cor da fonte</label>
+                                <color-picker ng-model="evento.textColor " options="options"></color-picker>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            
+                            <div class="col-xs-6">
+                                <label class="control-label">Valor arrecadado</label>
+                                <input type="number" class="form-control" ng-model="evento.valorArrecadado " required />
+                            </div>
+                            
+
+                        
+                            <div class="col-xs-6">
+                                <label class="control-label">Relato</label>
+                                <textarea class="form-control" ng-model="evento.relato" />
+                            </div>
+
+
+                        </div>
+
+
+                               
+                                        
+
+                            <div class="box-footer">
+                                <a href="/Evento" class="btn btn-primary">Voltar</a>
+                                <a href="" class="btn btn-default">Limpar Campos</a>
+                                <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
+                            </div>
+                        </div>
+
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>

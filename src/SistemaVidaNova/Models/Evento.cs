@@ -23,17 +23,19 @@ namespace SistemaVidaNova.Models
         public DateTime DataInicio { get; set; }
         [Required]
         public DateTime DataFim { get; set; }
-        [Required]
-        public double ValorDeEntrada { get; set; }
+        
 
         [Required]
         public double ValorArrecadado { get; set; }
                 
         public string Relato { get; set; }
 
-        
+        [Required]
+        public string IdUsuario { get; set; }
 
-        
+        [ForeignKey("IdUsuario")]
+        public Usuario Usuario { get; set; }
+
         public List<VoluntarioEvento> Voluntarios { get; set; }
         public List<InteressadoEvento> Interessados { get; set; }
 

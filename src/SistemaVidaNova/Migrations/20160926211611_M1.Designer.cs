@@ -8,8 +8,8 @@ using SistemaVidaNova.Models;
 namespace SistemaVidaNova.Migrations
 {
     [DbContext(typeof(VidaNovaContext))]
-    [Migration("20160924172321_M3")]
-    partial class M3
+    [Migration("20160926211611_M1")]
+    partial class M1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -194,6 +194,9 @@ namespace SistemaVidaNova.Migrations
                     b.Property<string>("Descricao")
                         .IsRequired();
 
+                    b.Property<string>("IdUsuario")
+                        .IsRequired();
+
                     b.Property<int?>("InteressadoCodInteressado");
 
                     b.Property<string>("Relato");
@@ -203,11 +206,11 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<double>("ValorArrecadado");
 
-                    b.Property<double>("ValorDeEntrada");
-
                     b.Property<int?>("VoluntarioId");
 
                     b.HasKey("CodEvento");
+
+                    b.HasIndex("IdUsuario");
 
                     b.HasIndex("InteressadoCodInteressado");
 
@@ -239,11 +242,9 @@ namespace SistemaVidaNova.Migrations
                 {
                     b.Property<int>("CodEvento");
 
-                    b.Property<int>("CodInetessado");
+                    b.Property<int>("CodInteressado");
 
-                    b.Property<int?>("CodInteressado");
-
-                    b.HasKey("CodEvento", "CodInetessado");
+                    b.HasKey("CodEvento", "CodInteressado");
 
                     b.HasIndex("CodEvento");
 
@@ -355,6 +356,9 @@ namespace SistemaVidaNova.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Cpf");
+
+
                     b.HasAlternateKey("Email");
 
                     b.HasIndex("IdUsuario");
@@ -424,6 +428,11 @@ namespace SistemaVidaNova.Migrations
 
             modelBuilder.Entity("SistemaVidaNova.Models.Evento", b =>
                 {
+                    b.HasOne("SistemaVidaNova.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("SistemaVidaNova.Models.Interessado")
                         .WithMany("Eventos")
                         .HasForeignKey("InteressadoCodInteressado");
@@ -442,7 +451,8 @@ namespace SistemaVidaNova.Migrations
 
                     b.HasOne("SistemaVidaNova.Models.Interessado", "Interessado")
                         .WithMany()
-                        .HasForeignKey("CodInteressado");
+                        .HasForeignKey("CodInteressado")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Voluntario", b =>

@@ -20,7 +20,7 @@ namespace SistemaVidaNova.Models.AccountViewModels
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirme a Senha")]
-        [Compare("Password", ErrorMessage = "A senha e a confirmação da senha não confere,.")]
+        [Compare("Password", ErrorMessage = "A senha e a confirmação da senha não confere.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

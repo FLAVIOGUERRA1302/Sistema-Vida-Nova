@@ -1,5 +1,6 @@
 ﻿angular.module('app')
-.controller('InteressadoControl', ['$scope', 'InteressadoService',  'interessados', function ($scope, InteressadoService,  interessados) {
+.controller('InteressadoControl', ['$scope', 'InteressadoService', 'interessados', 'loadingDialod', function ($scope, InteressadoService, interessados, loadingDialod) {
+    loadingDialod.close();
     var itensPorPagina = 10;
     $scope.interessados = interessados;
 
@@ -23,7 +24,8 @@
 
 
 }])
-.controller('InteressadoUpdateControl', ['$scope', 'InteressadoService', 'interessado',  function ($scope, InteressadoService, interessado) {
+.controller('InteressadoUpdateControl', ['$scope', 'InteressadoService', 'interessado', 'loadingDialod','$location', function ($scope, InteressadoService, interessado, loadingDialod,$location) {
+    loadingDialod.close();
     $scope.interessado = interessado;//angular.copy(interessado);
     $scope.random = new Date().getTime();
     
@@ -31,7 +33,7 @@
     $scope.salvar = function () {
         InteressadoService.Update($scope.interessado)
             .then(function (interessado) {
-
+                $location.path('/Interessado');
             }, function (erros) {
                 //exibir erros
             });
@@ -45,7 +47,7 @@
     $scope.salvar = function () {
         InteressadoService.Create($scope.interessado)
             .then(function (interessado) {
-                $location.path('/Interessado/Editar/' + interessado.id)
+                $location.path('/Interessado')
 
             }, function (erros) {
 

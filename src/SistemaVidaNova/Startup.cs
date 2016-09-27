@@ -71,6 +71,7 @@ namespace SistemaVidaNova
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
+                
             }
             else
             {
@@ -88,6 +89,10 @@ namespace SistemaVidaNova
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
+
+
         }
 
        }

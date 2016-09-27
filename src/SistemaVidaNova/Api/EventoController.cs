@@ -8,6 +8,7 @@ using SistemaVidaNova.Models;
 using SistemaVidaNova.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,26 +20,41 @@ namespace SistemaVidaNova.Api
     {
         // GET: api/values
         private VidaNovaContext _context;
-        private readonly UserManager<Voluntario> _userManager;
-        public EventoController(VidaNovaContext context,UserManager<Voluntario> userManager)
+        private readonly UserManager<Usuario> _userManager;
+        public EventoController(VidaNovaContext context,UserManager<Usuario> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
         [HttpGet]
-        public IEnumerable<EventoDTO> Get([FromQuery]DateTime? start, [FromQuery]DateTime? end)
+        public IEnumerable<EventoDTO> Get([FromQuery]DateTime? start, [FromQuery]DateTime? end, [FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
         {
 
-            IQueryable<Evento> query = null;
-             if(start!=null && end != null)
+            IQueryable<Evento> query = _context.Evento;
+             if(start!=null && end != null)//busca pelo calendario
             {
-                query = _context.Evento.Where(q => q.DataInicio >= start && q.DataInicio <= end);
+                query = query.Where(q => q.DataInicio >= start && q.DataInicio <= end);
             }
-            else
-            {
-                query = _context.Evento;
+            else { // busca pela lista
+                if (skip == null)
+                    skip = 0;
+                if (take == null)
+                    take = 1000;
+
+                 query = query
+                    .OrderByDescending(q => q.DataInicio);
+
+                if (!String.IsNullOrEmpty(filtro))
+                    query = query.Where(q => q.Titulo.Contains(filtro));
+
+                this.Response.Headers.Add("totalItems", query.Count().ToString());
+                query = query
+                .Skip(skip.Value)
+                .Take(take.Value);
             }
+           
+
 
             List<EventoDTO> eventos = (from q in query
                                        select new EventoDTO
@@ -50,7 +66,7 @@ namespace SistemaVidaNova.Api
                                                      textColor = q.CorDaFonte,
                                                      start = q.DataInicio,
                                                      end = q.DataFim,
-                                                     valorDeEntrada = q.ValorDeEntrada,
+                                                     
                                                      valorArrecadado = q.ValorArrecadado,
                                                      relato = q.Relato,
                                                                                                          
@@ -64,22 +80,39 @@ namespace SistemaVidaNova.Api
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Evento q = _context.Evento.SingleOrDefault(i => i.CodEvento == id);
-            if (q == null)
+            Evento eve = _context.Evento
+                    .Include(q => q.Interessados)
+                    //.ThenInclude(q=>q.Interessado)
+                    .Include(q => q.Voluntarios)
+                    //.ThenInclude(q=> q.Voluntario)
+                    .SingleOrDefault(q => q.CodEvento == id);
+            if (eve == null)
                 return new NotFoundResult();
-
+            if (eve.Interessados.Count > 0)
+                _context.InteressadoEvento.Where(q => q.CodEvento == id).Include(q => q.Interessado).Load();
+            if (eve.Voluntarios.Count > 0)
+                _context.VoluntarioEvento.Where(q => q.CodEvento == id).Include(q => q.Voluntario).Load();
             EventoDTO dto = new EventoDTO
             {
-                id = q.CodEvento,
-                title = q.Titulo,
-                descricao = q.Descricao,
-                color = q.Cor,
-                textColor = q.CorDaFonte,
-                start = q.DataInicio,
-                end = q.DataFim,
-                valorDeEntrada = q.ValorDeEntrada,
-                valorArrecadado = q.ValorArrecadado,
-                relato = q.Relato
+                id = eve.CodEvento,
+                title = eve.Titulo,
+                descricao = eve.Descricao,
+                color = eve.Cor,
+                textColor = eve.CorDaFonte,
+                start = eve.DataInicio,
+                end = eve.DataFim,
+                
+                valorArrecadado = eve.ValorArrecadado,
+                relato = eve.Relato,
+                voluntarios = eve.Voluntarios.Select(q=>new VoluntarioDTO{
+                 Id = q.IdVoluntario,
+                 Nome = q.Voluntario.Nome,
+                 Cpf = q.Voluntario.Cpf}).ToList(),
+                interessados = eve.Interessados.Select(q => new InteressadoDTO
+                {
+                    Id = q.Interessado.CodInteressado,
+                    Nome = q.Interessado.Nome
+                }).ToList()
 
             };
             return new ObjectResult(dto);
@@ -91,7 +124,7 @@ namespace SistemaVidaNova.Api
         {
             if (ModelState.IsValid)
             {
-                Voluntario voluntario = await _userManager.GetUserAsync(HttpContext.User);
+                Usuario usuario = await _userManager.GetUserAsync(HttpContext.User);
                 Evento novo = new Evento()
                 {
 
@@ -101,9 +134,11 @@ namespace SistemaVidaNova.Api
                 CorDaFonte = evento.textColor,
                 DataInicio = evento.start,
                 DataFim = evento.end,
-                ValorDeEntrada = evento.valorDeEntrada,
+                
                 ValorArrecadado = evento.valorArrecadado,
-                Relato = evento.relato
+                Relato = evento.relato,
+                 Usuario=usuario
+                 
                  
             };
                 _context.Evento.Add(novo);
@@ -133,17 +168,79 @@ namespace SistemaVidaNova.Api
                 return new BadRequestResult();
             if (ModelState.IsValid)
             {
-                Evento i = _context.Evento.Single(q => q.CodEvento == id);
 
-                i.Titulo = evento.title;
-                i.Descricao = evento.descricao;
-                i.Cor = evento.color;
-                i.CorDaFonte = evento.textColor;
-                i.DataInicio = evento.start;
-                i.DataFim = evento.end;
-                i.ValorDeEntrada = evento.valorDeEntrada;
-                i.ValorArrecadado = evento.valorArrecadado;
-                i.Relato = evento.relato;
+                
+
+                Evento e = _context.Evento
+                    .Include(q=>q.Interessados)
+                    .Include(q=>q.Voluntarios).
+                    Single(q => q.CodEvento == id);
+
+                e.Titulo = evento.title;
+                e.Descricao = evento.descricao;
+                e.Cor = evento.color;
+                e.CorDaFonte = evento.textColor;
+                e.DataInicio = evento.start;
+                e.DataFim = evento.end;
+                
+                e.ValorArrecadado = evento.valorArrecadado;
+                e.Relato = evento.relato;
+
+
+
+                
+                if (evento.interessados != null)
+                {
+                    //verifica quem está presentee e quem saiu
+                    List<InteressadoEvento> corretos = new List<InteressadoEvento>();
+                    foreach (var inter in evento.interessados)
+                    {
+                        var eventoInteressado = e.Interessados.SingleOrDefault(q => q.CodInteressado == inter.Id);
+                        if (eventoInteressado == null)
+                        {
+                            eventoInteressado = new InteressadoEvento { CodEvento = e.CodEvento, CodInteressado = inter.Id };
+                            corretos.Add(eventoInteressado);
+                            e.Interessados.Add(eventoInteressado);
+
+
+                        }
+                        corretos.Add(eventoInteressado);
+                        
+                    }
+                    //remove incorretos
+                    var incorretos = e.Interessados.Except(corretos);
+                    foreach (var incorreto in incorretos.ToArray())
+                        e.Interessados.Remove(incorreto);
+
+                }
+                else
+                    evento.interessados.Clear();
+
+                
+                if (evento.voluntarios != null)
+                {
+                    //verifica quem está presentee e quem saiu
+                    List<VoluntarioEvento> corretos = new List<VoluntarioEvento>();
+                    foreach (var volunt in evento.voluntarios)
+                    {
+                        var eventoVoluntario = e.Voluntarios.SingleOrDefault(q => q.IdVoluntario == volunt.Id);
+                        if (eventoVoluntario == null)
+                        {
+                            eventoVoluntario = new VoluntarioEvento { CodEvento = e.CodEvento, IdVoluntario = volunt.Id };
+                            corretos.Add(eventoVoluntario);
+                            e.Voluntarios.Add(eventoVoluntario);
+
+                        }
+                        corretos.Add(eventoVoluntario);
+
+                    }
+                    //remove incorretos
+                    var incorretos = e.Voluntarios.Except(corretos);
+                    foreach (var incorreto in incorretos.ToArray())
+                        e.Voluntarios.Remove(incorreto);
+                }
+                else
+                    evento.voluntarios.Clear();
 
                 _context.SaveChanges();
 

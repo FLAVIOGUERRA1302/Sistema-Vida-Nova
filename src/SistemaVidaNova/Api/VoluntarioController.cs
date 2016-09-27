@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Routing;
+using System.Net.Http;
 
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -276,6 +277,16 @@ namespace SistemaVidaNova.Api
             {
                 return new BadRequestResult();
             }
+        }
+
+        
+        [HttpGet("pdf/{id}")]
+        public IActionResult GetFile(string id)
+        {
+            var fileName = $"export.pfd";
+            var filepath = $"Downloads/{fileName}";
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filepath);
+            return File(fileBytes, "application/pdf", fileName);
         }
     }
 }

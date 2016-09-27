@@ -242,9 +242,9 @@ app.factory('EventoService', ["$http", "$q", function ($http, $q) {
         return deferred.promise;
     }
 
-    s.Read = function (id) {
+    s.Read = function (id, skip, take, filtro) {
         var deferred = $q.defer();
-        if (id === undefined) id = "";
+        if (id === undefined || id === null) id = "";
         var req = {
             method: 'GET',
             url: '/api/Evento/' + id,
@@ -254,7 +254,15 @@ app.factory('EventoService', ["$http", "$q", function ($http, $q) {
 
             dataType: 'json'
         };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
         $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
             deferred.resolve(response.data);
         }, function errorCallback(response) {
             deferred.reject(response.data);

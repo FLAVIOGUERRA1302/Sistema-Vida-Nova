@@ -1,0 +1,211 @@
+﻿<section class="content-header">
+    <h1>
+        Editar Evento
+    </h1>
+
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+
+                <form method='post' ng-submit="salvar()" name="form">
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label class="control-label">Título</label>
+                                <input type="text" class="form-control" ng-model="evento.title" required />
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-12">
+
+                                <label for="email">Descrição</label>
+                                <textarea class="form-control" ng-model="evento.descricao" required />
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <label class="control-label">Data Início</label>
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yy" ng-model="evento.start" is-open="startOpened" ng-required="true" close-text="Fechar" required />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="startOpened=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="col-xs-2">
+                                <label class="control-label">Date Fim</label>
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yy" ng-model="evento.end" is-open="endOpened" ng-required="true" close-text="Fechar" required />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="endOpened=true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+
+                            </div>
+
+
+                            <div class="col-xs-2">
+                                <label class="control-label">Hora Início</label>
+                                <div uib-timepicker ng-model="evento.start" hour-step="1" minute-step="5" show-meridian="false"></div>
+                            </div>
+
+                            <div class="col-xs-2">
+                                <label class="control-label">Hora Fim</label>
+                                <div uib-timepicker ng-model="evento.end" hour-step="1" minute-step="5" show-meridian="false"></div>
+
+                            </div>
+                            <div class="col-xs-2">
+                                <label class="control-label">Cor do Evento</label>
+                                <color-picker ng-model="evento.color" options="options"></color-picker>
+
+                            </div>
+
+                            <div class="col-xs-2">
+                                <label class="control-label">Cor da fonte</label>
+                                <color-picker ng-model="evento.textColor " options="options"></color-picker>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-xs-6">
+                                
+
+                                <label class="control-label">Voluntários</label>
+                                <div class="box box-solid ">
+                                    
+                                    <div class="box-header with-border bg-blue">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   ng-model="voluntarioSelected"
+                                                   placeholder="Pesquise um voluntário para asicionar ao evento"
+                                                   uib-typeahead="voluntario as voluntario.nome for voluntario in getVoluntarios($viewValue)"
+                                                   typeahead-loading="loandingVoluntarios"
+                                                   typeahead-no-results="noResultsV"
+                                                   class="form-control "
+                                                   typeahead-editable="false"
+                                                   typeahead-on-select="addVoluntario($item, $model, $label, $event)">
+
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn  btn-primary" ng-click="addVoluntario()">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </span>
+                                            <i ng-show="loandingVoluntarios" class="glyphicon glyphicon-refresh"></i>
+                                            <div ng-show="noResultsV">
+                                                <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                        
+                                        <ul class="list-unstyled">
+                                            <li class="list-group-item" ng-repeat="voluntario in evento.voluntarios">
+                                                <span class="badge glyphicon glyphicon-remove" ng-click="removerVoluntario(voluntario)">&nbsp;</span>
+                                            {{voluntario.nome}} - {{voluntario.cpf| brCpf}} </li>
+                                        </ul>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                            </div>
+
+
+                            <div class="col-xs-6">
+                                <label class="control-label">Interessados</label>
+
+
+                                <div class="box box-solid">
+                                    <div class="box-header with-border bg-blue">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   ng-model="interessadoSelected"
+                                                   placeholder="Pesquise um interessado para adicionar ao evento"
+                                                   uib-typeahead="interessado as interessado.nome for interessado in getInteressados($viewValue)"
+                                                   typeahead-loading="loandingInteressados"
+                                                   typeahead-no-results="noResultsI"
+                                                   class="form-control"
+                                                   typeahead-editable="false"
+                                                   typeahead-on-select="addInteressado($item, $model, $label, $event)">
+
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary" ng-click="addInteressado()">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </span>
+                                            <i ng-show="loandingInteressados" class="glyphicon glyphicon-refresh"></i>
+                                            <div ng-show="noResultsI">
+                                                <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+
+                                        <ul class="list-unstyled">
+                                            <li class="list-group-item" ng-repeat="interessado in evento.interessados">
+                                                <span class="badge glyphicon glyphicon-remove" ng-click="removerInteressado(interessado)">&nbsp;</span>
+                                                {{interessado.nome}}                                                 
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        
+
+                        <div class="row">
+
+                            <div class="col-xs-6">
+                                <label class="control-label">Valor arrecadado</label>
+                                <input type="number" class="form-control" ng-model="evento.valorArrecadado " required />
+                            </div>
+
+
+
+                            <div class="col-xs-6">
+                                <label class="control-label">Relato</label>
+                                <textarea class="form-control" ng-model="evento.relato" />
+                            </div>
+
+
+                        </div>
+
+
+
+
+
+                        <div class="box-footer">
+                            <a href="/Evento" class="btn btn-primary">Voltar</a>                            
+                            <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
+                        </div>
+                    </div>
+
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>

@@ -32,7 +32,7 @@
             <li class="user-footer">
                 <div class="pull-left">
                     
-                    <a asp-area="" asp-controller="Manage" asp-action="Index" class="btn btn-default btn-flat">Perfil</a>
+                    <a asp-area="" asp-controller="Manage" asp-action="Index" class="btn btn-default btn-flat" target="_self">Perfil</a>
                 </div>
                 <div class="pull-right">                    
                     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right" target="_self">                        
@@ -47,7 +47,7 @@ else
 {
     
         
-        <li ng-app="app2"><a asp-area="" asp-controller="Account" asp-action="Login" target="_self">Log in</a></li>
+        <li ng-app="app2"><a asp-area="" asp-controller="Account" asp-action="Login"  target="_self">Log in</a></li>
         
     
 
