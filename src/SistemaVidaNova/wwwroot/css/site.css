@@ -1,4 +1,7 @@
 ﻿
+body {
+    background-color: #ecf0f5;
+}
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -290,3 +293,17 @@ input.ng-valid.ng-valid-required {
   color: green
 }
 
+
+
+.main-footer {
+    background-color: #ecf0f5;
+    max-height:50px;
+    position:fixed;
+    bottom:0px;
+    width:100%;
+}
+
+.page-signin .form-container, .page-signup .form-container {
+	max-width: 420px;
+	margin: 10px auto
+}

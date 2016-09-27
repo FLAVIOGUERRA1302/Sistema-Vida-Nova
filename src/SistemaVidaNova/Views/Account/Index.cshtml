@@ -1,0 +1,111 @@
+﻿@model SistemaVidaNova.Models.AccountViewModels.IndexViewModel
+
+@{
+
+    Layout = "_LayoutAdmin";
+}
+
+
+
+<div id="top" class="content-header">
+    <div class="col-sm-3">
+        <h3 class="box-title">Lista de Usuários</h3>
+    </div>
+
+    <div class="col-sm-6">
+
+        <form  method="get" action="Account">
+            <div class="input-group h2">
+                <input type="text" name="q" class="form-control" id="exampleInputName2" placeholder="Pesquisar Usuário">
+
+                <span class="input-group-btn">
+                    <button class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+
+                </span>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-2">
+            <a href="/Account/Register" class="btn btn-primary pull-right h2">Novo Usuário</a>
+        </div>
+    </div>
+</div>
+
+<div id="list" class="row">
+
+
+    <section class="content body">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box-body">
+
+                    <table class="table table-striped" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+
+                                <th>Nome</th>
+                                <th>Cpf</th>
+                                <th>Email</th>
+                                <th>Ativo</th>
+                                
+                                <th class="actions">Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var u in Model.lista)
+                            {
+
+                                <tr>
+                                    <td>@u.Nome</td>
+                                    <td>@u.Cpf</td>
+                                    <td>@u.Email</td>
+                                    @if (u.IsAtivo)
+                                    {
+                                        <td>
+                                            Sim
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            Não
+                                        </td>
+                                    }
+
+
+
+
+<td class='actions'>
+
+
+                                        <a class='btn btn-warning btn-xs' href='/Account/Editar/@u.Id'>Editar</a>
+
+                                    </td>
+                                </tr>
+                            }
+                            
+
+                        </tbody>
+                    </table>
+
+
+                    
+
+
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+</div>

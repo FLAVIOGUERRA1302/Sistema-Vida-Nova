@@ -14,6 +14,7 @@ namespace SistemaVidaNova.Models.AccountViewModels
 
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "Senha")]
         public string Password { get; set; }
 
         [Display(Name = "Lembrar de mim?")]

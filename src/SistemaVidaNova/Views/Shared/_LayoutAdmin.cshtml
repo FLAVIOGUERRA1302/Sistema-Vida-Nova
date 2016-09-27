@@ -1,0 +1,164 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <base href="/">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sistema Vida Nova</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+        <link href="~/lib/angularjs-color-picker/dist/angularjs-color-picker.css" rel="stylesheet" />
+        <link href="~/lib/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.min.css" rel="stylesheet" />
+        <link href="~/lib/fullcalendar/dist/fullcalendar.css" rel="stylesheet" />
+        <link href="~/lib/components-font-awesome/css/font-awesome.css" rel="stylesheet" />
+        <!-- Ionicons -->
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">-->
+        <!-- Theme style -->
+        <link href="~/lib/admin-lte/dist/css/AdminLTE.css" rel="stylesheet" />
+
+
+        <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+        <link href="~/lib/admin-lte/dist/css/skins/skin-blue.css" rel="stylesheet" />
+
+        <link rel="stylesheet" href="~/css/site.css" />
+
+        <link href="~/lib/ng-dialog/css/ngDialog.css" rel="stylesheet" />
+        <link href="~/lib/ng-dialog/css/ngDialog-theme-default.css" rel="stylesheet" />
+
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition skin-blue sidebar-mini fixed" ng-app="app" id="app">
+    <div class="wrapper">
+
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>S</b>VN</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b></b>Sistema Vida Nova</span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+
+                        @await Html.PartialAsync("_LoginPartial")
+
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Left side column. contains the logo and sidebar -->
+        @await Html.PartialAsync("_MenuPartial")
+
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            Copyright &copy; 2016 - Sistema Vida Nova
+
+        </footer>
+
+
+    </div>
+    <!-- ./wrapper -->
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/angular/angular.js"></script>
+        <script src="~/lib/angular-route/angular-route.js"></script>
+        <script src="~/lib/angular-animate/angular-animate.min.js"></script>
+        <script src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
+        <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
+        <script src="~/lib/bootstrap-validator/js/validator.js"></script>
+
+        <script src="~/lib/tinycolor/dist/tinycolor-min.js"></script>
+        <script src="~/lib/angularjs-color-picker/dist/angularjs-color-picker.js"></script>
+
+        <script src="~/lib/moment/min/moment.min.js"></script>
+        <script src="~/lib/fullcalendar/dist/fullcalendar.js"></script>
+        <script src="~/lib/fullcalendar/dist/lang/pt-br.js"></script>
+
+        <script src="~/lib/admin-lte/plugins/slimScroll/jquery.slimscroll.js"></script>
+
+        <script src="~/lib/admin-lte/dist/js/app.js"></script>
+
+        <script src="~/lib/ng-dialog/js/ngDialog.min.js"></script>
+
+        <script src="~/lib/angular-br-filters/release/angular-br-filters.js"></script>
+
+        <script src="~/lib/angular-input-masks/angular-input-masks-dependencies.js"></script>
+        <script src="~/lib/angular-input-masks/angular-input-masks.br.min.js"></script>
+        <script src="~/lib/angular-input-masks/angular-input-masks-standalone.js"></script>
+
+        <script src="~/lib/ng-file-upload/ng-file-upload-shim.js"></script>
+        <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+
+
+        <script src="~/js/app.js"></script>
+        <script src="~/js/services/Services.js"></script>
+        <script src="~/js/directives/Directives.js"></script>
+        <script src="~/js/controllers/HomeControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/VoluntarioControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/InteressadoControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/EventoControl.js" asp-append-version="false"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"
+                asp-fallback-src="~/lib/angular/angular.min.js"
+                asp-fallback-test="window.angular">
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.min.js"
+                asp-fallback-src="~/lib/angular-route/angular-route.min.js"
+                asp-fallback-test="window.angular-route">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+
+</body>
+</html>

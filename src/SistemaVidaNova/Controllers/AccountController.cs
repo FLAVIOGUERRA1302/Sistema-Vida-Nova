@@ -13,6 +13,7 @@ using IdentityServer4.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SistemaVidaNova.Controllers
@@ -26,6 +27,7 @@ namespace SistemaVidaNova.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly IIdentityServerInteractionService _interaction;
+        private VidaNovaContext _context;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
@@ -33,7 +35,8 @@ namespace SistemaVidaNova.Controllers
             SignInManager<Usuario> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            VidaNovaContext context)
         {
             _interaction = interaction;
             _userManager = userManager;
@@ -41,7 +44,29 @@ namespace SistemaVidaNova.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;
         }
+
+
+        // GET: /Account/Register
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public IActionResult Index()
+        {
+            IndexViewModel  model= new IndexViewModel();
+            IdentityRole roleAdmin = _context.Roles.Single(q => q.Name == "Administrator");
+            model.lista = _context.Users.Select( q => new UserViewModel()
+            {
+                Id = q.Id,
+                Cpf = q.Cpf,
+                Email = q.Email,
+                IsAdmin = q.Roles.Any(r => r.RoleId == roleAdmin.Id),
+                IsAtivo = q.IsAtivo,
+                Nome = q.Nome
+            }).ToList();
+            return View(model);
+        }
+
 
         //
         // GET: /Account/Login
@@ -71,10 +96,10 @@ namespace SistemaVidaNova.Controllers
                     _logger.LogInformation(1, "User logged in.");
                     return RedirectToLocal(returnUrl);
                 }
-                if (result.RequiresTwoFactor)
+               /* if (result.RequiresTwoFactor)
                 {
                     return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                }
+                }*/
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning(2, "User account locked out.");
@@ -94,7 +119,7 @@ namespace SistemaVidaNova.Controllers
         //
         // GET: /Account/Register
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -104,8 +129,9 @@ namespace SistemaVidaNova.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -116,7 +142,8 @@ namespace SistemaVidaNova.Controllers
                     Nome = model.Nome,
                     UserName = model.Email,
                     Email = model.Email,
-                    Cpf = model.Cpf
+                    Cpf = model.Cpf,
+                    IsAtivo=true
                 };                    
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -151,7 +178,7 @@ namespace SistemaVidaNova.Controllers
 
         //
         // POST: /Account/ExternalLogin
-        [HttpPost]
+       /* [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
@@ -160,11 +187,11 @@ namespace SistemaVidaNova.Controllers
             var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
-        }
+        }*/
 
         //
         // GET: /Account/ExternalLoginCallback
-        [HttpGet]
+      /*  [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
@@ -202,11 +229,11 @@ namespace SistemaVidaNova.Controllers
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
                 return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
             }
-        }
+        }*/
 
         //
         // POST: /Account/ExternalLoginConfirmation
-        [HttpPost]
+      /*  [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl = null)
@@ -236,7 +263,7 @@ namespace SistemaVidaNova.Controllers
 
             ViewData["ReturnUrl"] = returnUrl;
             return View(model);
-        }
+        }*/
 
         // GET: /Account/ConfirmEmail
         [HttpGet]
@@ -275,7 +302,7 @@ namespace SistemaVidaNova.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null )// || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
@@ -349,7 +376,7 @@ namespace SistemaVidaNova.Controllers
 
         //
         // GET: /Account/SendCode
-        [HttpGet]
+       /* [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl = null, bool rememberMe = false)
         {
@@ -361,11 +388,11 @@ namespace SistemaVidaNova.Controllers
             var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        }
+        }*/
 
         //
         // POST: /Account/SendCode
-        [HttpPost]
+       /* [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendCode(SendCodeViewModel model)
@@ -399,11 +426,11 @@ namespace SistemaVidaNova.Controllers
             }
 
             return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
-        }
+        }*/
 
         //
         // GET: /Account/VerifyCode
-        [HttpGet]
+        /*[HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> VerifyCode(string provider, bool rememberMe, string returnUrl = null)
         {
@@ -415,10 +442,10 @@ namespace SistemaVidaNova.Controllers
             }
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
-
+        */
         //
         // POST: /Account/VerifyCode
-        [HttpPost]
+       /* [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> VerifyCode(VerifyCodeViewModel model)
@@ -446,7 +473,7 @@ namespace SistemaVidaNova.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid code.");
                 return View(model);
             }
-        }
+        }*/
 
         /// <summary>
         /// Show logout page
@@ -460,6 +487,14 @@ namespace SistemaVidaNova.Controllers
             };
 
             return View(vm);
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied(string returnUrl = null)
+        {
+           
+
+            return View();
         }
 
         /// <summary>

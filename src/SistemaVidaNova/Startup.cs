@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using SistemaVidaNova.Services;
 using SistemaVidaNova.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace SistemaVidaNova
 {
@@ -25,13 +26,17 @@ namespace SistemaVidaNova
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
-           /* if (env.IsDevelopment())
+            /* if (env.IsDevelopment())
+             {
+                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+                 builder.AddUserSecrets();
+             }*/
+            if (env.IsDevelopment())
             {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }*/
 
-            builder.AddEnvironmentVariables();
+            }
+
+                builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
@@ -59,11 +64,16 @@ namespace SistemaVidaNova
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<Usuario>();
 
+            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+
+            InitializeDatabase(app);
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -95,5 +105,49 @@ namespace SistemaVidaNova
 
         }
 
-       }
+
+        private async void InitializeDatabase(IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<VidaNovaContext>().Database.Migrate();
+
+                var context = scope.ServiceProvider.GetRequiredService<VidaNovaContext>();
+                UserManager<Usuario> _userManager = scope.ServiceProvider.GetRequiredService<UserManager<Usuario>>();                
+                context.Database.Migrate();
+                if (!context.Users.Where(q => q.Email == "admin@admin.com").Any())
+                {
+                    var user = new Usuario
+                    {
+                        Nome = "Admin",
+                        UserName = "admin@admin.com",
+                        Email = "admin@admin.com",
+                        Cpf = "83577880171"
+                    };
+                    var result = await _userManager.CreateAsync(user, "Admin1@");
+                    //context.SaveChanges();
+                }
+
+                if (!context.Roles.Any()) {
+                    IdentityRole ir = new IdentityRole("Administrator");
+                    context.Roles.Add(ir);
+                    ir = new IdentityRole("User");
+                    context.Roles.Add(ir);
+                    context.SaveChanges();
+                }
+
+                try
+                {
+                    Usuario admin = context.Users.Single(q => q.UserName == "admin@admin.com");
+                    IdentityRole role = context.Roles.Single(q => q.Name == "Administrator");
+                    admin.Roles.Add(new IdentityUserRole<string>() { RoleId = role.Id, UserId = admin.Id });
+                    context.SaveChanges();
+                }
+                catch { }
+
+
+            }
+        }
+
+    }
 }

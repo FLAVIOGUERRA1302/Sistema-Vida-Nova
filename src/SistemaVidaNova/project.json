@@ -28,7 +28,8 @@
     "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0",
     "MailKit": "1.6.0",
     "System.Linq.Dynamic.Core": "1.0.6.1",
-    "Microsoft.EntityFrameworkCore.Relational": "1.0.1"
+    "Microsoft.EntityFrameworkCore.Relational": "1.0.1",
+    "Google.Apis.Auth": "1.16.0"
   },
 
   "tools": {
