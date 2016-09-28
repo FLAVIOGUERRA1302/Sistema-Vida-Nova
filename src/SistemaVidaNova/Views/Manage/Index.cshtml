@@ -1,7 +1,7 @@
-﻿@model IndexViewModel
+﻿@model  SistemaVidaNova.Models.ManageViewModels.IndexViewModel
 @{
     ViewData["Title"] = "Gerencie sua conta";
-    ViewData["imagePath"] = "images/fotos/"+ Model.Id+".jpg";
+    ViewData["imagePath"] = "images/users/"+ Model.Id+".jpg?"+DateTime.Now.Ticks;
     Layout = "_LayoutAccount";
 }
 

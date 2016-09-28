@@ -1,5 +1,4 @@
-﻿
-@model SistemaVidaNova.Models.AccountViewModels.RegisterViewModel
+﻿@model SistemaVidaNova.Models.AccountViewModels.UserViewModel
 @{
 
     Layout = "_LayoutAdmin";
@@ -17,8 +16,8 @@
         <div class="col-md-12">
             <div id="main" class="box box-warning">
 
-                <form asp-controller="Account" asp-action="Register" method="post">
-
+                
+                <form asp-controller="Account" asp-action="Editar" method="post" name="form" >
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="box-body">
 
@@ -26,7 +25,7 @@
                             <div class="col-xs-6">
                                 <label asp-for="Nome"></label>
                                 <div class="col-md-12">
-                                    <input asp-for="Nome" class="form-control" placeholder="Nome" />
+                                    <input asp-for="Nome" class="form-control" placeholder="Nome"/>
                                     <span asp-validation-for="Nome" class="text-danger"></span>
                                 </div>
                             </div>
@@ -34,11 +33,11 @@
                             <div class="col-xs-6">
                                 <label asp-for="Email"></label>
                                 <div class="col-md-12">
-                                    <input asp-for="Email" class="form-control" placeholder="Email"  />
-
+                                    <input asp-for="Email" class="form-control" placeholder="Email" disabled />
+                                    
                                 </div>
                             </div>
-
+                            
 
                         </div>
 
@@ -46,7 +45,7 @@
                             <div class="col-xs-6">
                                 <label asp-for="Cpf"></label>
                                 <div class="col-md-12">
-                                    <input asp-for="Cpf" class="form-control" placeholder="Cpf" />
+                                    <input asp-for="Cpf" class="form-control" placeholder="Cpf"  />
 
                                 </div>
                             </div>
@@ -54,53 +53,37 @@
                                 <label asp-for="IsAdmin"></label>
                                 <div class="col-md-12">
                                     @Html.CheckBoxFor(m => m.IsAdmin)
-
+                                    
                                 </div>
                             </div>
 
-                            
-
-
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <label asp-for="Password"></label>
+                            <div class="col-xs-3">
+                                <label asp-for="IsAtivo"></label>
                                 <div class="col-md-12">
-                                    <input asp-for="Password" class="form-control" placeholder="Senha" />
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-6">
-                                <label asp-for="ConfirmPassword"></label>
-                                <div class="col-md-12">
-                                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Senha" />
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                    @Html.CheckBoxFor(m => m.IsAtivo)
+                                    
                                 </div>
                             </div>
 
 
                         </div>
-
+                        
 
 
 
                         <div class="box-footer">
                             <a asp-action="Index" class="btn btn-primary">voltar</a>
-                            <button type="submit" class="btn btn-primary pull-right">Salvar</button>
+                            <button type="submit" class="btn btn-primary pull-right" >Salvar</button>
                         </div>
-
                     </div>
 
-</form>
+
+                </form>
 
 
 
+            </div>
         </div>
     </div>
-    </div>
 </section>
-
 

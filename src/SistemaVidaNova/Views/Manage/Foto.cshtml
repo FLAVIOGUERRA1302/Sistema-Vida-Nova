@@ -1,0 +1,46 @@
+﻿@*
+    
+*@
+@{
+    Layout = "_LayoutAdmin";
+}
+<div ng-controller="UserFotoController">
+    <section class="content-header">
+        <h1>
+            Alterar foto do perfil
+        </h1>
+
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="main" class="box box-warning">
+
+                    <!-- formulario -->
+                    <!-- <div class="form-group col-md-6"> :::CLASSE DETERMINA TAMANHO DO CAMPO 'TEXT',  MAXIMO 12, 6= METADE DA TELA -->
+                    
+                        <form asp-controller="Manage" asp-action="Foto" method="post" name="form" enctype="multipart/form-data">
+                            <div class="box-body">
+                                <div>
+                                    <input type="file" ngf-select ng-model="picFile" name="file"
+                                           accept="image/*">
+                                    <br />
+
+                                </div>
+                                <div class="col-md-2" ng-show="picFile!=null">
+                                    <img ngf-thumbnail="picFile" class="thumb" height="100" width="100">
+
+                                </div>
+                            </div>
+
+                            <div class="box-footer">
+                                <a asp-action="Index" class="btn btn-primary">voltar</a>
+                                <button type="submit" class="btn btn-primary pull-right">Alterar</button>
+                            </div>
+
+                        </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

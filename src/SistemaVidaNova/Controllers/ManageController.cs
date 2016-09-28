@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 using SistemaVidaNova.Models;
 using SistemaVidaNova.Services;
 using SistemaVidaNova.Models.ManageViewModels;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,19 +26,22 @@ namespace SistemaVidaNova.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private IHostingEnvironment _environment;
 
         public ManageController(
         UserManager<Usuario> userManager,
         SignInManager<Usuario> signInManager,
         IEmailSender emailSender,
         ISmsSender smsSender,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        IHostingEnvironment environment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _environment = environment;
         }
 
         //
@@ -331,6 +337,36 @@ namespace SistemaVidaNova.Controllers
             var result = await _userManager.AddLoginAsync(user, info);
             var message = result.Succeeded ? ManageMessageId.AddLoginSuccess : ManageMessageId.Error;
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
+        }
+
+        [HttpGet]
+        public IActionResult Foto()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Manage/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Foto(string value)
+        {
+            var uploads = Path.Combine(_environment.WebRootPath, "images\\users\\");
+            if (Request.Form.Files.Count > 0)
+            {
+                var file = Request.Form.Files[0];
+
+                if (file.Length > 0)
+                {
+                    var user = await GetCurrentUserAsync();
+                    using (var fileStream = new FileStream(Path.Combine(uploads, user.Id + ".jpg"), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         #region Helpers

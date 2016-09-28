@@ -14,6 +14,9 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SistemaVidaNova.Controllers
@@ -22,52 +25,113 @@ namespace SistemaVidaNova.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<Usuario> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<Usuario> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly IIdentityServerInteractionService _interaction;
         private VidaNovaContext _context;
-
+        private IHostingEnvironment _environment;
         public AccountController(
             IIdentityServerInteractionService interaction,
             UserManager<Usuario> userManager,
+            RoleManager<IdentityRole> roleManager,
             SignInManager<Usuario> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory,
-            VidaNovaContext context)
+            VidaNovaContext context,
+            IHostingEnvironment environment)
         {
             _interaction = interaction;
             _userManager = userManager;
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _context = context;
+            _environment = environment;
         }
 
 
         // GET: /Account/Register
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        public IActionResult Index()
+        public IActionResult Index([FromQuery]string q)
         {
             IndexViewModel  model= new IndexViewModel();
-            IdentityRole roleAdmin = _context.Roles.Single(q => q.Name == "Administrator");
-            model.lista = _context.Users.Select( q => new UserViewModel()
+            IdentityRole roleAdmin = _context.Roles.Single(r => r.Name == "Administrator");
+            var users = from u in _context.Users
+                        select u;
+            if (!String.IsNullOrEmpty(q))
+                users = users.Where(u => u.Nome.Contains(q) || u.Email.Contains(q));
+            
+            model.lista = users.Select( u => new UserViewModel()
             {
-                Id = q.Id,
-                Cpf = q.Cpf,
-                Email = q.Email,
-                IsAdmin = q.Roles.Any(r => r.RoleId == roleAdmin.Id),
-                IsAtivo = q.IsAtivo,
-                Nome = q.Nome
+                Id = u.Id,
+                Cpf = u.Cpf,
+                Email = u.Email,
+                IsAdmin =u.Roles.Any(r => r.RoleId == roleAdmin.Id),
+                IsAtivo = u.IsAtivo,
+                Nome = u.Nome
+                
             }).ToList();
             return View(model);
         }
 
+        [HttpGet()]
+        //[Authorize(Roles = "Administrator")]
+        public IActionResult Editar(string id)
+        {
+            
+            IdentityRole roleAdmin = _context.Roles.Single(r => r.Name == "Administrator");
+            var u = _context.Users.Include(q=>q.Roles).Single(q => q.Id == id);
+            UserViewModel user = new UserViewModel()
+            {
+                Id = u.Id,
+                Cpf = u.Cpf,
+                Email = u.Email,
+                IsAdmin = u.Roles.Any(r => r.RoleId == roleAdmin.Id),
+                IsAtivo = u.IsAtivo,
+                Nome = u.Nome
 
+            };
+                       
+            return View(user);
+        }
+
+
+
+        [HttpPost()]
+        [Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Editar(UserViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var u = _context.Users.Single(q => q.Id == model.Id);
+
+                u.Nome = model.Nome;
+                u.IsAtivo = model.IsAtivo;
+                u.Cpf = model.Cpf;
+                if (model.IsAdmin)
+                {
+                    await _userManager.AddToRoleAsync(u, "Administrator");
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(u, "Administrator");
+                }
+                
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
         //
         // GET: /Account/Login
         [HttpGet]
@@ -88,8 +152,13 @@ namespace SistemaVidaNova.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var u = _context.Users.SingleOrDefault(q => q.UserName == model.Password);
+                if(u==null || !u.IsAtivo)
+                {
+                    ModelState.AddModelError(string.Empty, "Tentativa de login inválida.");
+                    return View(model);
+                }
+
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -102,12 +171,13 @@ namespace SistemaVidaNova.Controllers
                 }*/
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning(2, "User account locked out.");
-                    return View("Lockout");
+                    _logger.LogWarning(2, "A conta do usuário está bloqueada");
+                    //return View("Lockout");
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Tentativa de login inválida.");
                     return View(model);
                 }
             }
@@ -148,15 +218,26 @@ namespace SistemaVidaNova.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "User");
+                    if(model.IsAdmin)
+                        await _userManager.AddToRoleAsync(user, "Administrator");
+
+                    try
+                    {
+                        var path = Path.Combine(_environment.WebRootPath, "images\\users\\");
+                        System.IO.File.Copy(path + "default.jpg", path + user.Id + ".jpg", true);
+                    }
+                    catch { };
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    //_logger.LogInformation(3, "User created a new account with password.");
+                    return RedirectToAction(nameof(Index));
                 }
                 AddErrors(result);
             }

@@ -113,8 +113,28 @@ namespace SistemaVidaNova
                 scope.ServiceProvider.GetRequiredService<VidaNovaContext>().Database.Migrate();
 
                 var context = scope.ServiceProvider.GetRequiredService<VidaNovaContext>();
-                UserManager<Usuario> _userManager = scope.ServiceProvider.GetRequiredService<UserManager<Usuario>>();                
+                UserManager<Usuario> _userManager = scope.ServiceProvider.GetRequiredService<UserManager<Usuario>>();
+                RoleManager<IdentityRole> _rolemanager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 context.Database.Migrate();
+
+                //correçao, somentet nessa versão
+                var roles = context.Roles.ToList();
+                foreach(var role in roles)
+                {
+                    if (String.IsNullOrEmpty(role.NormalizedName))
+                        role.NormalizedName = role.Name.ToUpper();
+                }
+                context.SaveChanges();
+
+                try
+                {
+                    IdentityRole role = new IdentityRole("Administrator");
+                    await _rolemanager.CreateAsync(role);
+                    role = new IdentityRole("User");
+                    await _rolemanager.CreateAsync(role);
+                }
+                catch { }
+
                 if (!context.Users.Where(q => q.Email == "admin@admin.com").Any())
                 {
                     var user = new Usuario
@@ -125,25 +145,13 @@ namespace SistemaVidaNova
                         Cpf = "83577880171"
                     };
                     var result = await _userManager.CreateAsync(user, "Admin1@");
-                    //context.SaveChanges();
+                    await _userManager.AddToRoleAsync(user, "Administrator");
+                    
                 }
 
-                if (!context.Roles.Any()) {
-                    IdentityRole ir = new IdentityRole("Administrator");
-                    context.Roles.Add(ir);
-                    ir = new IdentityRole("User");
-                    context.Roles.Add(ir);
-                    context.SaveChanges();
-                }
+               
 
-                try
-                {
-                    Usuario admin = context.Users.Single(q => q.UserName == "admin@admin.com");
-                    IdentityRole role = context.Roles.Single(q => q.Name == "Administrator");
-                    admin.Roles.Add(new IdentityUserRole<string>() { RoleId = role.Id, UserId = admin.Id });
-                    context.SaveChanges();
-                }
-                catch { }
+               
 
 
             }

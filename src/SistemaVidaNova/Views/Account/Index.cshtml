@@ -53,6 +53,8 @@
                                 <th>Email</th>
                                 <th>Ativo</th>
                                 
+                                <th>Administrador</th>
+                                
                                 <th class="actions">Ações</th>
                             </tr>
                         </thead>
@@ -65,23 +67,10 @@
                                     <td>@u.Nome</td>
                                     <td>@u.Cpf</td>
                                     <td>@u.Email</td>
-                                    @if (u.IsAtivo)
-                                    {
-                                        <td>
-                                            Sim
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td>
-                                            Não
-                                        </td>
-                                    }
-
-
-
-
-<td class='actions'>
+                                    <td>@(u.IsAtivo?"Sim":"Não")</td>
+                                    <td>@(u.IsAdmin ? "Sim" : "Não")</td>
+                                    
+                                    <td class='actions'>
 
 
                                         <a class='btn btn-warning btn-xs' href='/Account/Editar/@u.Id'>Editar</a>

@@ -32,7 +32,11 @@ namespace SistemaVidaNova.Models.AccountViewModels
         [Display(Name = "CPF")]
         public string Cpf { get; set; }
 
-       
+        [Required]
+        [Display(Name = "Administrador")]
+        public bool IsAdmin { get; set; }
+
+
 
     }
 }
