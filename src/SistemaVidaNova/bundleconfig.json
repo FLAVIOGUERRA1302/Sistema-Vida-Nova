@@ -5,13 +5,58 @@
     "outputFileName": "wwwroot/css/site.min.css",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
+      "wwwroot/lib/angularjs-color-picker/dist/angularjs-color-picker.min.css",
+      "wwwroot/lib/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.min.css",
+      "wwwroot/lib/fullcalendar/dist/fullcalendar.min.css",
+      "wwwroot/lib/components-font-awesome/css/font-awesome.min.css",
+      "wwwroot/lib/admin-lte/dist/css/AdminLTE.min.css",
+      "wwwroot/lib/admin-lte/dist/css/skins/skin-blue.min.css",
+      "wwwroot/lib/ng-dialog/css/ngDialog.min.css",
+      "wwwroot/lib/ng-dialog/css/ngDialog-theme-default.min.css",
       "wwwroot/css/site.css"
     ]
   },
   {
+    "outputFileName": "wwwroot/js/vendor.min.js",
+    "inputFiles": [
+      "wwwroot/lib/angular-animate/angular-animate.min.js",
+      "wwwroot/lib/angular-bootstrap/ui-bootstrap.js",
+      "wwwroot/lib/angular-bootstrap/ui-bootstrap-tpls.js",
+      "wwwroot/lib/bootstrap-validator/js/validator.js",
+      "wwwroot/lib/tinycolor/dist/tinycolor-min.js",
+      "wwwroot/lib/angularjs-color-picker/dist/angularjs-color-picker.js",
+      "wwwroot/lib/moment/min/moment.min.js",
+      "wwwroot/lib/fullcalendar/dist/fullcalendar.js",
+      "wwwroot/lib/fullcalendar/dist/lang/pt-br.js",
+      "wwwroot/lib/admin-lte/plugins/slimScroll/jquery.slimscroll.js",
+      "wwwroot/lib/admin-lte/dist/js/app.js",
+      "wwwroot/lib/ng-dialog/js/ngDialog.min.js",
+      "wwwroot/lib/angular-br-filters/release/angular-br-filters.js",
+      "wwwroot/lib/angular-input-masks/angular-input-masks-dependencies.js",
+      "wwwroot/lib/angular-input-masks/angular-input-masks.br.min.js",
+      "wwwroot/lib/angular-input-masks/angular-input-masks-standalone.js",
+      "wwwroot/lib/ng-file-upload/ng-file-upload-shim.js",
+      "wwwroot/lib/ng-file-upload/ng-file-upload.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    // Optinally generate .map file
+    "sourceMap": false
+  },
+  {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/js/site.js"
+      "wwwroot/js/app.js",
+      "wwwroot/js/services/Services.js",
+      "wwwroot/js/directives/Directives.js",
+      "wwwroot/js/controllers/HomeControl.js",      
+      "wwwroot/js/controllers/VoluntarioControl.js",      
+      "wwwroot/js/controllers/InteressadoControl.js",      
+      "wwwroot/js/controllers/EventoControl.js"
+      
     ],
     // Optionally specify minification options
     "minify": {

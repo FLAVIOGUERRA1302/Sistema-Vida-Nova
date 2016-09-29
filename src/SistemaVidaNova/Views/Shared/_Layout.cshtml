@@ -27,16 +27,19 @@
          folder instead of downloading all of them to reduce the load. -->
         <link href="~/lib/admin-lte/dist/css/skins/skin-blue.css" rel="stylesheet" />
 
-        <link rel="stylesheet" href="~/css/site.css" />
+        
         
         <link href="~/lib/ng-dialog/css/ngDialog.css" rel="stylesheet" />
         <link href="~/lib/ng-dialog/css/ngDialog-theme-default.css" rel="stylesheet" />
+
+        <link rel="stylesheet" href="~/css/site.css" />
 
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 
@@ -102,6 +105,7 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/angular/angular.js"></script>
         <script src="~/lib/angular-route/angular-route.js"></script>
+        
         <script src="~/lib/angular-animate/angular-animate.min.js"></script>
         <script src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
         <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -156,7 +160,9 @@
                 asp-fallback-src="~/lib/angular-route/angular-route.min.js"
                 asp-fallback-test="window.angular-route">
         </script>
+        <script src="~/js/vendor.min.js" asp-append-version="true"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        
     </environment>
 
 
