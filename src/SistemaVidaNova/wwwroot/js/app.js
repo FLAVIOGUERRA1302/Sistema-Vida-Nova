@@ -1,12 +1,13 @@
 ﻿var app = angular.module('app', [
-    'ngAnimate',
-    'ui.bootstrap',
-    'color.picker',
     'ngRoute',
-    'ui.utils.masks',
+    'ngAnimate',
     'ngFileUpload',
-    'idf.br-filters',
-    'ngDialog'
+    'ngDialog',
+    'ui.bootstrap',
+    'color.picker',    
+    'ui.utils.masks',    
+    'idf.br-filters'
+    
 
 ]).config(function ($routeProvider, $locationProvider) {
 

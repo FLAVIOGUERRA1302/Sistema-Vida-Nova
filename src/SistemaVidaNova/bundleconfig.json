@@ -40,8 +40,8 @@
     ],
     // Optionally specify minification options
     "minify": {
-      "enabled": true,
-      "renameLocals": true
+      "enabled": false,
+      "renameLocals": false
     },
     // Optinally generate .map file
     "sourceMap": false
@@ -64,6 +64,6 @@
       "renameLocals": true
     },
     // Optinally generate .map file
-    "sourceMap": false
+    "sourceMap": true
   }
 ]
