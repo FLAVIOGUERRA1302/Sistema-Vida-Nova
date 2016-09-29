@@ -7,6 +7,7 @@
 /// <reference path="js/directives/Directives.js" />
 /// <reference path="js/services/services.js" />
 /// <reference path="js/site.min.js" />
+/// <reference path="js/vendor.min.js" />
 /// <reference path="lib/admin-lte/dist/js/app.js" />
 /// <reference path="lib/angular/angular.js" />
 /// <reference path="lib/angular-animate/angular-animate.js" />

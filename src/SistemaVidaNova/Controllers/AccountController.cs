@@ -152,7 +152,7 @@ namespace SistemaVidaNova.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var u = _context.Users.SingleOrDefault(q => q.UserName == model.Password);
+                var u = _context.Users.SingleOrDefault(q => q.UserName == model.Email);
                 if(u==null || !u.IsAtivo)
                 {
                     ModelState.AddModelError(string.Empty, "Tentativa de login inválida.");

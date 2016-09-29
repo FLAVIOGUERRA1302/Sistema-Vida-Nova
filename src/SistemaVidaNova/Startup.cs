@@ -64,9 +64,9 @@ namespace SistemaVidaNova
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<Usuario>();
 
-            services.Configure<IISOptions>(options => {
+           /* services.Configure<IISOptions>(options => {
                 options.AutomaticAuthentication = false;
-            });
+            });*/
 
         }
 
