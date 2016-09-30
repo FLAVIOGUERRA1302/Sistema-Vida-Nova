@@ -2,6 +2,9 @@
 @using SistemaVidaNova.Models
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
+@{ 
+    Usuario usuario =await UserManager.GetUserAsync(User);
+}
 @if (SignInManager.IsSignedIn(User))
 {
     <aside class="main-sidebar">
@@ -33,6 +36,7 @@
                     <ul class="treeview-menu">
                         <li class="active"><a href="/Interessado"><i class="fa fa-circle-o"></i> Interessados</a></li>
                         <li><a href="/Voluntario"><i class="fa fa-circle-o"></i> Volutários</a></li>
+                        <li><a href="/Doador"><i class="fa fa-circle-o"></i> Doadores</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -49,7 +53,8 @@
                     </a>
                     
                 </li>
-                
+                @if (await UserManager.IsInRoleAsync(usuario, "Administrator"))
+                {
                 <li class="treeview">
                     <a href="">
                         <i class="fa fa-users"></i> <span>Administração do sistema</span>
@@ -62,6 +67,7 @@
                         
                     </ul>
                 </li>
+                }
 
             </ul>
         </section>

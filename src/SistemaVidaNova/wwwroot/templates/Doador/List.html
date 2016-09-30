@@ -1,0 +1,145 @@
+﻿
+
+
+
+<div id="top" class="content-header">
+    <div class="row">
+        <div class="col-md-2">
+            <h3 class="box-title">Lista de Doadores</h3>
+        </div>
+
+        <div class="col-md-6">
+
+            <form ng-submit="pesquisar()">
+                <div class="input-group h2">
+                    <input type="text" ng-model="valorPesquisa" name="pesquisar" class="form-control" id="exampleInputName2" placeholder="Pesquisar Interessado">
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+
+                    </span>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="col-md-2">
+            <a href="/Doador/Criar/PF" class="btn btn-primary pull-right h2">Novo Doados PF</a>
+        </div>
+        <div class="col-md-2">
+            <a href="/Doador/Criar/PJ" class="btn btn-primary pull-right h2">Novo Doados Pj</a>
+        </div>
+    </div>
+    
+</div>
+
+<div id="list" class="row">
+
+
+    <section class="content body">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box-body">
+
+                    
+
+
+                    <uib-tabset >
+                        <uib-tab index="0" heading="Pessoa Física" select="Select('PF')">
+                            <table class="table table-striped" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <tr>
+
+                                        <th>Nome</th>
+                                        <th>CPF</th>
+                                        <th>Email</th>
+                                        <th>Telefone</th>
+                                        <th>Celular</th>
+
+                                        <th class="actions">Ações</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr ng-repeat="d in doadores">
+                                        <td>{{d.nomeRazaoSocial}}</td>
+                                        <th>{{d.cpfCnpj   | brCpf}}</th>
+                                        <td>{{d.email}}</td>
+                                        <td>{{d.telefone  | brPhoneNumber}}</td>
+                                        <td>{{d.celular  | brPhoneNumber}}</td>
+                                        <td class='actions'>
+
+                                            <a class='btn btn-success btn-xs' href='/Doador/Visualizar/{{d.id}}'>Visualizar</a>
+                                            <a class='btn btn-warning btn-xs' href='/Doador/Editar/{{d.id}}'>Editar</a>
+                                            <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </uib-tab>
+
+                        <uib-tab index="1" heading="Pessoa Jurídica" select="Select('PJ')">
+                            <table class="table table-striped" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <tr>
+
+                                        <th>Razão Social</th>
+                                        <th>CNPJ</th>
+                                        <th>Email</th>
+                                        <th>Telefone</th>
+                                        <th>Celular</th>
+
+                                        <th class="actions">Ações</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr ng-repeat="d in doadores">
+                                        <td>{{d.nomeRazaoSocial}}</td>
+                                        <th>{{d.cpfCnpj   | brCnpj}}</th>
+                                        <td>{{d.email}}</td>
+                                        <td>{{d.telefone  | brPhoneNumber}}</td>
+                                        <td>{{d.celular  | brPhoneNumber}}</td>
+                                        <td class='actions'>
+
+                                            <a class='btn btn-success btn-xs' href='/Doador/{{d.id}}'>Visualizar</a>
+                                            <a class='btn btn-warning btn-xs' href='/Doador/Editar/{{d.id}}'>Editar</a>
+                                            <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </uib-tab>
+                        
+                    </uib-tabset>
+
+                    <div class="col-lg-12">
+
+                        <button type="button" class="btn btn-success pull-right h2">Importar para Excel</button>
+
+                    </div>
+
+
+                    <nav class="text-center">
+
+                        <ul uib-pagination boundary-links="true" ng-change="pageChanged()" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+
+                    </nav>
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+</div>

@@ -46,7 +46,7 @@
                 }
             }
         })
-    .when('/Voluntario/:id', {
+    .when('/Voluntario/Visualizar/:id', {
         templateUrl: '/templates/Voluntario/Detalhe.html',
         controller: 'VoluntarioUpdateControl',
         resolve: {
@@ -91,7 +91,7 @@
                     }
                 }
             })
-        .when('/Interessado/:id', {
+        .when('/Interessado/Visualizar/:id', {
             templateUrl: '/templates/Interessado/Detalhe.html',
             controller: 'InteressadoUpdateControl',
             resolve: {
@@ -141,12 +141,71 @@
                     }
                 }
             })
-        .when('/Evento/:id', {
+        .when('/Evento/Visualizar/:id', {
             templateUrl: '/templates/Evento/Detalhe.html',
             controller: 'EventoUpdateControl',
             resolve: {
                 evento: function (EventoService, $route) {
                     return EventoService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                }
+            }
+        })
+
+     //------------Doador----------
+    .when('/Doador', {
+        templateUrl: '/templates/Doador/List.html',
+        controller: 'DoadorControl',
+        resolve: {
+
+            doadores: function (DoadorService) {
+                return DoadorService.Read(null, 0, 10,'PF');//id,skip,take
+            },            
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+            }
+        }
+    })
+        .when('/Doador/Criar/PF', {
+            templateUrl: '/templates/Doador/CreatePf.html',
+            controller: 'DoadorCreateControl',
+            resolve: {
+                doador: function () {
+                    return { tipo: "PF" };
+                }                
+            }
+
+        })
+        .when('/Doador/Criar/PJ', {
+            templateUrl: '/templates/Doador/CreatePj.html',
+            controller: 'DoadorCreateControl',
+            resolve: {
+                doador: function () {
+                    return { tipo: "PJ" };
+                }
+            }
+
+        })
+            .when('/Doador/Editar/:id', {
+                templateUrl: '/templates/Doador/Update.html',
+                controller: 'DoadorUpdateControl',
+                resolve: {
+                    doador: function (DoadorService, $route) {
+                        return DoadorService.Read($route.current.params.id);
+                    },
+                    loadingDialod: function (ngDialog) {
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    }
+                }
+            })
+        .when('/Doador/Visualizar/:id', {
+            templateUrl: '/templates/Doador/Detalhe.html',
+            controller: 'DoadorUpdateControl',
+            resolve: {
+                doador: function (DoadorService, $route) {
+                    return DoadorService.Read($route.current.params.id);
                 },
                 loadingDialod: function (ngDialog) {
                     return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });

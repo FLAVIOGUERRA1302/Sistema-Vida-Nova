@@ -47,7 +47,7 @@ namespace SistemaVidaNova.Models.DTO
 
         public DateTime DataDeCadastro { get; set; }
         [Required]
-        public Endereco Endereco { get; set; }
+        public EnderecoDTO Endereco { get; set; }
         public List<EventoDTO> Eventos { get; set; }
     }
 }

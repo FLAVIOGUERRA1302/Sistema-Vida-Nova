@@ -78,7 +78,7 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", function ($http, $q, 
         var deferred = $q.defer();
         var req = {
             method: 'DELETE',
-            url: '/api/Voluntario/' + voluntario.Id,
+            url: '/api/Voluntario/' + voluntario.id,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -197,7 +197,7 @@ app.factory('InteressadoService', ["$http", "$q", function ($http, $q) {
         var deferred = $q.defer();
         var req = {
             method: 'DELETE',
-            url: '/api/Interessado/' + interessado.Id,
+            url: '/api/Interessado/' + interessado.id,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -295,7 +295,7 @@ app.factory('EventoService', ["$http", "$q", function ($http, $q) {
         var deferred = $q.defer();
         var req = {
             method: 'DELETE',
-            url: '/api/Evento/' + evento.Id,
+            url: '/api/Evento/' + evento.id,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -316,7 +316,108 @@ app.factory('EventoService', ["$http", "$q", function ($http, $q) {
 
 }]);
 
+app.factory('DoadorService', ["$http", "$q", function ($http, $q) {
+    var s = {};
 
+    s.Create = function (doador) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/Doador',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(doador),
+            dataType: 'json'
+        };
+
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Read = function (id, skip, take,tipo, filtro) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/Doador/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        if (tipo !== null && tipo !== undefined && tipo !== "") {
+            req.params.tipo = tipo;
+        }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.Update = function (doador) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'PUT',
+            url: '/api/Doador/' + doador.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(doador),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Delete = function (doador) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'DELETE',
+            url: '/api/Doador/' + doador.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    return s;
+
+
+}]);
 
 app.factory('CepService', ["$http", "$q", function ($http, $q) {
     var s = {};

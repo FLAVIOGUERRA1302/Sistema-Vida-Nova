@@ -10,11 +10,11 @@
             <div id="main" class="box box-warning">
 
                 <!-- formulario -->
-                <!-- <div class="form-group col-md-6"> :::CLASSE DETERMINA TAMANHO DO CAMPO 'TEXT',  MAXIMO 12, 6= METADE DA TELA -->
+                
                 <form ng-submit="salvar()" novalidate name="form">
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-1">
+                            <div class="col-md-4">
                                 <img src="/images/voluntarios/{{voluntario.id}}.jpg?{{random}}" alt="Foto" height="100" width="100">
                             </div>
                             <div class="col-md-4">
@@ -23,7 +23,7 @@
                                <br /> 
                                 
                             </div>
-                            <div class="col-md-2" ng-show="picFile!=null">
+                            <div class="col-md-4" ng-show="picFile!=null">
                                 <img  ngf-thumbnail="picFile" class="thumb"  height="100" width="100"> 
                                 <div class="btn-group">
                                     <button type="button" ng-click="Upload()" class="btn btn-default">Atualizar foto</button>
@@ -44,11 +44,11 @@
 
                         </div>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <label for="nome">Nome</label>
                                 <input type="text" class="form-control" ng-model="voluntario.nome" name='nome' id="nome" required placeholder="Digite o Nome do Voluntário">
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <!--  -->
                                 <label for="cpf">CPF</label>
                                 <input type="text" class="form-control" ng-model="voluntario.cpf" name='cpf_field' id="cpf_field" required ui-br-cpf-mask >
@@ -60,24 +60,24 @@
 
 
                         <div class="row">
-                            <div class="col-xs-3">
+                            <div class="col-md-3">
 
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" ng-model="voluntario.email" name='email' id="email" placeholder="email@exemplo.com" required="required" title="email@exemplo.com">
                             </div>
 
 
-                            <div class="col-xs-3">
+                            <div class="col-md-3">
                                 <label for="dataNascimento">Data de Nascimento</label>
                                 <input type="date" class="form-control" ng-model="voluntario.dataNascimento" name='dataNascimento' required="required" id="dataNascimento">
                             </div>
 
-                            <div class="col-xs-3">
+                            <div class="col-md-3">
                                 <label for="rg">RG</label>
                                 <input type="text" class="form-control" ng-model="voluntario.rg" name='rg' required id="rg">
                             </div>
 
-                            <div class="col-xs-3">
+                            <div class="col-md-3">
                                 <label for="rg">Sexo</label>
                                 <select class="form-control" ng-model="voluntario.sexo" required>
                                     <option value="M">Masculino</option>
@@ -94,12 +94,12 @@
                         <div class="row">
 
 
-                            <div class="col-xs-3">
+                            <div class="col-md-3">
                                 <label for="telefone">Telefone</label>
                                 <input type="text" class="form-control" ng-model="voluntario.telefone" name='telefone' id="telefone" ui-br-phone-number>
                             </div>
 
-                            <div class="col-xs-3">
+                            <div class="col-md-3">
                                 <label for="celular">Celular</label>
                                 <input type="text" class="form-control" name='celular' ng-model="voluntario.celular" required id="celular" ui-br-phone-number>
                             </div>
@@ -109,12 +109,12 @@
 
 
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <label for="cep">Cep {{msgErro}}</label>
                                 <input id="cep" name="cep" type="text" ng-model="voluntario.endereco.cep" placeholder="Digite o CEP" class="form-control" required ui-br-cep-mask ng-blur="buscaCep()">
                             </div>
 
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <label for="logradouro">Rua, Avenida:</label>
                                 <input type="text" class="form-control" name='logradouro' ng-model="voluntario.endereco.logradouro" required="required" id="logradouro">
                             </div>
@@ -126,12 +126,12 @@
 
                         <div class="row">
 
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <label for="numero">Numero</label>
                                 <input type="text" class="form-control" name='numero' ng-model="voluntario.endereco.numero" required="required" id="numero">
                             </div>
 
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <label for="complemento">Complemento</label>
                                 <input type="text" class="form-control" name='complemento' ng-model="voluntario.endereco.complemento" id="complemento">
                             </div>
@@ -139,7 +139,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <label for="bairro">Bairro</label>
                                 <input type="text" class="form-control" name='bairro' ng-model="voluntario.endereco.bairro" required="required" id="bairro">
                             </div>
@@ -161,7 +161,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <label for="escolheDia">Dia da Semana</label>
 
                                 <dl class="dl-horizontal">

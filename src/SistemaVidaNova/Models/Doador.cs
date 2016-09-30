@@ -6,29 +6,35 @@ using System.Threading.Tasks;
 
 namespace SistemaVidaNova.Models
 {
+    
     public class Doador
     {
+
         [Key]
         public int CodDoador { get; set; }
-        [Required]
+
+        
         public string Email { get; set; }
         public string Telefone { get; set; }
         public string Celular { get; set; }
+
+        [Required]
+        public Endereco Endereco { get; set; }
     }
 
     public class PessoaFisica : Doador
     {
-        [Required]
-        public string Cpf { get; set; }
-        [Required]
+        [MaxLength(200)]
         public string Nome { get; set; }
+        [StringLength(11, ErrorMessage = "CPF tem que conter 11 caracteres", MinimumLength = 11)]
+        public string Cpf { get; set; }
     }
 
     public class PessoaJuridica : Doador
     {
-        [Required]
-        public string Cnpj { get; set; }
-        [Required]
+        [MaxLength(500)]
         public string RazaoSocial { get; set; }
+        [StringLength(14, ErrorMessage = "CNPJ tem que conter 14 caracteres", MinimumLength = 14)]
+        public string Cnpj { get; set; }
     }
 }

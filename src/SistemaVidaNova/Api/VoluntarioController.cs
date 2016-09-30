@@ -119,18 +119,20 @@ namespace SistemaVidaNova.Api
                 Sabado = v.Sabado,
                 Domingo = v.Domingo,
                 DataDeCadastro = v.DataDeCadastro,
-                Endereco = v.Endereco
-               /* Eventos = v.Eventos.OrderByDescending(q=>q.DataInicio)
-                    .Select(q=> new EventoDTO {
-                            id=q.CodEvento,
-                            descricao = q.Descricao,
-                            title=q.Titulo,
-                            start=q.DataInicio,
-                            end=q.DataFim,
-                            valorDeEntrada = q.ValorDeEntrada,
-                            valorArrecadado = q.ValorArrecadado
-                    }).ToList()*/
-            };
+                Endereco = new EnderecoDTO()
+                {
+                     Id = v.Endereco.Id,
+                    Bairro = v.Endereco.Bairro,
+                    Cep = v.Endereco.Cep,
+                    Cidade = v.Endereco.Cidade,
+                    Complemento = v.Endereco.Complemento,
+                    Estado = v.Endereco.Estado,
+                    Logradouro = v.Endereco.Logradouro,
+                    Numero = v.Endereco.Numero
+
+                }
+
+        };
             this.Response.Headers.Add("totalItems", "1");
             return new ObjectResult(dto);
         }
@@ -142,31 +144,83 @@ namespace SistemaVidaNova.Api
             if (ModelState.IsValid)
             {
                 Usuario user = await _userManager.GetUserAsync(HttpContext.User);
-                Voluntario voluntario = new Voluntario
+                Voluntario voluntario = _context.Voluntario.Include(q=>q.Endereco).SingleOrDefault(q => q.Cpf == v.Cpf);
+                if (voluntario == null)
                 {
+                    voluntario = new Voluntario
+                    {
 
-                    Email = v.Email,
-                    Nome = v.Nome,
-                    Cpf = v.Cpf,
-                    Rg = v.Rg,
-                    Celular = v.Celular,
-                    Telefone = v.Telefone,
-                    Sexo = v.Sexo,
-                    DataNascimento = v.DataNascimento,
-                    SegundaFeira = v.SegundaFeira,
-                    TercaFeira = v.TercaFeira,
-                    QuartaFeira = v.QuartaFeira,
-                    QuintaFeira = v.QuintaFeira,
-                    SextaFeira = v.SextaFeira,
-                    Sabado = v.Sabado,
-                    Domingo = v.Domingo,
-                    DataDeCadastro = DateTime.Today,
-                    IsDeletado = false,
-                    IdUsuario = user.Id
-                };
+                        Email = v.Email,
+                        Nome = v.Nome,
+                        Cpf = v.Cpf,
+                        Rg = v.Rg,
+                        Celular = v.Celular,
+                        Telefone = v.Telefone,
+                        Sexo = v.Sexo,
+                        DataNascimento = v.DataNascimento,
+                        SegundaFeira = v.SegundaFeira,
+                        TercaFeira = v.TercaFeira,
+                        QuartaFeira = v.QuartaFeira,
+                        QuintaFeira = v.QuintaFeira,
+                        SextaFeira = v.SextaFeira,
+                        Sabado = v.Sabado,
+                        Domingo = v.Domingo,
+                        DataDeCadastro = DateTime.Today,
+                        IsDeletado = false,
+                        IdUsuario = user.Id
+                    };
 
-                voluntario.Endereco = v.Endereco;
-                _context.Voluntario.Add(voluntario);
+                    voluntario.Endereco = new Endereco()
+                    {
+                        Bairro = v.Endereco.Bairro,
+                        Cep = v.Endereco.Cep,
+                        Cidade = v.Endereco.Cidade,
+                        Complemento = v.Endereco.Complemento,
+                        Estado = v.Endereco.Estado,
+                        Logradouro = v.Endereco.Logradouro,
+                        Numero = v.Endereco.Numero
+
+                    };
+                }else
+                {
+                    voluntario.Email = v.Email;
+                    voluntario.Nome = v.Nome;
+                    voluntario.Cpf = v.Cpf;
+                    voluntario.Rg = v.Rg;
+                    voluntario.Celular = v.Celular;
+                    voluntario.Telefone = v.Telefone;
+                    voluntario.Sexo = v.Sexo;
+                    voluntario.DataNascimento = v.DataNascimento;
+                    voluntario.SegundaFeira = v.SegundaFeira;
+                    voluntario.TercaFeira = v.TercaFeira;
+                    voluntario.QuartaFeira = v.QuartaFeira;
+                    voluntario.QuintaFeira = v.QuintaFeira;
+                    voluntario.SextaFeira = v.SextaFeira;
+                    voluntario.Sabado = v.Sabado;
+                    voluntario.Domingo = v.Domingo;
+                    voluntario.DataDeCadastro = DateTime.Today;
+                    voluntario.IsDeletado = false;
+                    voluntario.IdUsuario = user.Id;
+
+                    if(voluntario.Endereco != null)
+                    {
+                        _context.Remove(voluntario.Endereco);
+                    }
+
+                    voluntario.Endereco = new Endereco()
+                    {
+                        Bairro = v.Endereco.Bairro,
+                        Cep = v.Endereco.Cep,
+                        Cidade = v.Endereco.Cidade,
+                        Complemento = v.Endereco.Complemento,
+                        Estado = v.Endereco.Estado,
+                        Logradouro = v.Endereco.Logradouro,
+                        Numero = v.Endereco.Numero
+
+                    };
+
+                }
+                    _context.Voluntario.Add(voluntario);
                     try
                 {
                     _context.SaveChanges();
@@ -191,7 +245,7 @@ namespace SistemaVidaNova.Api
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]VoluntarioDTO voluntario)
+        public  IActionResult Put(int id, [FromBody]VoluntarioDTO voluntario)
         {
             if(id != voluntario.Id)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);

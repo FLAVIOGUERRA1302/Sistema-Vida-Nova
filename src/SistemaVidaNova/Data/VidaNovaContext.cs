@@ -15,6 +15,9 @@ namespace SistemaVidaNova.Models
         { }
 
         public DbSet<Doador> Doador { get; set; }
+        public DbSet<PessoaFisica> DoadorPessoaFisica { get; set; }
+        public DbSet<PessoaJuridica> DoadorPessoaJuridica { get; set; }
+        public DbSet<Favorecido> Favorecido { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Voluntario> Voluntario { get; set; }
         public DbSet<Interessado> Interessado { get; set; }
@@ -24,7 +27,7 @@ namespace SistemaVidaNova.Models
         public DbSet<VoluntarioEvento> VoluntarioEvento { get; set; }
 
 
-
+        public DbSet<Endereco> Endereco { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -34,6 +37,16 @@ namespace SistemaVidaNova.Models
 
             modelBuilder.Entity<Voluntario>()
                 .HasAlternateKey(c => c.Cpf);
+
+            modelBuilder.Entity<Doador>()
+                .HasDiscriminator<string>("doador_type")
+                .HasValue<PessoaFisica>("PF")
+                .HasValue<PessoaJuridica>("PJ");
+
+           /* modelBuilder.Entity<PessoaFisica>()
+                .HasAlternateKey(c =>new { c.Cpf });
+            modelBuilder.Entity<PessoaJuridica>()
+                .HasAlternateKey(c => new { c.Cnpj });*/
 
             modelBuilder.Entity<InteressadoEvento>()
                 .HasKey(t => new { t.CodEvento, t.CodInteressado });

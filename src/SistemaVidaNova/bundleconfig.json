@@ -44,7 +44,7 @@
       "renameLocals": false
     },
     // Optinally generate .map file
-    "sourceMap": false
+    "sourceMap": true
   },
   {
     "outputFileName": "wwwroot/js/site.min.js",
@@ -61,7 +61,7 @@
     // Optionally specify minification options
     "minify": {
       "enabled": true,
-      "renameLocals": true
+      "renameLocals": false
     },
     // Optinally generate .map file
     "sourceMap": true

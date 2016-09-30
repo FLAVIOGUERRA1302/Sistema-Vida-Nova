@@ -1,10 +1,17 @@
 ﻿
 angular.module('app')
 .controller('EventoControl', ['$scope', 'EventoService', 'eventos', 'loadingDialod', function ($scope, EventoService, eventos, loadingDialod) {
-    loadingDialod.close();
+    
     var itensPorPagina = 10;
     $scope.eventos = eventos;
+    for (var i = 0; i < $scope.eventos.length; i++) {
+        if (!($scope.eventos[i].start instanceof Date))
+            $scope.eventos[i].start = new Date($scope.eventos[i].start);
 
+        if (!($scope.eventos[i].end instanceof Date))
+            $scope.eventos[i].end = new Date($scope.eventos[i].end);
+    }
+    loadingDialod.close();
 
     $scope.totalItems = EventoService.totalItems;
     $scope.currentPage = 1;
@@ -13,6 +20,13 @@ angular.module('app')
         EventoService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa)//id,skip,take,filtro
         .then(function (eventos) {
             $scope.eventos = eventos;
+            for (var i = 0; i < $scope.eventos.length; i++) {
+                if (!($scope.eventos[i].start instanceof Date))
+                    $scope.eventos[i].start = new Date($scope.eventos[i].start);
+
+                if (!($scope.eventos[i].end instanceof Date))
+                    $scope.eventos[i].end = new Date($scope.eventos[i].end);
+            }
             $scope.totalItems = EventoService.totalItems;
         }, function (erros) {
 

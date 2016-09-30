@@ -25,7 +25,7 @@ namespace SistemaVidaNova.Controllers
             return View();
         }
 
-        public IActionResult Detalhe(int id)
+        public IActionResult Visualizar(int id)
         {
 
             return View();

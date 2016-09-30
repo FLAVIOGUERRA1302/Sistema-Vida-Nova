@@ -393,7 +393,7 @@ namespace SistemaVidaNova.Controllers
                 // Send an email with this link
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "Resetar a senha",
+                _emailSender.SendEmailAsync(model.Email, "Resetar a senha",
                    $"Resete sua senha clicando aqui: <a href='{callbackUrl}'>link</a>");
                 return View("ForgotPasswordConfirmation");
             }

@@ -130,14 +130,23 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<string>("Celular");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Email");
+
+                    b.Property<int?>("EnderecoId")
                         .IsRequired();
 
                     b.Property<string>("Telefone");
 
+                    b.Property<string>("doador_type")
+                        .IsRequired();
+
                     b.HasKey("CodDoador");
 
+                    b.HasIndex("EnderecoId");
+
                     b.ToTable("Doador");
+
+                    b.HasDiscriminator<string>("doador_type").HasValue("Doador");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Endereco", b =>
@@ -159,18 +168,12 @@ namespace SistemaVidaNova.Migrations
                     b.Property<string>("Estado")
                         .IsRequired();
 
-                    b.Property<string>("Logradouro")
-                        .IsRequired();
+                    b.Property<string>("Logradouro");
 
                     b.Property<string>("Numero")
                         .IsRequired();
 
-                    b.Property<int>("VoluntarioId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("VoluntarioId")
-                        .IsUnique();
 
                     b.ToTable("Endereco");
                 });
@@ -216,6 +219,65 @@ namespace SistemaVidaNova.Migrations
                     b.HasIndex("VoluntarioId");
 
                     b.ToTable("Evento");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.Familia", b =>
+                {
+                    b.Property<int>("CodFamilia")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Celular");
+
+                    b.Property<int>("CodFavorecido");
+
+                    b.Property<string>("Email");
+
+                    b.Property<int?>("EnderecoId");
+
+                    b.Property<string>("Nome")
+                        .HasAnnotation("MaxLength", 200);
+
+                    b.Property<string>("Telefone");
+
+                    b.HasKey("CodFamilia");
+
+                    b.HasIndex("CodFavorecido")
+                        .IsUnique();
+
+                    b.HasIndex("EnderecoId");
+
+                    b.ToTable("Familia");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.Favorecido", b =>
+                {
+                    b.Property<int>("CodFavorecido")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Apelido");
+
+                    b.Property<string>("Cpf");
+
+                    b.Property<DateTime>("DataDeCadastro");
+
+                    b.Property<DateTime>("DataNascimento");
+
+                    b.Property<string>("IdUsuario")
+                        .IsRequired();
+
+                    b.Property<string>("Nome")
+                        .IsRequired();
+
+                    b.Property<string>("Rg");
+
+                    b.Property<string>("Sexo")
+                        .IsRequired();
+
+                    b.HasKey("CodFavorecido");
+
+                    b.HasIndex("IdUsuario");
+
+                    b.ToTable("Favorecido");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Interessado", b =>
@@ -328,6 +390,8 @@ namespace SistemaVidaNova.Migrations
                     b.Property<string>("Email")
                         .IsRequired();
 
+                    b.Property<int?>("EnderecoId");
+
                     b.Property<string>("IdUsuario");
 
                     b.Property<bool>("IsDeletado");
@@ -362,6 +426,8 @@ namespace SistemaVidaNova.Migrations
 
                     b.HasAlternateKey("Email");
 
+                    b.HasIndex("EnderecoId");
+
                     b.HasIndex("IdUsuario");
 
                     b.ToTable("Voluntario");
@@ -380,6 +446,36 @@ namespace SistemaVidaNova.Migrations
                     b.HasIndex("IdVoluntario");
 
                     b.ToTable("VoluntarioEvento");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.PessoaFisica", b =>
+                {
+                    b.HasBaseType("SistemaVidaNova.Models.Doador");
+
+                    b.Property<string>("Cpf")
+                        .HasAnnotation("MaxLength", 11);
+
+                    b.Property<string>("Nome")
+                        .HasAnnotation("MaxLength", 200);
+
+                    b.ToTable("PessoaFisica");
+
+                    b.HasDiscriminator().HasValue("PF");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.PessoaJuridica", b =>
+                {
+                    b.HasBaseType("SistemaVidaNova.Models.Doador");
+
+                    b.Property<string>("Cnpj")
+                        .HasAnnotation("MaxLength", 14);
+
+                    b.Property<string>("RazaoSocial")
+                        .HasAnnotation("MaxLength", 500);
+
+                    b.ToTable("PessoaJuridica");
+
+                    b.HasDiscriminator().HasValue("PJ");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -419,11 +515,11 @@ namespace SistemaVidaNova.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SistemaVidaNova.Models.Endereco", b =>
+            modelBuilder.Entity("SistemaVidaNova.Models.Doador", b =>
                 {
-                    b.HasOne("SistemaVidaNova.Models.Voluntario", "Voluntario")
-                        .WithOne("Endereco")
-                        .HasForeignKey("SistemaVidaNova.Models.Endereco", "VoluntarioId")
+                    b.HasOne("SistemaVidaNova.Models.Endereco", "Endereco")
+                        .WithMany()
+                        .HasForeignKey("EnderecoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -443,6 +539,26 @@ namespace SistemaVidaNova.Migrations
                         .HasForeignKey("VoluntarioId");
                 });
 
+            modelBuilder.Entity("SistemaVidaNova.Models.Familia", b =>
+                {
+                    b.HasOne("SistemaVidaNova.Models.Favorecido", "Favorecido")
+                        .WithOne("Familia")
+                        .HasForeignKey("SistemaVidaNova.Models.Familia", "CodFavorecido")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SistemaVidaNova.Models.Endereco", "Endereco")
+                        .WithMany()
+                        .HasForeignKey("EnderecoId");
+                });
+
+            modelBuilder.Entity("SistemaVidaNova.Models.Favorecido", b =>
+                {
+                    b.HasOne("SistemaVidaNova.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SistemaVidaNova.Models.InteressadoEvento", b =>
                 {
                     b.HasOne("SistemaVidaNova.Models.Evento", "Evento")
@@ -458,6 +574,10 @@ namespace SistemaVidaNova.Migrations
 
             modelBuilder.Entity("SistemaVidaNova.Models.Voluntario", b =>
                 {
+                    b.HasOne("SistemaVidaNova.Models.Endereco", "Endereco")
+                        .WithMany()
+                        .HasForeignKey("EnderecoId");
+
                     b.HasOne("SistemaVidaNova.Models.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("IdUsuario");

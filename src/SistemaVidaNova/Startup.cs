@@ -64,9 +64,12 @@ namespace SistemaVidaNova
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<Usuario>();
 
-           /* services.Configure<IISOptions>(options => {
+            services.Configure<IISOptions>(options => {
                 options.AutomaticAuthentication = false;
-            });*/
+                options.ForwardWindowsAuthentication = false;
+            });
+
+            services.AddDataProtection();
 
         }
 
@@ -74,7 +77,7 @@ namespace SistemaVidaNova
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
 
-            InitializeDatabase(app);
+           // InitializeDatabase(app);
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

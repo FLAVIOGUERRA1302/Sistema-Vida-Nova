@@ -13,7 +13,7 @@ namespace SistemaVidaNova.Models
         public int Id { get; set; }
         [Required]
         public string Cep { get; set; }
-        [Required]
+        
         public string Logradouro { get; set; }
         [Required]
         public string Bairro { get; set; }
@@ -27,9 +27,6 @@ namespace SistemaVidaNova.Models
         public string Complemento { get; set; }
 
         
-        public int VoluntarioId { get; set; }
-        
-        [ForeignKey("VoluntarioId")]
-        public Voluntario Voluntario { get; set; }
+       
     }
 }

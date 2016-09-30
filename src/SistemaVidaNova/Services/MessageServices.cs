@@ -13,7 +13,7 @@ namespace SistemaVidaNova.Services
 {
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
-        public async Task SendEmailAsync(string email, string subject, string message)
+        public void  SendEmailAsync(string email, string subject, string message)
         {
             var emailMessage = new MimeMessage();
 
