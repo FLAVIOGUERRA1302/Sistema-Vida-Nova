@@ -14,14 +14,14 @@
                     <div class="box-body">
 
                         <div class="row">
-                            <div class="col-xs-6">
-                                <label for="nome">Razão Social</label>
-                                <input type="text" class="form-control" ng-model="doador.nomeRazaoSocial" name='nome' id="nome" required placeholder="Digite o Nome do Voluntário">
+                            <div class="col-md-6">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" ng-model="favorecido.nome" name='nome' id="nome" required placeholder="Digite o Nome do Favorecido">
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <!--  -->
-                                <label for="cpf">CNPJ</label>
-                                <input type="text" class="form-control" ng-model="doador.cpfCnpj " name='cnpj' id="cnpj" required ui-br-cnpj-mask>
+                                <label for="cpf">Apelido</label>
+                                <input type="text" class="form-control" ng-model="favorecido.apelido " >
                             </div>
                         </div>
 
@@ -30,110 +30,136 @@
 
 
                         <div class="row">
-                            <div class="col-xs-6">
-
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" ng-model="doador.email" name='email' id="email" placeholder="email@exemplo.com" required title="email@exemplo.com">
+                            <div class="col-md-3">
+                                <label for="dataNascimento">Data de Nascimento</label>
+                                <input type="date" class="form-control" ng-model="favorecido.dataNascimento" name='dataNascimento'  id="dataNascimento">
                             </div>
 
 
 
+                            <div class="col-md-3">
+                                <!--  -->
+                                <label for="cpf">CPF</label>
+                                <input type="text" class="form-control" ng-model="favorecido.cpf" name='cpf' id="cpf"  ui-br-cpf-mask>
+                            </div>
 
+                            <div class="col-md-3">
+                                <label for="rg">RG</label>
+                                <input type="text" class="form-control" ng-model="favorecido.rg" name='rg'  id="rg">
+                            </div>
 
                             <div class="col-xs-3">
-                                <label for="telefone">Telefone</label>
-                                <input type="text" class="form-control" ng-model="doador.telefone" name='telefone' id="telefone" ui-br-phone-number>
-                            </div>
-
-                            <div class="col-xs-3">
-                                <label for="celular">Celular</label>
-                                <input type="text" class="form-control" name='celular' ng-model="doador.celular" required id="celular" ui-br-phone-number>
-                            </div>
-
-                        </div>
-
-
-
-                            
-
-
-
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <label for="cep">Cep {{msgErro}}</label>
-                                <input id="cep" name="cep" type="text" ng-model="doador.endereco.cep" placeholder="Digite o CEP" class="form-control" required ui-br-cep-mask ng-blur="buscaCep()">
-                            </div>
-
-                            <div class="col-xs-6">
-                                <label for="logradouro">Rua, Avenida:</label>
-                                <input type="text" class="form-control" name='logradouro' ng-model="doador.endereco.logradouro" id="logradouro">
-                            </div>
-
-
-                        </div>
-
-
-
-                        <div class="row">
-
-                            <div class="col-xs-6">
-                                <label for="numero">Numero</label>
-                                <input type="text" class="form-control" name='numero' ng-model="doador.endereco.numero" required id="numero">
-                            </div>
-
-                            <div class="col-xs-6">
-                                <label for="complemento">Complemento</label>
-                                <input type="text" class="form-control" name='complemento' ng-model="doador.endereco.complemento" id="complemento">
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <label for="bairro">Bairro</label>
-                                <input type="text" class="form-control" name='bairro' ng-model="doador.endereco.bairro" required id="bairro">
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="cidade">Cidade</label>
-                                <input type="text" class="form-control" name='cidade' ng-model="doador.endereco.cidade" required id="cidade">
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-
-
-                            <div class="form-group col-md-6">
-                                <label for="uf">UF</label>
-                                <select class="form-control" ng-model="doador.endereco.estado">
-                                    <option ng-repeat="(key, value) in ufs" value="{{key}}">{{value}}</option>
+                                <label for="rg">Sexo</label>
+                                <select class="form-control" ng-model="favorecido.sexo" required>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Feminino</option>
                                 </select>
                             </div>
 
                         </div>
 
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="telefone">Conhecimentos Profissionais</label>
+                                <tags-input ng-model="favorecido.conhecimentosProfissionais" placeholder="Adicione os conhecimentos do favorecido"></tags-input>
+                            </div>
+                            
+                        </div>
 
                         <div class="row">
-
-
-
-
-                            <div class="col-xs-3">
+                            <div class="col-md-6">
+                                <label for="telefone">Nome do contato</label>
+                                <input type="text" class="form-control" ng-model="favorecido.nomeFamilia" required>
                             </div>
 
+                            <div class="col-md-6">
+                                <label for="celular">Email</label>
+                                <input type="email" class="form-control"  ng-model="favorecido.email" >
+                            </div>
+                            
+                        </div>
 
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="telefone">Telefone</label>
+                                <input type="text" class="form-control" ng-model="favorecido.telefone" name='telefone' id="telefone" ui-br-phone-number>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="celular">Celular</label>
+                                <input type="text" class="form-control" name='celular' ng-model="favorecido.celular"  id="celular" ui-br-phone-number>
+                            </div>
 
                         </div>
 
 
-                    </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="cep">Cep {{msgErro}}</label>
+                                    <input id="cep" name="cep" type="text" ng-model="favorecido.cep" placeholder="Digite o CEP" class="form-control"  ui-br-cep-mask ng-blur="buscaCep()">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="logradouro">Rua, Avenida:</label>
+                                    <input type="text" class="form-control" name='logradouro' ng-model="favorecido.logradouro" id="logradouro">
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <label for="numero">Numero</label>
+                                    <input type="text" class="form-control" name='numero' ng-model="favorecido.numero"  id="numero">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="complemento">Complemento</label>
+                                    <input type="text" class="form-control" name='complemento' ng-model="favorecido.complemento" id="complemento">
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="bairro">Bairro</label>
+                                    <input type="text" class="form-control" name='bairro' ng-model="favorecido.bairro"  id="bairro">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="cidade">Cidade</label>
+                                    <input type="text" class="form-control" name='cidade' ng-model="favorecido.cidade"  id="cidade">
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+
+                                <div class="form-group col-md-3">
+                                    <label for="uf">UF</label>
+                                    <select class="form-control" ng-model="favorecido.estado">
+                                        <option ng-repeat="(key, value) in ufs" value="{{key}}">{{value}}</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+
+
+                           
+
+                        </div>
 
 
 
                     <div class="box-footer">
-                        <a href="/Doador" class="btn btn-primary">Voltar</a>
+                        <a href="/Favorecido" class="btn btn-primary">Voltar</a>
                         <a href="" class="btn btn-default">Limpar Campos</a>
                         <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
                     </div>

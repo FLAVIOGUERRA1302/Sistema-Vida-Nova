@@ -1,7 +1,7 @@
 ﻿  <!-- Horizontal Form -->
 <section class="content-header">
     <h1>
-        Voluntário
+        Favorecido
     </h1>
 
 </section>
@@ -17,109 +17,131 @@
                     <div class="box-body">
 
                         <div class="row">
-                            
-                            <div class="col-md-4" ng-if="doador.tipo=='PF'">
+                            <div class="col-md-4">
                                 <p><strong>Nome:</strong></p>
-                                <p>{{doador.nomeRazaoSocial }}</p>
+                                <p>{{favorecido.nome}}</p>
                             </div>
 
-                            <div class="col-md-4" ng-if="doador.tipo=='PJ'">
-                                <p><strong>Razão Social:</strong></p>
-                                <p>{{doador.nomeRazaoSocial }}</p>
-                            </div>
+                            
+                                <div class="col-md-4">
+                                    <p><strong>Apelido:</strong></p>
+                                    <p>{{favorecido.apelido}}</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p><strong>Data Nascimento:</strong></p>
+                                    <p>{{favorecido.dataNascimento | date :'dd/MM/yyyy'}}</p>
+
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p><strong>CPF:</strong></p>
+                                    <p>{{favorecido.cpf | brCpf}}</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p><strong>RG:</strong></p>
+                                    <p>{{favorecido.rg}}</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p><strong>Sexo:</strong></p>
+                                    <p>{{favorecido.sexo}}</p>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <p><strong>Conhecimento Proficionais:</strong></p>
+                                    <ul class="list-inline">
+                                        <li ng-repeat="c in favorecido.conhecimentosProfissionais">{{c.text}}</li>
+                                    </ul>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p><strong>Familia:</strong></p>
+                                    <p>{{favorecido.nomeFamilia}}</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p><strong>Email:</strong></p>
+                                    <p>{{favorecido.email}}</p>
+                                </div>
 
 
 
-                            <div class="col-md-4" ng-if="doador.tipo=='PF'">
-                                <p><strong>CPF:</strong></p>
-                                <p>{{doador.cpfCnpj  | brCpf}}</p>
-                            </div>
+                                <div class="col-md-4">
+                                    <p><strong>Telefone:</strong></p>
+                                    <p>{{favorecido.telefone | brPhoneNumber}}&nbsp;</p>
+                                </div>
 
-                            <div class="col-md-4" ng-if="doador.tipo=='PJ'">
-                                <p><strong>CNPJ:</strong></p>
-                                <p>{{doador.cpfCnpj  | brCnpj}}</p>
-                            </div>
-
-
-
-                            <div class="col-md-4">
-                                <p><strong>Email:</strong></p>
-                                <p>{{doador.email}}</p>
-                            </div>
+                                <div class="col-md-4">
+                                    <p><strong>Celular:</strong></p>
+                                    <p>{{favorecido.celular | brPhoneNumber}}&nbsp;</p>
+                                </div>
 
 
 
-                            <div class="col-md-4">
-                                <p><strong>Telefone:</strong></p>
-                                <p>{{doador.telefone | brPhoneNumber}}&nbsp;</p>
-                            </div>
-
-                            <div class="col-md-4">
-                                <p><strong>Telefone:</strong></p>
-                                <p>{{doador.celular | brPhoneNumber}}&nbsp;</p>
-                            </div>
+                                
 
 
 
-                           
+
+                                <div class="col-md-4">
+                                    <p><strong>CEP:</strong></p>
+                                    <p>{{favorecido.cep | brCep}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Rua,Avenida:</strong></p>
+                                    <p>{{favorecido.logradouro}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Número:</strong></p>
+                                    <p>{{favorecido.numero}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Complemento:</strong></p>
+                                    <p>{{favorecido.complemento}}&nbsp;</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Bairro:</strong></p>
+                                    <p>{{favorecido.bairro}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Cidade:</strong></p>
+                                    <p>{{favorecido.cidade}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>UF:</strong></p>
+                                    <p>{{favorecido.estado}}</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p><strong>Data Inicio:</strong></p>
+                                    <p>{{favorecido.dataDeCadastro | date :'dd/MM/yyyy'}}</p>
+
+                                </div>
+
                             
 
 
 
-
-                            <div class="col-md-4">
-                                <p><strong>CEP:</strong></p>
-                                <p>{{doador.endereco.cep | brCep}}</p>
                             </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>Rua,Avenida:</strong></p>
-                                <p>{{doador.endereco.logradouro}}</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>Número:</strong></p>
-                                <p>{{doador.endereco.numero}}</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>Complemento:</strong></p>
-                                <p>{{doador.endereco.complemento}}&nbsp;</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>Bairro:</strong></p>
-                                <p>{{doador.endereco.bairro}}</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>Cidade:</strong></p>
-                                <p>{{doador.endereco.cidade}}</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>UF:</strong></p>
-                                <p>{{doador.endereco.estado}}</p>
-                            </div>
-
-                           
-
-                            
-
-
-
-                        </div>
 
                     </div>
 
                     <div class="box-footer">
-                        <a href="/Doador" class="btn btn-primary">voltar</a>
+                        <a href="/Favorecido" class="btn btn-primary">voltar</a>
                         <a class='btn btn-danger' href=""> Gerar PDF</a>
 
                     </div>

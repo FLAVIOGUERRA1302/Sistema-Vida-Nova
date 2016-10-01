@@ -24,13 +24,13 @@ namespace SistemaVidaNova.Models
         [Required]
         public String Sexo { get; set; }
         
-        public DateTime DataNascimento { get; set; }
+        public DateTime? DataNascimento { get; set; }
         
 
         [Required]
         public DateTime DataDeCadastro { get; set; }
 
-        public List<ConhecimentoProficional> ConhecimentosProfissionais;
+        public ICollection<ConhecimentoProficional> ConhecimentosProfissionais { get; set; }
         [Required]
         public string IdUsuario { get; set; }
         

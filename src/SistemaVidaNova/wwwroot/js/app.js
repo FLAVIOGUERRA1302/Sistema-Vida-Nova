@@ -6,7 +6,8 @@
     'ui.bootstrap',
     'color.picker',    
     'ui.utils.masks',    
-    'idf.br-filters'
+    'idf.br-filters',
+    'ngTagsInput'
     
 
 ]).config(function ($routeProvider, $locationProvider) {
@@ -206,6 +207,50 @@
             resolve: {
                 doador: function (DoadorService, $route) {
                     return DoadorService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                }
+            }
+        })
+
+     //------------Favorecido----------
+    .when('/Favorecido', {
+        templateUrl: '/templates/Favorecido/List.html',
+        controller: 'FavorecidoControl',
+        resolve: {
+
+            favorecidos: function (FavorecidoService) {
+                return FavorecidoService.Read(null, 0, 10);//id,skip,take
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+            }
+        }
+    })
+        .when('/Favorecido/Criar', {
+            templateUrl: '/templates/Favorecido/Create.html',
+            controller: 'FavorecidoCreateControl'
+
+        })
+            .when('/Favorecido/Editar/:id', {
+                templateUrl: '/templates/Favorecido/Update.html',
+                controller: 'FavorecidoUpdateControl',
+                resolve: {
+                    favorecido: function (FavorecidoService, $route) {
+                        return FavorecidoService.Read($route.current.params.id);
+                    },
+                    loadingDialod: function (ngDialog) {
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    }
+                }
+            })
+        .when('/Favorecido/Visualizar/:id', {
+            templateUrl: '/templates/Favorecido/Detalhe.html',
+            controller: 'FavorecidoUpdateControl',
+            resolve: {
+                favorecido: function (FavorecidoService, $route) {
+                    return FavorecidoService.Read($route.current.params.id);
                 },
                 loadingDialod: function (ngDialog) {
                     return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });

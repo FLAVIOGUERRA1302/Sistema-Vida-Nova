@@ -1,6 +1,6 @@
 ﻿
 angular.module('app')
-.controller('EventoControl', ['$scope', 'EventoService', 'eventos', 'loadingDialod', function ($scope, EventoService, eventos, loadingDialod) {
+.controller('EventoControl', ['$scope', 'EventoService', 'eventos', 'loadingDialod', 'ngDialog', function ($scope, EventoService, eventos, loadingDialod, ngDialog) {
     
     var itensPorPagina = 10;
     $scope.eventos = eventos;

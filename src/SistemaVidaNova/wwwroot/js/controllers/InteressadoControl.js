@@ -1,5 +1,5 @@
 ﻿angular.module('app')
-.controller('InteressadoControl', ['$scope', 'InteressadoService', 'interessados', 'loadingDialod', function ($scope, InteressadoService, interessados, loadingDialod) {
+.controller('InteressadoControl', ['$scope', 'InteressadoService', 'interessados', 'loadingDialod', 'ngDialog', function ($scope, InteressadoService, interessados, loadingDialod, ngDialog) {
     loadingDialod.close();
     var itensPorPagina = 10;
     $scope.interessados = interessados;

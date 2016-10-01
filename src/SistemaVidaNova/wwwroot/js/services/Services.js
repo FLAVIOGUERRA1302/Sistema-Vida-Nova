@@ -419,6 +419,107 @@ app.factory('DoadorService', ["$http", "$q", function ($http, $q) {
 
 }]);
 
+app.factory('FavorecidoService', ["$http", "$q", function ($http, $q) {
+    var s = {};
+
+    s.Create = function (favorecido) {
+        
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/Favorecido',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(favorecido),
+            dataType: 'json'
+        };
+
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Read = function (id, skip, take, filtro) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/Favorecido/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.Update = function (favorecido) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'PUT',
+            url: '/api/Favorecido/' + favorecido.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(favorecido),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Delete = function (favorecido) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'DELETE',
+            url: '/api/Favorecido/' + favorecido.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    return s;
+
+
+}]);
+
 app.factory('CepService', ["$http", "$q", function ($http, $q) {
     var s = {};
 

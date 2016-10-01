@@ -1,5 +1,5 @@
 ﻿angular.module('app')
-.controller('VoluntarioControl', ['$scope', 'VoluntarioService', '$uibModal', 'voluntarios', 'loadingDialod', function ($scope, VoluntarioService, $uibModal, voluntarios, loadingDialod) {
+.controller('VoluntarioControl', ['$scope', 'VoluntarioService', '$uibModal', 'voluntarios', 'loadingDialod', 'ngDialog', function ($scope, VoluntarioService, $uibModal, voluntarios, loadingDialod, ngDialog) {
     loadingDialod.close();
     var itensPorPagina = 10;
     $scope.voluntarios = voluntarios;

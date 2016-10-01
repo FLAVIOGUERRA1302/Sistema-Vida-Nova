@@ -82,13 +82,16 @@ namespace SistemaVidaNova.Api
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Favorecido f =_context.Favorecido                
+            Favorecido f =_context.Favorecido
+                .Include(q=>q.ConhecimentosProfissionais)
                 .SingleOrDefault(q => q.CodFavorecido == id);
 
             if (f == null)
                 return new NotFoundResult();
 
-            _context.ConhecimentoProficional.Where(q => q.CodFavorecido == id).Load();
+            //_context.ConhecimentoProficional.Where(q => q.CodFavorecido == id).Load().;
+            //f.ConhecimentosProfissionais = _context.ConhecimentoProficional.Where(q => q.CodFavorecido == f.CodFavorecido).ToList();
+            
 
             FavorecidoDTO dto = new FavorecidoDTO
             {
@@ -105,30 +108,30 @@ namespace SistemaVidaNova.Api
             _context.Familia.Include(q => q.Endereco).Where(q => q.CodFavorecido == id).Load();
             if (f.Familia != null)
             {
+                
 
-                dto.Familia = new FamiliaDTO()
-                {
-                    id = f.Familia.CodFamilia,
-                    Celular = f.Familia.Celular,
-                    Email = f.Familia.Email,
-                    Nome = f.Familia.Nome,
-                    Telefone = f.Familia.Telefone,
-                    Endereco = new EnderecoDTO()
-                    {
-                        Bairro = f.Familia.Endereco.Bairro,
-                        Cep = f.Familia.Endereco.Cep,
-                        Cidade = f.Familia.Endereco.Cidade,
-                        Complemento = f.Familia.Endereco.Complemento,
-                        Estado = f.Familia.Endereco.Estado,
-                        Logradouro = f.Familia.Endereco.Logradouro,
-                        Numero = f.Familia.Endereco.Numero
+                dto.Celular = f.Familia.Celular;
+                dto.Email = f.Familia.Email;
+                dto.NomeFamilia = f.Familia.Nome;
+                dto.Telefone = f.Familia.Telefone;
 
-                    }
+                dto.Bairro = f.Familia.Endereco.Bairro;
+                dto.Cep = f.Familia.Endereco.Cep;
+                dto.Cidade = f.Familia.Endereco.Cidade;
+                dto.Complemento = f.Familia.Endereco.Complemento;
+                dto.Estado = f.Familia.Endereco.Estado;
+                dto.Logradouro = f.Familia.Endereco.Logradouro;
+                dto.Numero = f.Familia.Endereco.Numero;
+                
+              }
 
-                };
+            dto.ConhecimentosProfissionais = f.ConhecimentosProfissionais.Select(q => new ConhecimentoProficionalDTO()
+            {
+                Text = q.Nome
+            }).ToList();
 
-                }
-            
+
+
 
             this.Response.Headers.Add("totalItems", "1");
             return new ObjectResult(dto);
@@ -156,34 +159,41 @@ namespace SistemaVidaNova.Api
 
                 };
 
-                if (v.Familia != null)
+                if (v.NomeFamilia != null)
                 {
                     favorecido.Familia = new Familia()
                     {
-                        Nome = v.Familia.Nome,
-                        Celular = v.Familia.Nome,
-                        Email = v.Familia.Nome,
-                        Telefone = v.Familia.Nome
+                        Nome = v.NomeFamilia,
+                        Celular = v.Celular,
+                        Email = v.Email,
+                        Telefone = v.Telefone
 
                     };
                     favorecido.Familia.Endereco = new Endereco()
                     {
-                        Bairro = v.Familia.Endereco.Bairro,
-                        Cep = v.Familia.Endereco.Cep,
-                        Cidade = v.Familia.Endereco.Cidade,
-                        Complemento = v.Familia.Endereco.Complemento,
-                        Estado = v.Familia.Endereco.Estado,
-                        Logradouro = v.Familia.Endereco.Logradouro,
-                        Numero = v.Familia.Endereco.Numero
+                        Bairro = v.Bairro==null?"": v.Bairro,
+                        Cep = v.Cep == null ? "" : v.Cep,
+                        Cidade = v.Cidade == null ? "" : v.Cidade,
+                        Complemento = v.Complemento == null ? "" : v.Complemento,
+                        Estado = v.Estado == null ? "" : v.Estado,
+                        Logradouro = v.Logradouro == null ? "" : v.Logradouro,
+                        Numero = v.Numero == null ? "" : v.Numero
 
                     };
                 }
 
                 if (v.ConhecimentosProfissionais != null)
                 {
-                    foreach(var cp in v.ConhecimentosProfissionais)
+                    favorecido.ConhecimentosProfissionais = new List<ConhecimentoProficional>();
+                    foreach (var cp in v.ConhecimentosProfissionais)
                     {
-                        favorecido.ConhecimentosProfissionais.Add(new ConhecimentoProficional() { Nome = cp.Text });
+                        ConhecimentoProficional conhecimento = new ConhecimentoProficional()
+                        {
+                            Favorecido = favorecido,
+                            Nome = cp.Text
+                        };
+                        favorecido.ConhecimentosProfissionais.Add(conhecimento);
+                        _context.ConhecimentoProficional.Add(conhecimento);
                     }
                 }
 
@@ -213,63 +223,73 @@ namespace SistemaVidaNova.Api
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public  IActionResult Put(int id, [FromBody]FavorecidoDTO voluntario)
+        public  IActionResult Put(int id, [FromBody]FavorecidoDTO dto)
         {
-            if(id != voluntario.Id)
+            if(id != dto.Id)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             if (ModelState.IsValid)
             {
-                Favorecido v = _context.Favorecido.Include(q=>q.Familia).SingleOrDefault(q => q.CodFavorecido == id );
-                if (v == null)
+                Favorecido favorecido = _context.Favorecido.Include(q=>q.Familia).ThenInclude(q=>q.Endereco).SingleOrDefault(q => q.CodFavorecido == id );
+                if (favorecido == null)
                     return new BadRequestResult();
 
+
+                favorecido.Nome = dto.Nome;
+                favorecido.Cpf = dto.Cpf;
+                favorecido.Rg = dto.Rg;
+                favorecido.Sexo = dto.Sexo;
+                favorecido.DataNascimento = dto.DataNascimento;
+                favorecido.Apelido = dto.Apelido;
                 
-                v.Nome = voluntario.Nome;                
-                v.Cpf = voluntario.Cpf;
-                v.Rg = voluntario.Rg;                
-                v.Sexo = voluntario.Sexo;
-                v.DataNascimento = voluntario.DataNascimento;
-                v.Apelido = voluntario.Apelido;
-                
-                if(voluntario.Familia!= null)
+                if(dto.NomeFamilia!= null)
                 {
-                    if (v.Familia == null)
+                    if (favorecido.Familia == null)
                     {
-                        v.Familia = new Familia();
-                        v.Familia.Endereco = new Endereco();
+                        favorecido.Familia = new Familia();
+                        favorecido.Familia.Endereco = new Endereco();
                     }
 
-                    v.Familia.Nome = voluntario.Familia.Nome;
-                    v.Familia.Telefone = voluntario.Familia.Telefone;
-                    v.Familia.Email = voluntario.Familia.Email;
-                    v.Familia.Celular = voluntario.Familia.Celular;
 
+                    favorecido.Familia.Nome = dto.NomeFamilia;
+                    favorecido.Familia.Celular = dto.Celular;
+                    favorecido.Familia.Email = dto.Email;
+                    favorecido.Familia.Telefone = dto.Telefone;
 
-                    v.Familia.Endereco.Logradouro = voluntario.Familia.Endereco.Logradouro;
-                    v.Familia.Endereco.Numero = voluntario.Familia.Endereco.Numero;
-                    v.Familia.Endereco.Bairro = voluntario.Familia.Endereco.Bairro;
-                    v.Familia.Endereco.Estado = voluntario.Familia.Endereco.Estado;
-                    v.Familia.Endereco.Cep = voluntario.Familia.Endereco.Cep;
-                    v.Familia.Endereco.Cidade = voluntario.Familia.Endereco.Cidade;
-                    v.Familia.Endereco.Complemento = voluntario.Familia.Endereco.Complemento;
+                    if (favorecido.Familia.Endereco == null)
+                        favorecido.Familia.Endereco = new Endereco();
+
+                    favorecido.Familia.Endereco.Bairro = dto.Bairro == null ? " " : dto.Bairro;
+                    favorecido.Familia.Endereco.Cep = dto.Cep == null ? " " : dto.Cep;
+                    favorecido.Familia.Endereco.Cidade = dto.Cidade == null ? " " : dto.Cidade;
+                    favorecido.Familia.Endereco.Complemento = dto.Complemento == null ? " " : dto.Complemento;
+                    favorecido.Familia.Endereco.Estado = dto.Estado == null ? " " : dto.Estado;
+                    favorecido.Familia.Endereco.Logradouro = dto.Logradouro == null ? " " : dto.Logradouro;
+                    favorecido.Familia.Endereco.Numero = dto.Numero == null ? " " : dto.Numero;
+
+                    
                 }
 
-                if (v.ConhecimentosProfissionais == null)
-                    v.ConhecimentosProfissionais = new List<ConhecimentoProficional>();
+                _context.ConhecimentoProficional.Where(q => q.CodFavorecido == id).Load();
 
-                if (voluntario.ConhecimentosProfissionais == null)
-                    voluntario.ConhecimentosProfissionais = new List<ConhecimentoProficionalDTO>();
+                if (favorecido.ConhecimentosProfissionais == null)
+                    favorecido.ConhecimentosProfissionais = new List<ConhecimentoProficional>();
 
-                var entraram = voluntario.ConhecimentosProfissionais.Where(q => !v.ConhecimentosProfissionais.Any(x => x.Nome == q.Text));
-                var sairam = v.ConhecimentosProfissionais.Where(q => !voluntario.ConhecimentosProfissionais.Any(x => x.Text == q.Nome));
+                if (dto.ConhecimentosProfissionais == null)
+                    dto.ConhecimentosProfissionais = new List<ConhecimentoProficionalDTO>();
+
+                var entraram = dto.ConhecimentosProfissionais.Where(q => !favorecido.ConhecimentosProfissionais.Any(x => x.Nome == q.Text));
+                var sairam = favorecido.ConhecimentosProfissionais.Where(q => !dto.ConhecimentosProfissionais.Any(x => x.Text == q.Nome)).ToArray();
 
                 foreach(var entrou in entraram)
                 {
-                    v.ConhecimentosProfissionais.Add(new ConhecimentoProficional() { Nome = entrou.Text });
+                    ConhecimentoProficional cp = new ConhecimentoProficional() { Nome = entrou.Text, CodFavorecido = favorecido.CodFavorecido };
+                    _context.ConhecimentoProficional.Add(cp);
+                    favorecido.ConhecimentosProfissionais.Add(cp);
                 }
                 foreach(var saiu in sairam)
                 {
-                    v.ConhecimentosProfissionais.Remove(saiu);
+                    favorecido.ConhecimentosProfissionais.Remove(saiu);
+                    _context.ConhecimentoProficional.Remove(saiu);
                 }
 
 
@@ -283,7 +303,7 @@ namespace SistemaVidaNova.Api
                 
                 
 
-                return new ObjectResult(voluntario);
+                return new ObjectResult(dto);
             }
             else
             {

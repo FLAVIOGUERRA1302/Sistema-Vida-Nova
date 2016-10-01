@@ -2,6 +2,7 @@
 /// <reference path="js/app.min.js" />
 /// <reference path="js/controllers/doadorcontrol.js" />
 /// <reference path="js/controllers/eventocontrol.js" />
+/// <reference path="js/controllers/favorecidocontrol.js" />
 /// <reference path="js/controllers/homecontrol.js" />
 /// <reference path="js/controllers/InteressadoControl.js" />
 /// <reference path="js/controllers/voluntariocontrol.js" />
