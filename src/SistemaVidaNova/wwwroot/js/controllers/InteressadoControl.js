@@ -22,6 +22,29 @@
         $scope.pageChanged();
     }
 
+    $scope.delete = function (interessado) {
+        ngDialog.openConfirm({
+            template: '\
+                <p>Tem certeza que quer apagar este Interessado?</p>\
+                <div class="ngdialog-buttons">\
+                    <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">Não</button>\
+                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Sim</button>\
+                </div>',
+            plain: true
+        }).then(function () {
+            InteressadoService.Delete(interessado)
+            .then(function () {
+                //remove da lista
+                var index = $scope.interessados.indexOf(interessado);
+                $scope.interessados.splice(index, 1);
+            }, function () {
+
+            });
+        }, function () {
+            //não faz nada
+        });
+    }
+
 
 }])
 .controller('InteressadoUpdateControl', ['$scope', 'InteressadoService', 'interessado', 'loadingDialod','$location', function ($scope, InteressadoService, interessado, loadingDialod,$location) {

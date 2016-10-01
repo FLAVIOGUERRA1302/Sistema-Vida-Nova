@@ -15,7 +15,7 @@ namespace SistemaVidaNova.Models
         public string Nome { get; set; }
 
         [Required]
-        public string CodFavorecido { get; set; }
+        public int CodFavorecido { get; set; }
 
         [ForeignKey("CodFavorecido")]
         public Favorecido Favorecido { get; set; }

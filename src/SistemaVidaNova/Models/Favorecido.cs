@@ -30,7 +30,7 @@ namespace SistemaVidaNova.Models
         [Required]
         public DateTime DataDeCadastro { get; set; }
 
-        public List<ConhecimentoProficional> ConhecimentosProficionais;
+        public List<ConhecimentoProficional> ConhecimentosProfissionais;
         [Required]
         public string IdUsuario { get; set; }
         

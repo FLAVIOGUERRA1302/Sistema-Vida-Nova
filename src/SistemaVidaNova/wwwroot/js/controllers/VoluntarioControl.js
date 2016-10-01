@@ -24,6 +24,29 @@
         $scope.pageChanged();
     }
 
+    $scope.delete = function (voluntario) {
+        ngDialog.openConfirm({
+            template: '\
+                <p>Tem certeza que quer apagar este Voluntário?</p>\
+                <div class="ngdialog-buttons">\
+                    <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">Não</button>\
+                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Sim</button>\
+                </div>',
+            plain: true
+        }).then(function () {
+            VoluntarioService.Delete(voluntario)
+            .then(function () {
+                //remove da lista
+                var index = $scope.voluntarios.indexOf(voluntario);
+                $scope.voluntarios.splice(index, 1);
+            }, function () {
+
+            });
+        }, function () {
+            //não faz nada
+        });
+    }
+
 }])
 .controller('VoluntarioUpdateControl', ['$scope', 'VoluntarioService', 'voluntario', 'CepService', 'loadingDialod','$location', function ($scope, VoluntarioService, voluntario, CepService, loadingDialod,$location) {
     loadingDialod.close();

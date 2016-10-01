@@ -37,6 +37,29 @@ angular.module('app')
         $scope.pageChanged();
     }
 
+    $scope.delete = function (evento) {
+        ngDialog.openConfirm({
+            template: '\
+                <p>Tem certeza que quer apagar este evento?</p>\
+                <div class="ngdialog-buttons">\
+                    <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">Não</button>\
+                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Sim</button>\
+                </div>',
+            plain: true
+        }).then(function () {
+            EventoService.Delete(evento)
+            .then(function () {
+                //remove da lista
+                var index = $scope.eventos.indexOf(evento);
+                $scope.eventos.splice(index, 1);
+            }, function () {
+
+            });
+        }, function () {
+            //não faz nada
+        });
+    }
+
 
 }])
 .controller('EventoUpdateControl', ['$scope', 'EventoService', 'evento', 'loadingDialod', '$location', 'VoluntarioService', 'InteressadoService', function ($scope, EventoService, evento, loadingDialod, $location, VoluntarioService, InteressadoService) {

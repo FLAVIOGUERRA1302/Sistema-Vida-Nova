@@ -20,6 +20,10 @@ namespace SistemaVidaNova.Models
         public string Telefone { get; set; }
         public string Celular { get; set; }
 
+        [Required]
+        public int IdEndereco { get; set; }
+
+        [ForeignKey("IdEndereco")]
         public Endereco Endereco { get; set; }
 
         [Required]

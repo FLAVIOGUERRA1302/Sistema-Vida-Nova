@@ -37,5 +37,7 @@ namespace SistemaVidaNova.Models.DTO
 
         [Required]
         public FamiliaDTO Familia { get; set; }
+
+        public List<ConhecimentoProficionalDTO> ConhecimentosProfissionais = new List<ConhecimentoProficionalDTO>();
     }
 }

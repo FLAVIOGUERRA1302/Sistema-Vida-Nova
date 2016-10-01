@@ -38,13 +38,13 @@ namespace SistemaVidaNova.Api
         {
             _context = context;
             _userManager = userManager;
-            _logger = loggerFactory.CreateLogger<VoluntarioController>();
+            _logger = loggerFactory.CreateLogger<FavorecidoController>();
             _environment = environment;
         }
 
         // GET: api/values
         [HttpGet]
-        public IEnumerable<VoluntarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
+        public IEnumerable<FavorecidoDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
         {
 
             if (skip == null)
@@ -52,8 +52,7 @@ namespace SistemaVidaNova.Api
             if (take == null)
                 take = 1000;
             
-            IQueryable<Voluntario> query = _context.Voluntario
-                .Where(q => q.IsDeletado == false)
+            IQueryable<Favorecido> query = _context.Favorecido                
                 .OrderBy(q => q.Nome);
 
             if (!String.IsNullOrEmpty(filtro))
@@ -61,131 +60,141 @@ namespace SistemaVidaNova.Api
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
 
-            List<VoluntarioDTO> voluntarios = query
+            List<FavorecidoDTO> favorecidos = query
                 .Skip(skip.Value)
-                .Take(take.Value).Select(v => new VoluntarioDTO
+                .Take(take.Value).Select(v => new FavorecidoDTO
                 {
-                    Id = v.Id,
-                    Email = v.Email,
+                    Id = v.CodFavorecido,                    
                     Nome = v.Nome,
+                    Apelido = v.Apelido,
                     Cpf = v.Cpf,
-                    Rg = v.Rg,
-                    Celular = v.Celular,
-                    Telefone = v.Telefone,
+                    Rg = v.Rg,                    
                     Sexo = v.Sexo,
-                    DataNascimento = v.DataNascimento,
-                    SegundaFeira = v.SegundaFeira,
-                    TercaFeira = v.TercaFeira,
-                    QuartaFeira = v.QuartaFeira,
-                    QuintaFeira = v.QuintaFeira,
-                    SextaFeira = v.SextaFeira,
-                    Sabado = v.Sabado,
-                    Domingo = v.Domingo,
+                    DataNascimento = v.DataNascimento,                    
                     DataDeCadastro = v.DataDeCadastro
                 }).ToList();
 
             
-            return voluntarios;
+            return favorecidos;
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Voluntario v =_context.Voluntario
-                .Include(q=>q.Endereco)
-                .SingleOrDefault(q => q.Id == id);
+            Favorecido f =_context.Favorecido                
+                .SingleOrDefault(q => q.CodFavorecido == id);
 
-            if (v == null)
+            if (f == null)
                 return new NotFoundResult();
 
-            
-            VoluntarioDTO dto = new VoluntarioDTO
+            _context.ConhecimentoProficional.Where(q => q.CodFavorecido == id).Load();
+
+            FavorecidoDTO dto = new FavorecidoDTO
             {
-                Id = v.Id,
-                Email = v.Email,
-                Nome = v.Nome,
-                Cpf = v.Cpf,
-                Rg = v.Rg,
-                Celular = v.Celular,
-                Telefone = v.Telefone,
-                Sexo = v.Sexo,
-                DataNascimento = v.DataNascimento,
-                SegundaFeira = v.SegundaFeira,
-                TercaFeira = v.TercaFeira,
-                QuartaFeira = v.QuartaFeira,
-                QuintaFeira = v.QuintaFeira,
-                SextaFeira = v.SextaFeira,
-                Sabado = v.Sabado,
-                Domingo = v.Domingo,
-                DataDeCadastro = v.DataDeCadastro,
-                Endereco = new EnderecoDTO()
+                Id = f.CodFavorecido,
+                Nome = f.Nome,
+                Apelido = f.Apelido,
+                Cpf = f.Cpf,
+                Rg = f.Rg,
+                Sexo = f.Sexo,
+                DataNascimento = f.DataNascimento,
+                DataDeCadastro = f.DataDeCadastro,
+
+            };
+            _context.Familia.Include(q => q.Endereco).Where(q => q.CodFavorecido == id).Load();
+            if (f.Familia != null)
+            {
+
+                dto.Familia = new FamiliaDTO()
                 {
-                     Id = v.Endereco.Id,
-                    Bairro = v.Endereco.Bairro,
-                    Cep = v.Endereco.Cep,
-                    Cidade = v.Endereco.Cidade,
-                    Complemento = v.Endereco.Complemento,
-                    Estado = v.Endereco.Estado,
-                    Logradouro = v.Endereco.Logradouro,
-                    Numero = v.Endereco.Numero
+                    id = f.Familia.CodFamilia,
+                    Celular = f.Familia.Celular,
+                    Email = f.Familia.Email,
+                    Nome = f.Familia.Nome,
+                    Telefone = f.Familia.Telefone,
+                    Endereco = new EnderecoDTO()
+                    {
+                        Bairro = f.Familia.Endereco.Bairro,
+                        Cep = f.Familia.Endereco.Cep,
+                        Cidade = f.Familia.Endereco.Cidade,
+                        Complemento = f.Familia.Endereco.Complemento,
+                        Estado = f.Familia.Endereco.Estado,
+                        Logradouro = f.Familia.Endereco.Logradouro,
+                        Numero = f.Familia.Endereco.Numero
+
+                    }
+
+                };
 
                 }
+            
 
-        };
             this.Response.Headers.Add("totalItems", "1");
             return new ObjectResult(dto);
         }
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]VoluntarioDTO v)
+        public async Task<IActionResult> Post([FromBody]FavorecidoDTO v)
         {   
             if (ModelState.IsValid)
             {
                 Usuario user = await _userManager.GetUserAsync(HttpContext.User);
-                Voluntario voluntario = new Voluntario
+                Favorecido favorecido = new Favorecido
                 {
 
-                    Email = v.Email,
+                    
                     Nome = v.Nome,
+                    Apelido = v.Apelido,
                     Cpf = v.Cpf,
-                    Rg = v.Rg,
-                    Celular = v.Celular,
-                    Telefone = v.Telefone,
+                    Rg = v.Rg,                    
                     Sexo = v.Sexo,
-                    DataNascimento = v.DataNascimento,
-                    SegundaFeira = v.SegundaFeira,
-                    TercaFeira = v.TercaFeira,
-                    QuartaFeira = v.QuartaFeira,
-                    QuintaFeira = v.QuintaFeira,
-                    SextaFeira = v.SextaFeira,
-                    Sabado = v.Sabado,
-                    Domingo = v.Domingo,
-                    DataDeCadastro = DateTime.Today,
-                    IsDeletado = false,
-                    IdUsuario = user.Id
+                    DataNascimento = v.DataNascimento,                    
+                    DataDeCadastro = DateTime.Today,                    
+                    IdUsuario = user.Id,                     
+
                 };
 
-                voluntario.Endereco = new Endereco()
+                if (v.Familia != null)
                 {
-                    Bairro = v.Endereco.Bairro,
-                    Cep = v.Endereco.Cep,
-                    Cidade = v.Endereco.Cidade,
-                    Complemento = v.Endereco.Complemento,
-                    Estado = v.Endereco.Estado,
-                    Logradouro = v.Endereco.Logradouro,
-                    Numero = v.Endereco.Numero
+                    favorecido.Familia = new Familia()
+                    {
+                        Nome = v.Familia.Nome,
+                        Celular = v.Familia.Nome,
+                        Email = v.Familia.Nome,
+                        Telefone = v.Familia.Nome
 
-                };
+                    };
+                    favorecido.Familia.Endereco = new Endereco()
+                    {
+                        Bairro = v.Familia.Endereco.Bairro,
+                        Cep = v.Familia.Endereco.Cep,
+                        Cidade = v.Familia.Endereco.Cidade,
+                        Complemento = v.Familia.Endereco.Complemento,
+                        Estado = v.Familia.Endereco.Estado,
+                        Logradouro = v.Familia.Endereco.Logradouro,
+                        Numero = v.Familia.Endereco.Numero
 
-                    _context.Voluntario.Add(voluntario);
+                    };
+                }
+
+                if (v.ConhecimentosProfissionais != null)
+                {
+                    foreach(var cp in v.ConhecimentosProfissionais)
+                    {
+                        favorecido.ConhecimentosProfissionais.Add(new ConhecimentoProficional() { Nome = cp.Text });
+                    }
+                }
+
+                
+
+                    _context.Favorecido.Add(favorecido);
                     try
                 {
                     _context.SaveChanges();
-                    v.Id = voluntario.Id;
-                    var path = Path.Combine(_environment.WebRootPath, "images\\voluntarios\\");
-                    System.IO.File.Copy(path+"default.jpg", path+ voluntario.Id+".jpg", true);
+                    v.Id = favorecido.CodFavorecido;
+                    
 
                 }
                 catch
@@ -204,40 +213,67 @@ namespace SistemaVidaNova.Api
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]VoluntarioDTO voluntario)
+        public  IActionResult Put(int id, [FromBody]FavorecidoDTO voluntario)
         {
             if(id != voluntario.Id)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             if (ModelState.IsValid)
             {
-                Voluntario v = _context.Voluntario.Include(q=>q.Endereco).SingleOrDefault(q => q.Id == id && q.IsDeletado==false);
+                Favorecido v = _context.Favorecido.Include(q=>q.Familia).SingleOrDefault(q => q.CodFavorecido == id );
                 if (v == null)
                     return new BadRequestResult();
 
-                v.Email = voluntario.Email;
+                
                 v.Nome = voluntario.Nome;                
                 v.Cpf = voluntario.Cpf;
-                v.Rg = voluntario.Rg;
-                v.Celular = voluntario.Celular;
-                v.Telefone = voluntario.Telefone;
+                v.Rg = voluntario.Rg;                
                 v.Sexo = voluntario.Sexo;
                 v.DataNascimento = voluntario.DataNascimento;
-                v.SegundaFeira = voluntario.SegundaFeira;
-                v.TercaFeira = voluntario.TercaFeira;
-                v.QuartaFeira = voluntario.QuartaFeira;
-                v.QuintaFeira = voluntario.QuintaFeira;
-                v.SextaFeira = voluntario.SextaFeira;
-                v.Sabado = voluntario.Sabado;
-                v.Domingo = voluntario.Domingo;
-
-                v.Endereco.Logradouro = voluntario.Endereco.Logradouro;
-                v.Endereco.Numero = voluntario.Endereco.Numero;
-                v.Endereco.Bairro = voluntario.Endereco.Bairro;
-                v.Endereco.Estado = voluntario.Endereco.Estado;
-                v.Endereco.Cep = voluntario.Endereco.Cep;
-                v.Endereco.Cidade = voluntario.Endereco.Cidade;
-                v.Endereco.Complemento = voluntario.Endereco.Complemento;
+                v.Apelido = voluntario.Apelido;
                 
+                if(voluntario.Familia!= null)
+                {
+                    if (v.Familia == null)
+                    {
+                        v.Familia = new Familia();
+                        v.Familia.Endereco = new Endereco();
+                    }
+
+                    v.Familia.Nome = voluntario.Familia.Nome;
+                    v.Familia.Telefone = voluntario.Familia.Telefone;
+                    v.Familia.Email = voluntario.Familia.Email;
+                    v.Familia.Celular = voluntario.Familia.Celular;
+
+
+                    v.Familia.Endereco.Logradouro = voluntario.Familia.Endereco.Logradouro;
+                    v.Familia.Endereco.Numero = voluntario.Familia.Endereco.Numero;
+                    v.Familia.Endereco.Bairro = voluntario.Familia.Endereco.Bairro;
+                    v.Familia.Endereco.Estado = voluntario.Familia.Endereco.Estado;
+                    v.Familia.Endereco.Cep = voluntario.Familia.Endereco.Cep;
+                    v.Familia.Endereco.Cidade = voluntario.Familia.Endereco.Cidade;
+                    v.Familia.Endereco.Complemento = voluntario.Familia.Endereco.Complemento;
+                }
+
+                if (v.ConhecimentosProfissionais == null)
+                    v.ConhecimentosProfissionais = new List<ConhecimentoProficional>();
+
+                if (voluntario.ConhecimentosProfissionais == null)
+                    voluntario.ConhecimentosProfissionais = new List<ConhecimentoProficionalDTO>();
+
+                var entraram = voluntario.ConhecimentosProfissionais.Where(q => !v.ConhecimentosProfissionais.Any(x => x.Nome == q.Text));
+                var sairam = v.ConhecimentosProfissionais.Where(q => !voluntario.ConhecimentosProfissionais.Any(x => x.Text == q.Nome));
+
+                foreach(var entrou in entraram)
+                {
+                    v.ConhecimentosProfissionais.Add(new ConhecimentoProficional() { Nome = entrou.Text });
+                }
+                foreach(var saiu in sairam)
+                {
+                    v.ConhecimentosProfissionais.Remove(saiu);
+                }
+
+
+
 
 
 
@@ -256,30 +292,19 @@ namespace SistemaVidaNova.Api
         }
 
 
-        [HttpPost("{id}")]
-        public async Task<IActionResult> Post(int id)
-        {
-            var uploads = Path.Combine(_environment.WebRootPath, "images\\voluntarios");
-            var file = Request.Form.Files[0];
-
-            if (file.Length > 0)
-            {
-                using (var fileStream = new FileStream(Path.Combine(uploads, id+".jpg"), FileMode.Create))
-                {
-                    await file.CopyToAsync(fileStream);
-                }
-            }
-               
-             
-            return new OkResult();
-        }
+       
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            Voluntario voluntario = _context.Voluntario.Single(q => q.Id == id);
-            voluntario.IsDeletado = true;
+            Favorecido favorecido = _context.Favorecido.Include(q=>q.Familia).Single(q => q.CodFavorecido == id);
+            if(favorecido.Familia!=null)
+            {
+                Endereco end = _context.Endereco.Single(q => q.Id == favorecido.Familia.IdEndereco);
+                _context.Endereco.Remove(end);
+            }
+            _context.Favorecido.Remove(favorecido);
             
             try
             {

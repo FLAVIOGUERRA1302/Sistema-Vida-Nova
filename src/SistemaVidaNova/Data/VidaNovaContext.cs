@@ -18,6 +18,8 @@ namespace SistemaVidaNova.Models
         public DbSet<PessoaFisica> DoadorPessoaFisica { get; set; }
         public DbSet<PessoaJuridica> DoadorPessoaJuridica { get; set; }
         public DbSet<Favorecido> Favorecido { get; set; }
+        public DbSet<Familia> Familia { get; set; }
+        public DbSet<ConhecimentoProficional> ConhecimentoProficional { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Voluntario> Voluntario { get; set; }
         public DbSet<Interessado> Interessado { get; set; }
