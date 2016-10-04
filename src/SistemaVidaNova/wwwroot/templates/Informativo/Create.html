@@ -1,0 +1,76 @@
+﻿<section class="content-header">
+    <h1>
+        Criar Informativo
+    </h1>
+
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+                
+                <form method='post' ng-submit="enviar()" name="form">
+                    <div class="box-body">
+                        
+                        <div class="form-group">
+                            <tags-input ng-model="informativo.usuarios" display-property="nome" placeholder="Usuários:" add-on-blur="false" add-from-autocomplete-only="true">
+                                <auto-complete source="loadUsuarios($query)"></auto-complete>
+                            </tags-input>
+                        </div>
+                        <div class="form-group">
+                            <tags-input ng-model="informativo.voluntarios" display-property="nome" placeholder="Voluntários:" add-on-blur="false" add-from-autocomplete-only="true">
+                                <auto-complete source="loadVoluntarios($query)"></auto-complete>
+                            </tags-input>
+                        </div>
+                        <div class="form-group">
+                            <tags-input ng-model="informativo.doadoresFisicos" display-property="nomeRazaoSocial" placeholder="Doadores pessoa física:" add-on-blur="false" add-from-autocomplete-only="true">
+                                <auto-complete source="loadDoadoresFisicos($query)"></auto-complete>
+                            </tags-input>
+                        </div>
+                        <div class="form-group">
+                            <tags-input ng-model="informativo.doadoresJuridicos" display-property="nomeRazaoSocial" placeholder="Doadores pessoa jurídica:" add-on-blur="false" add-from-autocomplete-only="true">
+                                <auto-complete source="loadDoadoresJuridicos($query)"></auto-complete>
+                            </tags-input>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Assunto:" ng-model="informativo.subject">
+                        </div>
+                        <div class="form-group">
+                            <div text-angular ng-model="informativo.body"></div>
+                         </div>
+                        <div class="form-group">
+                            <div class="btn btn-default btn-file">
+                                <i class="fa fa-paperclip"></i> Anexar
+                                <input type="file" 
+                                       ngf-select="uploadFiles($file, $invalidFiles)"
+                                       ng-model="files" 
+                                       name="files"
+                                       accept="*.*"
+                                       ngf-max-size="25MB"
+                                       >
+                            </div>                            
+                            <div class="progress" ng-show="progresso >= 0">
+                                <div style="width:{{progresso}}%"
+                                     ng-bind="progresso + '%'"></div>
+                            </div>
+                            <p class="help-block">Max. 25MB</p>
+                        </div>
+                     </div>
+                    <div class="box-footer">
+                        <div class="pull-right">                            
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Enviar</button>
+                        </div>
+                        <button type="button" ng-click="delete()" class="btn btn-default"><i class="fa fa-times"></i> Descartar</button>
+                    </div>
+
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>

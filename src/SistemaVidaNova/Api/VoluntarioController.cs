@@ -144,7 +144,7 @@ namespace SistemaVidaNova.Api
             if (ModelState.IsValid)
             {
                 Usuario user = await _userManager.GetUserAsync(HttpContext.User);
-                Voluntario voluntario = _context.Voluntario.Include(q=>q.Endereco).SingleOrDefault(q => q.Cpf == v.Cpf);
+                Voluntario voluntario = _context.Voluntario.Include(q=>q.Endereco).SingleOrDefault(q => q.Cpf == v.Cpf && q.IsDeletado==true);
                 if (voluntario == null)
                 {
                     voluntario = new Voluntario
@@ -231,7 +231,8 @@ namespace SistemaVidaNova.Api
                 }
                 catch
                 {
-                    return new BadRequestResult();
+                    ModelState.AddModelError("Chave exclusiva", "Já existe um voluntário cadastrado com este email ou CPF");
+                    return new BadRequestObjectResult(ModelState);
                 }
                                
                 return new ObjectResult(v);
@@ -321,7 +322,7 @@ namespace SistemaVidaNova.Api
         {
             Voluntario voluntario = _context.Voluntario.Single(q => q.Id == id);
             voluntario.IsDeletado = true;
-            
+            voluntario.Email = "";
             try
             {
                 _context.SaveChanges();

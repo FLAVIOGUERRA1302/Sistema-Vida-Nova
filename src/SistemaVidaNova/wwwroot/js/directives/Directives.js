@@ -27,4 +27,4 @@ app.directive('calendar', function () {
             });
         }
     }
-})
+});

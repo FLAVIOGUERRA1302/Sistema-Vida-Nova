@@ -47,6 +47,7 @@
                                 <th>Email</th>
                                 <th>Telefone</th>
                                 <th>Celular</th>
+                                <th>Data de cadastro</th>
 
                                 <th class="actions">Ações</th>
                             </tr>
@@ -59,6 +60,7 @@
                                 <td>{{v.email}}</td>
                                 <td>{{v.telefone | brPhoneNumber}}</td>
                                 <td>{{v.celular | brPhoneNumber}}</td>
+                                <td>{{v.dataDeCadastro | date :'dd/MM/yyyy'}}</td>
                                 <td class='actions'>
 
                                     <a class='btn btn-success btn-xs' href='/Voluntario/Visualizar/{{v.id}}'>Visualizar</a>

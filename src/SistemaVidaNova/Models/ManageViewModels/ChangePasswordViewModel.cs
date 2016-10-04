@@ -8,13 +8,13 @@ namespace SistemaVidaNova.Models.ManageViewModels
 {
     public class ChangePasswordViewModel
     {
-        [Required]
+        [Required(ErrorMessage ="A senha é obrigatória" )]
         [DataType(DataType.Password)]
         [Display(Name = "Senha Atual")]
         public string OldPassword { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "A nova senha é obrigatória")]
+        [StringLength(100, ErrorMessage = "A {0} tem que ter no mínumo {2} e no máximo {1} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Nova Senha")]
         public string NewPassword { get; set; }

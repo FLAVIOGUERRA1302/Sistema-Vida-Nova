@@ -12,27 +12,37 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        
+
         <link href="~/lib/angularjs-color-picker/dist/angularjs-color-picker.css" rel="stylesheet" />
         <link href="~/lib/angularjs-color-picker/dist/themes/angularjs-color-picker-bootstrap.min.css" rel="stylesheet" />
         <link href="~/lib/fullcalendar/dist/fullcalendar.css" rel="stylesheet" />
         <link href="~/lib/components-font-awesome/css/font-awesome.css" rel="stylesheet" />
         <!-- Ionicons -->
         <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">-->
-        <!-- Theme style -->        
+        <!-- Theme style -->
         <link href="~/lib/admin-lte/dist/css/AdminLTE.css" rel="stylesheet" />
-        
+
 
         <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
         <link href="~/lib/admin-lte/dist/css/skins/skin-blue.css" rel="stylesheet" />
 
+
+
+        <link href="~/lib/ng-dialog/css/ngDialog.css" rel="stylesheet" />
+        <link href="~/lib/ng-dialog/css/ngDialog-theme-default.css" rel="stylesheet" />
+        <link href="~/lib/ng-tags-input/ng-tags-input.min.css" rel="stylesheet" />
+
+        <link href="~/lib/textAngular/dist/textAngular.css" rel="stylesheet" />
+
         <link rel="stylesheet" href="~/css/site.css" />
+
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 
@@ -93,6 +103,7 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/angular/angular.js"></script>
         <script src="~/lib/angular-route/angular-route.js"></script>
+
         <script src="~/lib/angular-animate/angular-animate.min.js"></script>
         <script src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
         <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -105,8 +116,28 @@
         <script src="~/lib/moment/min/moment.min.js"></script>
         <script src="~/lib/fullcalendar/dist/fullcalendar.js"></script>
         <script src="~/lib/fullcalendar/dist/lang/pt-br.js"></script>
+
         <script src="~/lib/admin-lte/plugins/slimScroll/jquery.slimscroll.js"></script>
+
         <script src="~/lib/admin-lte/dist/js/app.js"></script>
+
+        <script src="~/lib/ng-dialog/js/ngDialog.min.js"></script>
+
+        <script src="~/lib/angular-br-filters/release/angular-br-filters.js"></script>
+
+
+
+        <script src="~/lib/angular-input-masks/angular-input-masks-standalone.js"></script>
+
+        <script src="~/lib/ng-file-upload/ng-file-upload-shim.js"></script>
+        <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+
+        <script src="~/lib/ng-tags-input/ng-tags-input.min.js"></script>
+
+        <script src="~/lib/textAngular/dist/textAngular-rangy.min.js"></script>
+        <script src="~/lib/textAngular/dist/textAngular-sanitize.min.js"></script>
+        <script src="~/lib/textAngular/dist/textAngular.min.js"></script>
+
 
         <script src="~/js/app.js"></script>
         <script src="~/js/services/Services.js"></script>
@@ -114,15 +145,24 @@
         <script src="~/js/controllers/HomeControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/VoluntarioControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/InteressadoControl.js" asp-append-version="true"></script>
-        <script src="~/js/controllers/EventoControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/EventoControl.js" asp-append-version="false"></script>
+        <script src="~/js/controllers/DoadorControl.js" asp-append-version="false"></script>
+        <script src="~/js/controllers/FavorecidoControl.js" asp-append-version="false"></script>
+        <script src="~/js/controllers/InformativoControl.js"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/lib/angular/angular.min.js"></script>
-        <script src="~/lib/angular-route/angular-route.min.js"></script>
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/angular/angular.js"></script>
+        <script src="~/lib/angular-route/angular-route.js"></script>
+
+
+
+
         <script src="~/js/vendor.min.js" asp-append-version="true"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+
     </environment>
 
     @RenderSection("scripts", required: false)

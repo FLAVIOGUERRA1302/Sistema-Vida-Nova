@@ -16,7 +16,7 @@ namespace SistemaVidaNova.Models
         public string Celular { get; set; }
         
         public string Telefone { get; set; }
-        
+        [Required]
         public string Email { get; set; }
 
         public List<Evento> Eventos { get; set; }

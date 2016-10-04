@@ -52,8 +52,25 @@ angular.module('app')
                 //remove da lista
                 var index = $scope.eventos.indexOf(evento);
                 $scope.eventos.splice(index, 1);
-            }, function () {
+            }, function (erros) {
+                var corpo = "";
+                angular.forEach(erros, function (value, key) {
+                    corpo += '<div class="list-group">';
+                    corpo += '<a href="#" class="list-group-item list-group-item-danger">' + key + '</a>';
+                    for (var i = 0; i < value.length; i++) {
+                        corpo += '<a href="#" class="list-group-item">' + value[i] + '</a>';
+                    }
+                    corpo += '</div>';
+                });
 
+
+
+                ngDialog.open({
+                    template: '\
+                <h1>Erro</h1>\
+                '+ corpo,
+                    plain: true
+                })
             });
         }, function () {
             //não faz nada
@@ -94,7 +111,24 @@ angular.module('app')
             .then(function (evento) {
                 $location.path('/Evento');
             }, function (erros) {
-                //exibir erros
+                var corpo = "";
+                angular.forEach(erros, function (value, key) {
+                    corpo += '<div class="list-group">';
+                    corpo += '<a href="#" class="list-group-item list-group-item-danger">' + key + '</a>';
+                    for (var i = 0; i < value.length; i++) {
+                        corpo += '<a href="#" class="list-group-item">' + value[i] + '</a>';
+                    }
+                    corpo += '</div>';
+                });
+
+
+
+                ngDialog.open({
+                    template: '\
+                <h1>Erro</h1>\
+                '+ corpo,
+                    plain: true
+                })
             });
     }
 
@@ -169,7 +203,24 @@ angular.module('app')
                 $location.path('/Evento/Editar/'+evento .id);
 
             }, function (erros) {
+                var corpo = "";
+                angular.forEach(erros, function (value, key) {
+                    corpo += '<div class="list-group">';
+                    corpo += '<a href="#" class="list-group-item list-group-item-danger">' + key + '</a>';
+                    for (var i = 0; i < value.length; i++) {
+                        corpo += '<a href="#" class="list-group-item">' + value[i] + '</a>';
+                    }
+                    corpo += '</div>';
+                });
 
+
+
+                ngDialog.open({
+                    template: '\
+                <h1>Erro</h1>\
+                '+ corpo,
+                    plain: true
+                })
             });
     }
 

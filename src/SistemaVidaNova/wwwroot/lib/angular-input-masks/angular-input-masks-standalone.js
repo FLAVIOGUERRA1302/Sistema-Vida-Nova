@@ -4934,11 +4934,12 @@ var m = angular.module('ui.utils.masks.br', [
 .directive('uiBrIeMask', require('./inscricao-estadual/ie'))
 .directive('uiNfeAccessKeyMask', require('./nfe/nfe'))
 .directive('uiBrCarPlateMask', require('./car-plate/car-plate'))
-.directive('uiBrPhoneNumber', require('./phone/br-phone'));
+.directive('uiBrPhoneNumber', require('./phone/br-phone'))
+.directive('uiBrPhoneNumberFixo', require('./phone/br-phoneFixo'));
 
 module.exports = m.name;
 
-},{"../helpers":25,"./boleto-bancario/boleto-bancario":5,"./car-plate/car-plate":7,"./cep/cep":8,"./cnpj/cnpj":9,"./cpf-cnpj/cpf-cnpj":10,"./cpf/cpf":11,"./inscricao-estadual/ie":12,"./nfe/nfe":13,"./phone/br-phone":14}],7:[function(require,module,exports){
+}, { "../helpers": 25, "./boleto-bancario/boleto-bancario": 5, "./car-plate/car-plate": 7, "./cep/cep": 8, "./cnpj/cnpj": 9, "./cpf-cnpj/cpf-cnpj": 10, "./cpf/cpf": 11, "./inscricao-estadual/ie": 12, "./nfe/nfe": 13, "./phone/br-phone": 14, "./phone/br-phoneFixo": 666 }], 7: [function (require, module, exports) {
 'use strict';
 
 var StringMask = require('string-mask');
@@ -5225,7 +5226,8 @@ module.exports = maskFactory({
 	}
 });
 
-},{"mask-factory":"mask-factory","string-mask":3}],14:[function(require,module,exports){
+}, { "mask-factory": "mask-factory", "string-mask": 3 }]
+    , 14: [function (require, module, exports) {
 'use strict';
 
 var StringMask = require('string-mask');
@@ -5268,7 +5270,53 @@ module.exports = maskFactory({
 	}
 });
 
-},{"mask-factory":"mask-factory","string-mask":3}],15:[function(require,module,exports){
+    }, { "mask-factory": "mask-factory", "string-mask": 3 }]
+
+    , 666: [function (require, module, exports) {
+        'use strict';
+
+        var StringMask = require('string-mask');
+        var maskFactory = require('mask-factory');
+
+        /**
+         * FIXME: all numbers will have 9 digits after 2016.
+         * see http://portal.embratel.com.br/embratel/9-digito/
+         */
+        var phoneMask8D = new StringMask('(00) 0000-0000'),
+            
+            phoneMask0800 = new StringMask('0000-000-0000');
+
+        module.exports = maskFactory({
+            clearValue: function (rawValue) {
+                return rawValue.toString().replace(/[^0-9]/g, '').slice(0, 11);
+            },
+            format: function (cleanValue) {
+                var formatedValue;
+                if (cleanValue.indexOf('0800') === 0) {
+                    formatedValue = phoneMask0800.apply(cleanValue);
+                } else  {
+                    formatedValue = phoneMask8D.apply(cleanValue) || '';
+                } 
+
+                return formatedValue.trim().replace(/[^0-9]$/, '');
+            },
+            getModelValue: function (formattedValue, originalModelType) {
+                var cleanValue = this.clearValue(formattedValue);
+
+                return originalModelType === 'number' ? parseInt(cleanValue) : cleanValue;
+            },
+            validations: {
+                brPhoneNumber: function (value) {
+                    var valueLength = value && value.toString().length;
+                    return valueLength === 10 ;
+                }
+            }
+        });
+
+    }, { "mask-factory": "mask-factory", "string-mask": 3 }]
+
+
+    , 15: [function (require, module, exports) {
 'use strict';
 
 var m = angular.module('ui.utils.masks.ch', [

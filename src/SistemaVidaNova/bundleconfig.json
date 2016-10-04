@@ -13,6 +13,8 @@
       "wwwroot/lib/admin-lte/dist/css/skins/skin-blue.min.css",
       "wwwroot/lib/ng-dialog/css/ngDialog.min.css",
       "wwwroot/lib/ng-dialog/css/ngDialog-theme-default.min.css",
+      "wwwroot/lib/ng-tags-input/ng-tags-input.min.css",
+      "wwwroot/lib/textAngular/dist/textAngular.css",      
       "wwwroot/css/site.css"
     ]
   },
@@ -36,7 +38,13 @@
       "wwwroot/lib/angular-input-masks/angular-input-masks.br.min.js",
       "wwwroot/lib/angular-input-masks/angular-input-masks-standalone.js",
       "wwwroot/lib/ng-file-upload/ng-file-upload-shim.js",
-      "wwwroot/lib/ng-file-upload/ng-file-upload.js"
+      "wwwroot/lib/ng-file-upload/ng-file-upload.js",
+      "wwwroot/lib/ng-tags-input/ng-tags-input.min.js",
+
+      "wwwroot/lib/textAngular/dist/textAngular-rangy.min.js",
+      "wwwroot/lib/textAngular/dist/textAngular-sanitize.min.js",
+      "wwwroot/lib/textAngular/dist/textAngular.min.js"
+
     ],
     // Optionally specify minification options
     "minify": {
@@ -52,11 +60,14 @@
       "wwwroot/js/app.js",
       "wwwroot/js/services/Services.js",
       "wwwroot/js/directives/Directives.js",
-      "wwwroot/js/controllers/HomeControl.js",      
-      "wwwroot/js/controllers/VoluntarioControl.js",      
-      "wwwroot/js/controllers/InteressadoControl.js",      
-      "wwwroot/js/controllers/EventoControl.js"
+      "wwwroot/js/controllers/HomeControl.js",
+      "wwwroot/js/controllers/VoluntarioControl.js",
+      "wwwroot/js/controllers/InteressadoControl.js",
+      "wwwroot/js/controllers/EventoControl.js",
+      "wwwroot/js/controllers/FavorecidoControl.js",
+      "wwwroot/js/controllers/InformativoControl.js",
       
+
     ],
     // Optionally specify minification options
     "minify": {

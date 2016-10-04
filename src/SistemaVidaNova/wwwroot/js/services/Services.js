@@ -549,4 +549,182 @@ app.factory('CepService', ["$http", "$q", function ($http, $q) {
 
     return s;
 
+}])
+
+
+app.factory('UsuarioService', ["$http", "$q", function ($http, $q) {
+    var s = {};
+
+    
+
+    s.Read = function (id, skip, take, filtro) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/Usuario/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+   
+
+   
+
+    return s;
+
+
 }]);
+
+app.factory('InformativoService', ["$http", "$q", "Upload", function ($http, $q, Upload) {
+    var s = {};
+
+   
+
+    s.Read = function () {
+        var deferred = $q.defer();
+        
+        var req = {
+            method: 'GET',
+            url: '/api/Informativo/',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            dataType: 'json'
+        };
+        
+        $http(req).then(function successCallback(response) {            
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.Update = function (informativo) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'PUT',
+            url: '/api/Informativo/' + informativo.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(informativo),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Send = function (informativo) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/Informativo/Send/' + informativo.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Delete = function (informativo) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'DELETE',
+            url: '/api/Informativo/' + informativo.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Attach = function (informativo, files) {
+        var deferred = $q.defer();
+
+        Upload.upload({
+            //method: 'UPLOAD',
+            url: '/api/Informativo/Attach/' + informativo.id,
+            data: { files: files }
+        }).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        }, function (evt) {
+            deferred.notify(Math.min(100, parseInt(100.0 *
+                                     evt.loaded / evt.total)));
+        });
+
+        return deferred.promise;
+    }
+
+    s.Detach = function (informativo, attachment) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/Informativo/Detach/' + informativo.id + "/" + attachment.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    return s;
+
+
+}]);;

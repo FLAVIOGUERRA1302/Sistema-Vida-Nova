@@ -58,9 +58,26 @@
     $scope.salvar = function () {
         VoluntarioService.Update($scope.voluntario)
             .then(function (voluntario) {
-                $location.path('/Voluntario' + interessado.id)
+                $location.path('/Voluntario' )
             }, function (erros) {
-                //exibir erros
+                var corpo = "";
+                angular.forEach(erros, function (value, key) {
+                    corpo += '<div class="list-group">';
+                    corpo += '<a href="#" class="list-group-item list-group-item-danger">' + key + '</a>';
+                    for (var i = 0; i < value.length; i++) {
+                        corpo += '<a href="#" class="list-group-item">' + value[i] + '</a>';
+                    }
+                    corpo += '</div>';
+                });
+
+
+
+                ngDialog.open({
+                    template: '\
+                <h1>Erro</h1>\
+                '+ corpo,
+                    plain: true
+                })
             });
     }
     
@@ -73,7 +90,24 @@
                 $scope.progresso = 0;
                 $scope.picFile = null;
         }, function (erros) {
-            //exibir erros
+            var corpo = "";
+            angular.forEach(erros, function (value, key) {
+                corpo += '<div class="list-group">';
+                corpo += '<a href="#" class="list-group-item list-group-item-danger">' + key + '</a>';
+                for (var i = 0; i < value.length; i++) {
+                    corpo += '<a href="#" class="list-group-item">' + value[i] + '</a>';
+                }
+                corpo += '</div>';
+            });
+
+
+
+            ngDialog.open({
+                template: '\
+                <h1>Erro</h1>\
+                '+ corpo,
+                plain: true
+            })
         }, function (progresso) {
             $scope.progresso = progresso;
         });
@@ -104,15 +138,32 @@
     }
     
 }])
-.controller('VoluntarioCreateControl', ['$scope', 'VoluntarioService', 'CepService', '$location', function ($scope, VoluntarioService, CepService, $location) {
+.controller('VoluntarioCreateControl', ['$scope', 'VoluntarioService', 'CepService', '$location', 'ngDialog', function ($scope, VoluntarioService, CepService, $location, ngDialog) {
     $scope.voluntario = {};
     $scope.salvar = function () {
         VoluntarioService.Create($scope.voluntario)
             .then(function (voluntario) {
-                $location.path('/Voluntario/Editar/' + voluntario.id)
+                $location.path('/Voluntario/');
                 
             }, function (erros) {
+                var corpo = "";
+                angular.forEach(erros, function (value, key) {
+                    corpo += '<div class="list-group">';
+                    corpo += '<a href="#" class="list-group-item list-group-item-danger">' + key + '</a>';
+                    for(var i = 0;i<value.length;i++){
+                        corpo += '<a href="#" class="list-group-item">'+value[i]+'</a>';
+                    }
+                    corpo += '</div>';
+                });
+
                 
+
+                ngDialog.open({
+                    template: '\
+                <h1>Erro</h1>\
+                '+corpo,
+                    plain: true
+                })
             });
     }
     $scope.ufs = ufs;

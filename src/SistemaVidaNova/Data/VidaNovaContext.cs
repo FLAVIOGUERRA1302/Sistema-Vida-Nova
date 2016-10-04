@@ -27,6 +27,8 @@ namespace SistemaVidaNova.Models
 
         public DbSet<InteressadoEvento> InteressadoEvento { get; set; }
         public DbSet<VoluntarioEvento> VoluntarioEvento { get; set; }
+        public DbSet<Informativo> Informativo { get; set; }
+        public DbSet<Attachment> Attachment { get; set; }
 
 
         public DbSet<Endereco> Endereco { get; set; }
@@ -37,7 +39,13 @@ namespace SistemaVidaNova.Models
             modelBuilder.Entity<Voluntario>()
                 .HasAlternateKey(c => c.Email);
 
+            modelBuilder.Entity<Interessado>()
+                .HasAlternateKey(c => c.Email);
+
             modelBuilder.Entity<Voluntario>()
+                .HasAlternateKey(c => c.Cpf);
+
+            modelBuilder.Entity<Usuario>()
                 .HasAlternateKey(c => c.Cpf);
 
             modelBuilder.Entity<Doador>()
@@ -55,6 +63,15 @@ namespace SistemaVidaNova.Models
 
             modelBuilder.Entity<VoluntarioEvento>()
                 .HasKey(t => new { t.CodEvento, t.IdVoluntario });
+
+            modelBuilder.Entity<InformativoDoador>()
+                .HasKey(t => new { t.CodDoador, t.IdInformativo });
+
+            modelBuilder.Entity<InformativoUsuario>()
+                .HasKey(t => new { t.IdUsuario, t.IdInformativo });
+
+            modelBuilder.Entity<InformativoVoluntario>()
+                .HasKey(t => new { t.IdVoluntario, t.IdInformativo });
 
 
             /*  modelBuilder.Entity<TUserRole>()
