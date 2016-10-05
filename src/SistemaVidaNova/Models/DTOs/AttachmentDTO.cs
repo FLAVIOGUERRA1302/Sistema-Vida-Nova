@@ -9,7 +9,7 @@ namespace SistemaVidaNova.Models.DTOs
     {
         public int Id { get; set; }
         
-        public string path { get; set; }
+        public string FileName { get; set; }
         
         
     }

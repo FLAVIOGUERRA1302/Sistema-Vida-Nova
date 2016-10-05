@@ -22,6 +22,7 @@
                                 <!--  -->
                                 <label for="cpf">CNPJ</label>
                                 <input type="text" class="form-control" ng-model="doador.cpfCnpj " name='cnpj' id="cnpj" required ui-br-cnpj-mask>
+                                <lista-erro lista="erros.Cnpj"></lista-erro>
                             </div>
                         </div>
 
@@ -34,6 +35,7 @@
 
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" ng-model="doador.email" name='email' id="email" placeholder="email@exemplo.com" required title="email@exemplo.com">
+                                <lista-erro lista="erros.Email"></lista-erro>
                             </div>
 
 
@@ -47,7 +49,7 @@
 
                             <div class="col-xs-3">
                                 <label for="celular">Celular</label>
-                                <input type="text" class="form-control" name='celular' ng-model="doador.celular" required id="celular" ui-br-phone-number>
+                                <input type="text" class="form-control" name='celular' ng-model="doador.celular"  id="celular" ui-br-phone-number>
                             </div>
 
                         </div>
@@ -134,7 +136,7 @@
 
                     <div class="box-footer">
                         <a href="/Doador" class="btn btn-primary">Voltar</a>
-                        <a href="" class="btn btn-default">Limpar Campos</a>
+                        <button type="reset" class="btn btn-default">Limpar Campos</button>
                         <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
                     </div>
 

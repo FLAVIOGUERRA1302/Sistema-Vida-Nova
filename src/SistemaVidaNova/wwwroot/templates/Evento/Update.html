@@ -37,22 +37,12 @@
                         <div class="row">
                             <div class="col-xs-2">
                                 <label class="control-label">Data Início</label>
-                                <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yy" ng-model="evento.start" is-open="startOpened" ng-required="true" close-text="Fechar" required />
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="startOpened=true"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                                </p>
+                                <input type="date" class="form-control" ng-model="evento.start" required />
                             </div>
 
                             <div class="col-xs-2">
                                 <label class="control-label">Date Fim</label>
-                                <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yy" ng-model="evento.end" is-open="endOpened" ng-required="true" close-text="Fechar" required />
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="endOpened=true"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                                </p>
+                                <input type="date" class="form-control" ng-model="evento.end" required />
 
                             </div>
 

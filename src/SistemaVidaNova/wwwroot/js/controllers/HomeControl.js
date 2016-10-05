@@ -4,4 +4,6 @@
 }])
 .controller('UserFotoController', ['$scope', function ($scope) {
 
+}]).controller('UserController', ['$scope', function ($scope) {
+
 }]);

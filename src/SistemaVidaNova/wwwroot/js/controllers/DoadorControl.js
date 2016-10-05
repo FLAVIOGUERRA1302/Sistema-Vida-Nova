@@ -107,24 +107,7 @@
             .then(function (doador) {
                 $location.path('/Doador');
             }, function (erros) {
-                var corpo = "";
-                angular.forEach(erros, function (value, key) {
-                    corpo += '<div class="list-group">';
-                    corpo += '<a href="#" class="list-group-item list-group-item-danger">' + key + '</a>';
-                    for (var i = 0; i < value.length; i++) {
-                        corpo += '<a href="#" class="list-group-item">' + value[i] + '</a>';
-                    }
-                    corpo += '</div>';
-                });
-
-
-
-                ngDialog.open({
-                    template: '\
-                <h1>Erro</h1>\
-                '+ corpo,
-                    plain: true
-                })
+                $scope.erros = erros;
             });
     }
 
@@ -139,24 +122,7 @@
                 $location.path('/Doador')
 
             }, function (erros) {
-                var corpo = "";
-                angular.forEach(erros, function (value, key) {
-                    corpo += '<div class="list-group">';
-                    corpo += '<a href="#" class="list-group-item list-group-item-danger">' + key + '</a>';
-                    for (var i = 0; i < value.length; i++) {
-                        corpo += '<a href="#" class="list-group-item">' + value[i] + '</a>';
-                    }
-                    corpo += '</div>';
-                });
-
-
-
-                ngDialog.open({
-                    template: '\
-                <h1>Erro</h1>\
-                '+ corpo,
-                    plain: true
-                })
+                $scope.erros = erros;
             });
     }
 

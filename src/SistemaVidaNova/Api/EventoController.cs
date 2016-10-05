@@ -31,7 +31,7 @@ namespace SistemaVidaNova.Api
         public IEnumerable<EventoDTO> Get([FromQuery]DateTime? start, [FromQuery]DateTime? end, [FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
         {
 
-            IQueryable<Evento> query = _context.Evento;
+            IQueryable<Evento> query = _context.Evento.Include(q=>q.Usuario);
              if(start!=null && end != null)//busca pelo calendario
             {
                 query = query.Where(q => q.DataInicio >= start && q.DataInicio <= end);
@@ -69,8 +69,13 @@ namespace SistemaVidaNova.Api
                                                      
                                                      valorArrecadado = q.ValorArrecadado,
                                                      relato = q.Relato,
-                                                                                                         
-                                                      
+                                                       Usuario = new UsuarioDTO()
+                                                       {
+                                                            Id = q.Usuario.Id,
+                                                             Email = q.Usuario.Email,
+                                                              Nome = q.Usuario.Nome
+                                                       }                                                   
+                                                       
                                                      
                                                  }).ToList();
               return eventos;
@@ -84,6 +89,7 @@ namespace SistemaVidaNova.Api
                     .Include(q => q.Interessados)
                     //.ThenInclude(q=>q.Interessado)
                     .Include(q => q.Voluntarios)
+                    .Include(q=>q.Usuario)
                     //.ThenInclude(q=> q.Voluntario)
                     .SingleOrDefault(q => q.CodEvento == id);
             if (eve == null)
@@ -104,6 +110,14 @@ namespace SistemaVidaNova.Api
                 
                 valorArrecadado = eve.ValorArrecadado,
                 relato = eve.Relato,
+                 
+                Usuario = new UsuarioDTO()
+                {
+                    Id = eve.Usuario.Id,
+                    Email = eve.Usuario.Email,
+                    Nome = eve.Usuario.Nome
+                },
+
                 voluntarios = eve.Voluntarios.Select(q=>new VoluntarioDTO{
                  Id = q.IdVoluntario,
                  Nome = q.Voluntario.Nome,

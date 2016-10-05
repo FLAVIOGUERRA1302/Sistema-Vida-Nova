@@ -105,7 +105,8 @@ namespace SistemaVidaNova.Api
                     return new ObjectResult(i);
                 }
                 catch {
-
+                    ModelState.AddModelError("Email", "Este email já está cadastrado");
+                    return new BadRequestObjectResult(ModelState);
                 }
                 
 
@@ -131,7 +132,15 @@ namespace SistemaVidaNova.Api
                 i.Celular = interessado.Celular;
                 i.Telefone = interessado.Telefone;
                 i.Email = interessado.Email;
-                _context.SaveChanges();
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch
+                {
+                    ModelState.AddModelError("Email", "Este email já está cadastrado");
+                    return new BadRequestObjectResult(ModelState);
+                }
 
                 return new ObjectResult(interessado);
             }

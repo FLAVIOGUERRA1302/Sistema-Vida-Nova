@@ -24,6 +24,7 @@ namespace SistemaVidaNova.Models.DTO
         public string Telefone { get; set; }
 
         [EmailAddress]
+        [Required]
         public string Email { get; set; }
 
         public EnderecoDTO Endereco { get; set; }

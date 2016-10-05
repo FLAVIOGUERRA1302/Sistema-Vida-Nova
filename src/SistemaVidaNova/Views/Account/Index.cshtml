@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<div id="list" class="row">
+<div id="list" class="row" ng-controller="UserController">
 
 
     <section class="content body">
@@ -65,7 +65,8 @@
 
                                 <tr>
                                     <td>@u.Nome</td>
-                                    <td>@u.Cpf</td>
+                                    
+                                    <td>{{'@u.Cpf' | brCpf}}</td>
                                     <td>@u.Email</td>
                                     <td>@(u.IsAtivo?"Sim":"Não")</td>
                                     <td>@(u.IsAdmin ? "Sim" : "Não")</td>

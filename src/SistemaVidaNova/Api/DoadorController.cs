@@ -181,6 +181,13 @@ namespace SistemaVidaNova.Api
 
                 if (v.Tipo.ToUpper() == "PF")
                 {
+                    //verifica se ja exite o cpf cadastrado
+                    if(_context.DoadorPessoaFisica.Any(q=>q.Cpf == v.CpfCnpj))
+                    {
+                        ModelState.AddModelError("Cpf", "Este CPF já está cadastrado");
+                        return new BadRequestObjectResult(ModelState);
+                    }
+
                     PessoaFisica pf = new PessoaFisica()
                     {
                         Celular = v.Celular,
@@ -216,6 +223,11 @@ namespace SistemaVidaNova.Api
                 }
                 else
                 {
+                    if (_context.DoadorPessoaJuridica.Any(q => q.Cnpj == v.CpfCnpj))
+                    {
+                        ModelState.AddModelError("Cnpj", "Este CNPJ já está cadastrado");
+                        return new BadRequestObjectResult(ModelState);
+                    }
                     PessoaJuridica pj = new PessoaJuridica()
                     {
                         Celular = v.Celular,
@@ -243,9 +255,12 @@ namespace SistemaVidaNova.Api
                         v.Id = pj.CodDoador;
 
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        return new BadRequestResult();
+                        if (e.InnerException.Message.Contains("Email"))
+                            ModelState.AddModelError("Email", "Este email ja está cadastrado");
+                        
+                        return new BadRequestObjectResult(ModelState);
                     }
 
                 }
@@ -274,8 +289,17 @@ namespace SistemaVidaNova.Api
                     return new BadRequestResult();
 
 
+                
+
                 if (d.GetType() == typeof(PessoaFisica))
                 {
+                    //verifica se ja está cadastrado o cpf
+                    if (_context.DoadorPessoaFisica.Any(q => q.Cpf == doador.CpfCnpj && q.CodDoador!=id))
+                    {
+                        ModelState.AddModelError("Cpf", "Este CPF já está cadastrado");
+                        return new BadRequestObjectResult(ModelState);
+                    }
+
                     PessoaFisica pf = (PessoaFisica)d;
                     pf.Nome = doador.NomeRazaoSocial;
                     pf.Cpf = doador.CpfCnpj;
@@ -295,6 +319,13 @@ namespace SistemaVidaNova.Api
                 }
                 if (d.GetType() == typeof(PessoaJuridica))
                 {
+                    //verifica se ja está cadastrado o cnpj
+                    if (_context.DoadorPessoaJuridica.Any(q => q.Cnpj == doador.CpfCnpj && q.CodDoador != id))
+                    {
+                        ModelState.AddModelError("Cpf", "Este CPF já está cadastrado");
+                        return new BadRequestObjectResult(ModelState);
+                    }
+
                     PessoaJuridica pj = (PessoaJuridica)d;
                     pj.RazaoSocial = doador.NomeRazaoSocial;
                     pj.Cnpj = doador.CpfCnpj;
@@ -314,9 +345,18 @@ namespace SistemaVidaNova.Api
 
 
 
+                try
+                {
+                    _context.SaveChanges();
+                    return new ObjectResult(doador);
+                }
+                catch (Exception e)
+                {
+                    if (e.InnerException.Message.Contains("Email"))
+                        ModelState.AddModelError("Email", "Este email ja está cadastrado");
 
-                _context.SaveChanges();                
-                return new ObjectResult(doador);
+                    return new BadRequestObjectResult(ModelState);
+                }
             }
             else
             {

@@ -207,11 +207,14 @@ namespace SistemaVidaNova.Api
                     
 
                 }
-                catch
+                catch (Exception e)
                 {
-                    return new BadRequestResult();
+                    
+                    if (e.InnerException.Message.Contains("Cpf"))
+                        ModelState.AddModelError("Cpf", "Este CPF ja está cadastrado");
+                    return new BadRequestObjectResult(ModelState);
                 }
-                               
+
                 return new ObjectResult(v);
             }
             else
@@ -296,12 +299,21 @@ namespace SistemaVidaNova.Api
 
 
 
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    
+                    if (e.InnerException.Message.Contains("Cpf"))
+                        ModelState.AddModelError("Cpf", "Este CPF ja está cadastrado");
+                    return new BadRequestObjectResult(ModelState);
+                }
 
-                _context.SaveChanges();
 
 
-                
-                
+
 
                 return new ObjectResult(dto);
             }

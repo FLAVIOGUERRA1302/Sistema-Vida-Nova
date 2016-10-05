@@ -21,7 +21,7 @@ namespace SistemaVidaNova.Models.ManageViewModels
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirme a nova senha")]
-        [Compare("NewPassword", ErrorMessage = "A nova senha não e a confirmação da senha não conferem.")]
+        [Compare("NewPassword", ErrorMessage = "A nova senha e a confirmação da senha não conferem.")]
         public string ConfirmPassword { get; set; }
     }
 }

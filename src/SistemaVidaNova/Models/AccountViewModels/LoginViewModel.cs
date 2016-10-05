@@ -9,7 +9,7 @@ namespace SistemaVidaNova.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required(ErrorMessage ="O Email é obrigatório")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage ="Este não é um email válido")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "A senha é obrigatória")]

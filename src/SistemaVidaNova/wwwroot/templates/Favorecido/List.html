@@ -51,9 +51,7 @@
                                     <tr>
 
                                         <th>Nome</th>
-                                        <th>Apelido</th>
-                                        <th>CPF</th>
-                                        <th>Rg</th>
+                                        <th>Apelido</th>                                        
                                         <th>Data de nascimento</th>
                                         <th>Data de cadastro</th>
 
@@ -65,9 +63,7 @@
 
                                     <tr ng-repeat="d in favorecidos">
                                         <td>{{d.nome}}</td>
-                                        <td>{{d.apelido}}</td>
-                                        <th>{{d.cpf   | brCpf}}</th>
-                                        <td>{{d.rg}}</td>
+                                        <td>{{d.apelido}}</td>                                        
                                         <td>{{d.dataNascimento  | date :'dd/MM/yy'}}</td>
                                         <td>{{d.dataDeCadastro  | date :'dd/MM/yy'}}</td>
                                         <td class='actions'>

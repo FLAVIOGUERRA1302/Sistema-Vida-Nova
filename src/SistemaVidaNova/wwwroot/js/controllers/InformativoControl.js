@@ -41,8 +41,10 @@
     }
     $scope.uploadFiles = function (file, errFiles) {
         InformativoService.Attach($scope.informativo,file)
-        .then(function (result) {
-
+        .then(function (results) {
+            $scope.progresso = 0;
+            for (var i = 0; i < results.length;i++)
+                $scope.informativo.attachments.push(results[i]);
         }, function (erros) {
 
         }, function (progresso) {
@@ -50,12 +52,70 @@
         });
 
     }
+    $scope.Salvar = function () {
+        InformativoService.Update($scope.informativo)
+            .then(function () { });
+    }
+
+    $scope.AdicionarTodosUsuarios = function () {
+        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', })
+        UsuarioService.Read(null, 0, 1000000)//id,skip,take
+        .then(function (usuarios) {
+            $scope.informativo.usuarios = usuarios;
+            $scope.Salvar();
+            carregando.close();
+            }, function () {
+
+            });
+    }
+
+    $scope.AdicionarTodosVoluntarios = function () {
+        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', })
+        VoluntarioService.Read(null, 0, 1000000)//id,skip,take
+        .then(function (voluntarios) {
+            $scope.informativo.voluntarios = voluntarios;
+            $scope.Salvar();
+            carregando.close();
+        }, function () {
+
+        });
+    }
+
+    $scope.AdicionarTodosDoadoresPF = function () {
+        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', })
+        DoadorService.Read(null, 0, 1000000,'PF')//id,skip,take,tipo
+        .then(function (doadoresFisicos) {
+            $scope.informativo.doadoresFisicos = doadoresFisicos;
+            $scope.Salvar();
+            carregando.close();
+        }, function () {
+
+        });
+    }
+
+    $scope.AdicionarTodosDoadoresPJ = function () {
+        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', })
+        DoadorService.Read(null, 0, 1000000, 'PJ')//id,skip,take,tipo
+        .then(function (doadoresJuridicos) {
+            $scope.informativo.doadoresJuridicos = doadoresJuridicos;
+            $scope.Salvar();
+            carregando.close();
+        }, function () {
+
+        });
+    }
+
+
        
     $scope.enviar = function () {
+        var enviando = ngDialog.open({ template: '/templates/enviando.html', className: 'ngdialog-theme-default', })
         InformativoService.Update($scope.informativo)
             .then(function () {
                 InformativoService.Send($scope.informativo)
-                    .then(function () {
+                    .then(function (novoInfor) {
+                        $scope.informativo = novoInfor;
+                        enviando.close();
+                        ngDialog.open({ template: '/templates/Informativo/Sucesso.html', className: 'ngdialog-theme-default', })
                     }, function () {
 
                     });
@@ -86,6 +146,17 @@
         }, function () {
             //não faz nada
         });
+    }
+
+
+    $scope.Detach = function (attachment) {
+        InformativoService.Detach($scope.informativo, attachment)
+            .then(function () {
+                var index = $scope.informativo.attachments.indexOf(attachment);
+                $scope.informativo.attachments.splice(index, 1);
+            }, function () {
+
+            });
     }
 
 }])

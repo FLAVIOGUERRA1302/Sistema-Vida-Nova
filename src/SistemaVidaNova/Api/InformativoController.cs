@@ -70,12 +70,15 @@ namespace SistemaVidaNova.Api
                     Usuario = user,
                     Body = "",
                     Doadores = new List<InformativoDoador>(),
-                     Usuarios = new List<InformativoUsuario>(),
-                      Voluntarios = new List<InformativoVoluntario>()
+                    Usuarios = new List<InformativoUsuario>(),
+                    Voluntarios = new List<InformativoVoluntario>(),
+                    Attachments = new List<Attachment>()
+                      
 
                 };
                 _context.Informativo.Add(info);
                 _context.SaveChanges();
+                
             }
 
             InformativoDTO infoDto = new InformativoDTO()
@@ -96,8 +99,13 @@ namespace SistemaVidaNova.Api
                        Id = q.Voluntario.Id,
                         Nome = q.Voluntario.Nome,
                         Email = q.Voluntario.Email
-                  }).ToList()
-                   
+                  }   ).ToList(),
+                Attachments = info.Attachments.Select(q=>new AttachmentDTO()
+                {
+                     Id=q.Id,
+                       FileName = q.FileName
+                }).ToList()
+
             };
             foreach(var d in info.Doadores)
             {
@@ -186,7 +194,7 @@ namespace SistemaVidaNova.Api
                             select u;
                 
                 //para remover
-                foreach(var u in info.Usuarios.Except(usersManter))
+                foreach(var u in info.Usuarios.Except(usersManter).ToArray())
                 {
                     info.Usuarios.Remove(u);
                 }
@@ -206,7 +214,7 @@ namespace SistemaVidaNova.Api
                             join d in infoDTO.DoadoresJuridicos on u.CodDoador equals d.Id
                             select u);
                 //para remover
-                foreach (var u in info.Doadores.Except(doadoresManter))
+                foreach (var u in info.Doadores.Except(doadoresManter).ToArray())
                 {
                     info.Doadores.Remove(u);
                 }
@@ -222,10 +230,10 @@ namespace SistemaVidaNova.Api
                 }
 
                 var voluntariosManter = from u in info.Voluntarios
-                            join d in infoDTO.Voluntarios on u.IdInformativo equals d.Id
+                            join d in infoDTO.Voluntarios on u.IdVoluntario equals d.Id
                             select u;
                 //para remover
-                foreach (var u in info.Voluntarios.Except(voluntariosManter))
+                foreach (var u in info.Voluntarios.Except(voluntariosManter).ToArray())
                 {
                     info.Voluntarios.Remove(u);
                 }
@@ -282,51 +290,66 @@ namespace SistemaVidaNova.Api
                 attachments.Add(a.GetMimePart(_environment.WebRootPath));
             }
 
-            _emailSender.SendEmailAsync(emails,info.Subject,info.Body, attachments);
+           _emailSender.SendEmailAsync(emails,info.Subject,info.Body, attachments);
 
-
+            
             //apaga tudo
-            var attachmentsPath = Path.Combine(_environment.WebRootPath, "attachment", id.ToString());
-            System.IO.Directory.Delete(attachmentsPath);
-            _context.Informativo.Remove(info);
-            _context.SaveChanges();
-
-            //cria um novo
-            info = new Informativo()
+            try
             {
-                Subject = "",
-                Usuario = user,
-                Body = "",
-                Doadores = new List<InformativoDoador>(),
-                Usuarios = new List<InformativoUsuario>(),
-                Voluntarios = new List<InformativoVoluntario>()
+                foreach (var a in attachments)
+                {
+                    a.ContentObject.Stream.Dispose();
 
-            };
-            _context.Informativo.Add(info);
-            _context.SaveChanges();
+                }
 
 
-            InformativoDTO infoDto = new InformativoDTO()
-            {
-                Id = info.Id,
-                Subject = info.Subject,
-                Body = info.Body,
-                DoadoresFisicos = new List<DoadorDTO>(),
-                DoadoresJuridicos = new List<DoadorDTO>(),
-                Usuarios = new List<UsuarioDTO>(),
-                Voluntarios = new List<VoluntarioDTO>()
 
-            };
+                var attachmentsPath = Path.Combine(_environment.WebRootPath, "attachment", id.ToString());
+                System.IO.Directory.Delete(attachmentsPath, true);
 
-            return new ObjectResult(infoDto);
+            }
+            catch { }
+                _context.Informativo.Remove(info);
+                _context.SaveChanges();
+
+                //cria um novo
+                info = new Informativo()
+                {
+                    Subject = "",
+                    Usuario = user,
+                    Body = "",
+                    Doadores = new List<InformativoDoador>(),
+                    Usuarios = new List<InformativoUsuario>(),
+                    Voluntarios = new List<InformativoVoluntario>()
+
+                };
+                _context.Informativo.Add(info);
+                _context.SaveChanges();
+
+
+                InformativoDTO infoDto = new InformativoDTO()
+                {
+                    Id = info.Id,
+                    Subject = info.Subject,
+                    Body = info.Body,
+                    DoadoresFisicos = new List<DoadorDTO>(),
+                    DoadoresJuridicos = new List<DoadorDTO>(),
+                    Usuarios = new List<UsuarioDTO>(),
+                    Voluntarios = new List<VoluntarioDTO>()
+
+                };
+                return new ObjectResult(infoDto);
+            
+            
+            
         }
         [HttpPost("Attach/{id}")]
-        public async Task<IActionResult> Post(int id)
+        public async Task<List<AttachmentDTO>> Post(int id)
         {
             var attachmentsPath = Path.Combine(_environment.WebRootPath, "attachment",id.ToString());
             if (!System.IO.Directory.Exists(attachmentsPath))
                 System.IO.Directory.CreateDirectory(attachmentsPath);
-
+            List<AttachmentDTO> atachs = new List<Models.DTOs.AttachmentDTO>();
             foreach (var file in Request.Form.Files) {
 
 
@@ -341,7 +364,11 @@ namespace SistemaVidaNova.Api
                         //Path.Combine("attachment",id.ToString(), file.Name), file.GetType().Name, file.GetType().Name);
                     _context.Attachment.Add(attachment);
                     _context.SaveChanges();
-
+                    atachs.Add(new AttachmentDTO()
+                    {
+                        Id = attachment.Id,
+                        FileName = attachment.FileName
+                    });
                     using (var fileStream = new FileStream(Path.Combine(_environment.WebRootPath, "attachment", id.ToString(),attachment.Id.ToString()), FileMode.Create))
                     {
                         await file.CopyToAsync(fileStream);
@@ -351,7 +378,7 @@ namespace SistemaVidaNova.Api
                 }
             }
              
-            return new OkResult();
+            return atachs;
         }
 
 
@@ -377,9 +404,13 @@ namespace SistemaVidaNova.Api
             Usuario user = await _userManager.GetUserAsync(HttpContext.User);
             Informativo info = _context.Informativo.Single(q => q.Id == id && q.IdUsuario == user.Id);
             var attachmentsPath = Path.Combine(_environment.WebRootPath, "attachment", id.ToString());
-            System.IO.Directory.Delete(attachmentsPath);
+            try
+            {
+                System.IO.Directory.Delete(attachmentsPath);
+            }
+            catch { }
             _context.Informativo.Remove(info);
-            _context.SaveChanges();
+            
 
             try
             {

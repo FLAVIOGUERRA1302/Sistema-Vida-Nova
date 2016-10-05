@@ -52,6 +52,7 @@
                                 <!--  -->
                                 <label for="cpf">CPF</label>
                                 <input type="text" class="form-control" ng-model="voluntario.cpf" name='cpf_field' id="cpf_field" required ui-br-cpf-mask >
+                                <lista-erro lista="erros.Cpf"></lista-erro>
                             </div>
                         </div>
 
@@ -64,6 +65,7 @@
 
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" ng-model="voluntario.email" name='email' id="email" placeholder="email@exemplo.com" required="required" title="email@exemplo.com">
+                                <lista-erro lista="erros.Email"></lista-erro>
                             </div>
 
 
@@ -103,6 +105,12 @@
                                 <label for="celular">Celular</label>
                                 <input type="text" class="form-control" name='celular' ng-model="voluntario.celular" required id="celular" ui-br-phone-number>
                             </div>
+
+                            <div class="col-xs-6">
+                                <label for="celular">Função</label>
+                                <input type="text" class="form-control" name='funcao' ng-model="voluntario.funcao" required id="funcao">
+                            </div>
+
 
                         </div>
 
@@ -167,12 +175,12 @@
                                 <dl class="dl-horizontal">
                                     <dd>
                                         <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.domingo"><span>Domingo</span></label>
-                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.SegundaFeira "><span>Segunda</span></label>
-                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.TercaFeira "><span>Terça</span></label>
-                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.QuartaFeira "><span>Quarta</span></label>
-                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.QuintaFeira "><span>Quinta</span></label>
-                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.SextaFeira "><span>Sexta</span></label>
-                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.Sabado "><span>Sabado</span></label>
+                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.segundaFeira "><span>Segunda</span></label>
+                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.tercaFeira "><span>Terça</span></label>
+                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.quartaFeira "><span>Quarta</span></label>
+                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.quintaFeira "><span>Quinta</span></label>
+                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.sextaFeira "><span>Sexta</span></label>
+                                        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.sabado "><span>Sabado</span></label>
                                     </dd>
                                 </dl>
                             </div>

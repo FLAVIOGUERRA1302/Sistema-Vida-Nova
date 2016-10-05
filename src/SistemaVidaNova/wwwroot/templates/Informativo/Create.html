@@ -15,32 +15,53 @@
                     <div class="box-body">
                         
                         <div class="form-group">
-                            <tags-input ng-model="informativo.usuarios" display-property="nome" placeholder="Usuários:" add-on-blur="false" add-from-autocomplete-only="true">
-                                <auto-complete source="loadUsuarios($query)"></auto-complete>
-                            </tags-input>
+                            <div class="input-group">
+                                <tags-input ng-model="informativo.usuarios" display-property="nome" placeholder="Usuários:" add-on-blur="false" add-from-autocomplete-only="true" ng-blur="Salvar()">
+                                    <auto-complete source="loadUsuarios($query)"></auto-complete>
+                                </tags-input>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-flat" ng-click="AdicionarTodosUsuarios()">Adicionar Todos</button>
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <tags-input ng-model="informativo.voluntarios" display-property="nome" placeholder="Voluntários:" add-on-blur="false" add-from-autocomplete-only="true">
-                                <auto-complete source="loadVoluntarios($query)"></auto-complete>
-                            </tags-input>
+                            <div class="input-group">
+                                <tags-input ng-model="informativo.voluntarios" display-property="nome" placeholder="Voluntários:" add-on-blur="false" add-from-autocomplete-only="true" ng-blur="Salvar()">
+                                    <auto-complete source="loadVoluntarios($query)"></auto-complete>
+                                </tags-input>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-flat" ng-click="AdicionarTodosVoluntarios()">Adicionar Todos</button>
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <tags-input ng-model="informativo.doadoresFisicos" display-property="nomeRazaoSocial" placeholder="Doadores pessoa física:" add-on-blur="false" add-from-autocomplete-only="true">
-                                <auto-complete source="loadDoadoresFisicos($query)"></auto-complete>
-                            </tags-input>
+                            <div class="input-group">
+                                <tags-input ng-model="informativo.doadoresFisicos" display-property="nomeRazaoSocial" placeholder="Doadores pessoa física:" add-on-blur="false" add-from-autocomplete-only="true"  ng-blur="Salvar()">
+                                    <auto-complete source="loadDoadoresFisicos($query)"></auto-complete>
+                                </tags-input>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-flat" ng-click="AdicionarTodosDoadoresPF()">Adicionar Todos</button>
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <tags-input ng-model="informativo.doadoresJuridicos" display-property="nomeRazaoSocial" placeholder="Doadores pessoa jurídica:" add-on-blur="false" add-from-autocomplete-only="true">
-                                <auto-complete source="loadDoadoresJuridicos($query)"></auto-complete>
-                            </tags-input>
+                            <div class="input-group">
+                                <tags-input ng-model="informativo.doadoresJuridicos" display-property="nomeRazaoSocial" placeholder="Doadores pessoa jurídica:" add-on-blur="false" add-from-autocomplete-only="true"  ng-blur="Salvar()">
+                                    <auto-complete source="loadDoadoresJuridicos($query)"></auto-complete>
+                                </tags-input>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-flat" ng-click="AdicionarTodosDoadoresPJ()">Adicionar Todos</button>
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Assunto:" ng-model="informativo.subject">
+                            <input class="form-control" placeholder="Assunto:" ng-model="informativo.subject"  ng-blur="Salvar()">
                         </div>
                         <div class="form-group">
-                            <div text-angular ng-model="informativo.body"></div>
+                            <div text-angular ng-model="informativo.body"  ng-blur="Salvar()"></div>
                          </div>
                         <div class="form-group">
+                            <h2 >Anexos:</h2>                            
                             <div class="btn btn-default btn-file">
                                 <i class="fa fa-paperclip"></i> Anexar
                                 <input type="file" 
@@ -51,11 +72,25 @@
                                        ngf-max-size="25MB"
                                        >
                             </div>                            
-                            <div class="progress" ng-show="progresso >= 0">
+                            <div class="progress" ng-show="progresso > 0">
                                 <div style="width:{{progresso}}%"
                                      ng-bind="progresso + '%'"></div>
                             </div>
                             <p class="help-block">Max. 25MB</p>
+                        </div>
+                        <div class="form-group">
+                                                        
+                            <ul class="list-group col-md-4">
+                                <li ng-repeat="attachment in  informativo.attachments" class="list-group-item">
+                                    {{attachment.fileName}}
+                                    <span class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" ng-click="Detach(attachment)">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </span>
+                                </li>
+                                
+                            </ul>
                         </div>
                      </div>
                     <div class="box-footer">

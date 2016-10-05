@@ -41,6 +41,7 @@
                                 <!--  -->
                                 <label for="cpf">CPF</label>
                                 <input type="text" class="form-control" ng-model="favorecido.cpf" name='cpf' id="cpf" ui-br-cpf-mask>
+                                <lista-erro lista="erros.Cpf"></lista-erro>
                             </div>
 
                             <div class="col-md-3">
@@ -69,7 +70,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="telefone">Nome do contato</label>
-                                <input type="text" class="form-control" ng-model="favorecido.nomeFamilia" required>
+                                <input type="text" class="form-control" ng-model="favorecido.nomeFamilia" >
                             </div>
 
                             <div class="col-md-6">

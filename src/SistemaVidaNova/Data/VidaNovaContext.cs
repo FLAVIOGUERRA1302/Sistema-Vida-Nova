@@ -37,26 +37,29 @@ namespace SistemaVidaNova.Models
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Voluntario>()
-                .HasAlternateKey(c => c.Email);
+                .HasIndex(c => c.Email).IsUnique();
 
             modelBuilder.Entity<Interessado>()
-                .HasAlternateKey(c => c.Email);
+                .HasIndex(c => c.Email).IsUnique();
 
             modelBuilder.Entity<Voluntario>()
-                .HasAlternateKey(c => c.Cpf);
+                .HasIndex(c => c.Cpf).IsUnique();
 
             modelBuilder.Entity<Usuario>()
-                .HasAlternateKey(c => c.Cpf);
+                .HasIndex(c => c.Cpf).IsUnique();
 
             modelBuilder.Entity<Doador>()
                 .HasDiscriminator<string>("doador_type")
                 .HasValue<PessoaFisica>("PF")
                 .HasValue<PessoaJuridica>("PJ");
 
-           /* modelBuilder.Entity<PessoaFisica>()
-                .HasAlternateKey(c =>new { c.Cpf });
-            modelBuilder.Entity<PessoaJuridica>()
-                .HasAlternateKey(c => new { c.Cnpj });*/
+            modelBuilder.Entity<Doador>()
+                .HasIndex(c => c.Email).IsUnique();
+
+            modelBuilder.Entity<Favorecido>()
+                .HasIndex(c => c.Cpf).IsUnique();
+
+
 
             modelBuilder.Entity<InteressadoEvento>()
                 .HasKey(t => new { t.CodEvento, t.CodInteressado });

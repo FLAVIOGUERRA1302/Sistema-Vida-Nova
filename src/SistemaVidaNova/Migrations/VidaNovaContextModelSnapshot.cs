@@ -167,7 +167,8 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<string>("Celular");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
                     b.Property<int>("EnderecoId");
 
@@ -177,6 +178,9 @@ namespace SistemaVidaNova.Migrations
                         .IsRequired();
 
                     b.HasKey("CodDoador");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("EnderecoId");
 
@@ -311,6 +315,9 @@ namespace SistemaVidaNova.Migrations
 
                     b.HasKey("CodFavorecido");
 
+                    b.HasIndex("Cpf")
+                        .IsUnique();
+
                     b.HasIndex("IdUsuario");
 
                     b.ToTable("Favorecido");
@@ -398,7 +405,8 @@ namespace SistemaVidaNova.Migrations
 
                     b.HasKey("CodInteressado");
 
-                    b.HasAlternateKey("Email");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Interessado");
                 });
@@ -465,7 +473,8 @@ namespace SistemaVidaNova.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Cpf");
+                    b.HasIndex("Cpf")
+                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -498,6 +507,8 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<int?>("EnderecoId");
 
+                    b.Property<string>("Funcao");
+
                     b.Property<string>("IdUsuario");
 
                     b.Property<bool>("IsDeletado");
@@ -527,10 +538,11 @@ namespace SistemaVidaNova.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Cpf");
+                    b.HasIndex("Cpf")
+                        .IsUnique();
 
-
-                    b.HasAlternateKey("Email");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("EnderecoId");
 

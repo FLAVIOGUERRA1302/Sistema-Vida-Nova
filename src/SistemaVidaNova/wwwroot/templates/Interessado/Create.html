@@ -24,6 +24,7 @@
 
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" ng-model="interessado.email" name='email' id="email" placeholder="email@exemplo.com" required title="email@exemplo.com">
+                                <lista-erro lista="erros.Email"></lista-erro>
                             </div>
 
                         </div>
@@ -44,8 +45,8 @@
                                         
 
                             <div class="box-footer">
-                                <a href="/Interessado" class="btn btn-primary">Voltar</a>
-                                <a href="" class="btn btn-default">Limpar Campos</a>
+                                <a href="/Interessado" class="btn btn-primary">Voltar</a>                                
+                                <button type="reset" class="btn btn-default">Limpar Campos</button>
                                 <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
                             </div>
                         </div>

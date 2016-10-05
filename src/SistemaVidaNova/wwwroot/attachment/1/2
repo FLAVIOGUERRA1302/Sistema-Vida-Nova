@@ -1,0 +1,41 @@
+<div  
+              
+             gantt-base-width-watch="changeBaseWidth" 
+             column-numbers="scaleCenterColumnNumber" 
+             scale-mode="scale"
+             hack-scrollable
+             >
+            
+            <div ngc-table data="dadosScale"
+                 custom-data-value-fn="customScaleDataFn"
+                 scroll-top-position="myscrollTopPosition"
+                 scroll-left-position="myscrollScaleLeftPosition"
+                 left-column-number="0"
+                 show-column-names="false"
+                 show-row-numbers="false"
+                 show-footer="false"
+                 header-row-number="1"
+                 center-column-number="scaleCenterColumnNumber"
+                 right-column-number="0"
+                 row-number="rowNumber"
+                 row-heights="20"                 
+                 special-template="'conograma.scalehead.html'"
+                 >
+                <ngc-range top="0" bottom="1000000" left="0" right="29" clazz="'col-1-28'"></ngc-range>
+
+            </div>
+            <div class="gantt_data_area" >
+                
+                <div style="position: absolute; left: {{chartLeft}}px; top: {{chartTop}}px;">                    
+                    <div class="gantt_bars_area">
+                        <div gantt-task-line ng-repeat="task in tasks" task="task" base-start-date="baseStartDate" register-fn="register" style="height:30px"></div>
+                    </div>
+                </div>
+                <div style="position: absolute; left: {{chartLeft}}px; top: {{chartTop}}px;">
+                    <div class="gantt_bars_area">
+                        <div gantt-task-link class="gantt_task_link" ng-repeat="(key, value) in links" link="value" base-time-width="baseTimeWidth" base-start-date="baseStartDate"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>

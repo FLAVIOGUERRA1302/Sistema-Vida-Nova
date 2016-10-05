@@ -73,6 +73,7 @@ namespace SistemaVidaNova.Api
                     Celular = v.Celular,
                     Telefone = v.Telefone,
                     Sexo = v.Sexo,
+                    Funcao = v.Funcao,
                     DataNascimento = v.DataNascimento,
                     SegundaFeira = v.SegundaFeira,
                     TercaFeira = v.TercaFeira,
@@ -109,6 +110,7 @@ namespace SistemaVidaNova.Api
                 Rg = v.Rg,
                 Celular = v.Celular,
                 Telefone = v.Telefone,
+                Funcao = v.Funcao,
                 Sexo = v.Sexo,
                 DataNascimento = v.DataNascimento,
                 SegundaFeira = v.SegundaFeira,
@@ -157,6 +159,7 @@ namespace SistemaVidaNova.Api
                         Celular = v.Celular,
                         Telefone = v.Telefone,
                         Sexo = v.Sexo,
+                        Funcao = v.Funcao,
                         DataNascimento = v.DataNascimento,
                         SegundaFeira = v.SegundaFeira,
                         TercaFeira = v.TercaFeira,
@@ -190,6 +193,7 @@ namespace SistemaVidaNova.Api
                     voluntario.Celular = v.Celular;
                     voluntario.Telefone = v.Telefone;
                     voluntario.Sexo = v.Sexo;
+                    voluntario.Funcao = v.Funcao;
                     voluntario.DataNascimento = v.DataNascimento;
                     voluntario.SegundaFeira = v.SegundaFeira;
                     voluntario.TercaFeira = v.TercaFeira;
@@ -229,9 +233,12 @@ namespace SistemaVidaNova.Api
                     System.IO.File.Copy(path+"default.jpg", path+ voluntario.Id+".jpg", true);
 
                 }
-                catch
+                catch(Exception e)
                 {
-                    ModelState.AddModelError("Chave exclusiva", "Já existe um voluntário cadastrado com este email ou CPF");
+                        if(e.InnerException.Message.Contains("Email"))
+                        ModelState.AddModelError("Email", "Este email ja está cadastrado");
+                    if (e.InnerException.Message.Contains("Cpf"))
+                        ModelState.AddModelError("Cpf", "Este CPF ja está cadastrado");
                     return new BadRequestObjectResult(ModelState);
                 }
                                
@@ -262,6 +269,7 @@ namespace SistemaVidaNova.Api
                 v.Rg = voluntario.Rg;
                 v.Celular = voluntario.Celular;
                 v.Telefone = voluntario.Telefone;
+                v.Funcao = voluntario.Funcao;
                 v.Sexo = voluntario.Sexo;
                 v.DataNascimento = voluntario.DataNascimento;
                 v.SegundaFeira = voluntario.SegundaFeira;
@@ -279,12 +287,22 @@ namespace SistemaVidaNova.Api
                 v.Endereco.Cep = voluntario.Endereco.Cep;
                 v.Endereco.Cidade = voluntario.Endereco.Cidade;
                 v.Endereco.Complemento = voluntario.Endereco.Complemento;
-                
 
 
 
-                _context.SaveChanges();
-
+                try
+                {
+                    _context.SaveChanges();
+                }                
+                catch (Exception e)
+                {
+                    if (e.InnerException.Message.Contains("Email"))
+                        ModelState.AddModelError("Email", "Este email ja está cadastrado");
+                    if (e.InnerException.Message.Contains("Cpf"))
+                        ModelState.AddModelError("Cpf", "Este CPF ja está cadastrado");
+                    return new BadRequestObjectResult(ModelState);
+                }
+            
 
                 
                 

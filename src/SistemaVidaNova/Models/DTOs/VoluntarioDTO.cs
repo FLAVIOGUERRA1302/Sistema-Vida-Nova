@@ -42,7 +42,8 @@ namespace SistemaVidaNova.Models.DTO
         public bool Sabado { get; set; }
         [Required]
         public bool Domingo { get; set; }
-
+        [StringLength(200)]
+        public string Funcao { get; set; }
         public Usuario usuario { get; set; }
 
         public DateTime DataDeCadastro { get; set; }

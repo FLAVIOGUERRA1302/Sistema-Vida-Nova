@@ -125,8 +125,14 @@ namespace SistemaVidaNova.Controllers
                 {
                     await _userManager.RemoveFromRoleAsync(u, "Administrator");
                 }
-                
-                _context.SaveChanges();
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch
+                {
+                    ModelState.AddModelError("CPF", "Este CPF ja está sendo utilizado");
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -214,32 +220,45 @@ namespace SistemaVidaNova.Controllers
                     Email = model.Email,
                     Cpf = model.Cpf,
                     IsAtivo=true
-                };                    
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                };
+                try
                 {
-                    await _userManager.AddToRoleAsync(user, "User");
-                    if(model.IsAdmin)
-                        await _userManager.AddToRoleAsync(user, "Administrator");
-
-                    try
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
                     {
-                        var path = Path.Combine(_environment.WebRootPath, "images\\users\\");
-                        System.IO.File.Copy(path + "default.jpg", path + user.Id + ".jpg", true);
-                    }
-                    catch { };
+                        await _userManager.AddToRoleAsync(user, "User");
+                        if (model.IsAdmin)
+                            await _userManager.AddToRoleAsync(user, "Administrator");
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
-                    //_logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToAction(nameof(Index));
+                        List<Claim> claims = new List<Claim>()
+                        {
+                            new Claim(ClaimTypes.Name,model.Nome),
+                          //  new Claim("CPF", model.Cpf)
+                        };
+                        await _userManager.AddClaimsAsync(user ,claims);
+                        try
+                        {
+                            var path = Path.Combine(_environment.WebRootPath, "images\\users\\");
+                            System.IO.File.Copy(path + "default.jpg", path + user.Id + ".jpg", true);
+                        }
+                        catch { };
+
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+                        // Send an email with this link
+                        //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                        //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                        //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                        //await _signInManager.SignInAsync(user, isPersistent: false);
+                        //_logger.LogInformation(3, "User created a new account with password.");
+                        return RedirectToAction(nameof(Index));
+                    }
+                    AddErrors(result);
                 }
-                AddErrors(result);
+                catch
+                {
+                    ModelState.AddModelError("Cpf", "Este CPF ja está cadastrado");
+                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -610,7 +629,16 @@ namespace SistemaVidaNova.Controllers
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                switch (error.Code)
+                {
+                    case "DuplicateUserName":
+                        ModelState.AddModelError(string.Empty, "Este usuário já existe, altere o email do usuário");
+                        break;
+                    default:
+                        ModelState.AddModelError(string.Empty, "Este CPF já foi cadastrado");
+                        break;
+                }
+                
             }
         }
 

@@ -1,0 +1,36 @@
+INSERT INTO TBL_EAP_FISICA_ATIVIDADE
+                                                 (EFS_ID, ATV_ID, EFA_DATA_INICIO_PLANO_BRASE, EFA_DATA_CONCLUSAO_PLANO_BRASE, EFA_DATA_INICIO_PROGRAMADO, EFA_DATA_CONCLUSAO_PROGRAMADO, EFA_CODIGO, EFA_ORDEM, CAR_ID, 
+                                                 EFA_PERCENTUAL_CARACTERISTICA, EFA_DESCRICAO)
+                        SELECT        EFS.EFS_ID, AAT.ATV_ID, EFS.EFS_DATA_INICIO_PLANO_BRASE, EFS.EFS_DATA_CONCLUSAO_PLANO_BRASE, EFS.EFS_DATA_INICIO_PROGRAMADO, EFS.EFS_DATA_CONCLUSAO_PROGRAMADO, 
+                                                 SUBSTRING(EFS.EFS_CODIGO + '-' + ATV.ATV_NOME, 1, 50) AS Expr1, AAT.AAT_ORDEM, AAT.CAR_ID_PLANEJAMENTO, 1, ATV.ATV_NOME
+                        FROM            TBL_AGRUPAMENTO AS AGR INNER JOIN
+                                                 TBL_AGRUPAMENTO_ATIVIDADE AS AAT ON AGR.AGR_ID = AAT.AGR_ID INNER JOIN
+                                                 TBL_EAP_FISICA AS EFS ON AGR.AGR_ID = EFS.AGR_ID INNER JOIN
+                                                 TBL_ATIVIDADE AS ATV ON AAT.ATV_ID = ATV.ATV_ID
+                        WHERE          not EXISTS(
+                        select 1 
+                        from TBL_EAP_FISICA_ATIVIDADE as efa
+                        where efa.EFS_ID = efs.efs_id AND EFA.ATV_ID = ATV.ATV_ID);
+
+
+                        delete from EFA
+                        FROM TBL_EAP_FISICA_ATIVIDADE AS EFA INNER JOIN
+                        TBL_EAP_FISICA AS EFSP ON EFA.EFS_ID = EFSP.EFS_ID
+                        WHERE   NOT EXISTS(
+                        SELECT 1
+                        FROM TBL_AGRUPAMENTO AS AGR INNER JOIN
+                             TBL_AGRUPAMENTO_ATIVIDADE AS AAT ON AGR.AGR_ID = AAT.AGR_ID INNER JOIN
+                             TBL_EAP_FISICA AS EFS ON AGR.AGR_ID = EFS.AGR_ID INNER JOIN
+                             TBL_ATIVIDADE AS ATV ON AAT.ATV_ID = ATV.ATV_ID
+						     WHERE EFS.EFS_ID = EFA.EFS_ID AND ATV.ATV_ID = EFA.ATV_ID);
+
+
+                        update EFA
+                        SET EFA_ORDEM = R.AAT_ORDEM
+                        FROM TBL_EAP_FISICA_ATIVIDADE AS EFA INNER JOIN
+                        (SELECT        EFS.EFS_ID, AAT.ATV_ID, AAT.AAT_ORDEM, AAT.CAR_ID_PLANEJAMENTO, AAT.AAT_PORCENTAGEM_PLANEJAMENTO
+                        FROM            TBL_AGRUPAMENTO AS AGR INNER JOIN
+                                                 TBL_AGRUPAMENTO_ATIVIDADE AS AAT ON AGR.AGR_ID = AAT.AGR_ID INNER JOIN
+                                                 TBL_EAP_FISICA AS EFS ON AGR.AGR_ID = EFS.AGR_ID INNER JOIN
+                                                 TBL_ATIVIDADE AS ATV ON AAT.ATV_ID = ATV.ATV_ID
+                                 ) AS R ON EFA.EFS_ID = R.EFS_ID AND EFA.ATV_ID = R.ATV_ID

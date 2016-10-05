@@ -64,6 +64,7 @@
                                 <td>{{evento.start | date :'HH:mm'}}</td>
                                 <td>{{evento.end | date :'HH:mm'}}</td>                                
                                 <td>{{evento.valorArrecadado | finance:true:2}}</td>
+                                <td>{{evento.usuario.nome}}</td>
                                 <td class='actions'>
 
                                     <a class='btn btn-success btn-xs' href='/Evento/Visualizar/{{evento.id}}'>Visualizar</a>

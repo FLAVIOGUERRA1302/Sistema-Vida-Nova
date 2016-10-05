@@ -47,7 +47,8 @@ namespace SistemaVidaNova.Models
         [Required]
         public DateTime DataDeCadastro { get; set; }
 
-        
+        public string Funcao { get; set; }
+
         public string IdUsuario { get; set; }
         
         [ForeignKey("IdUsuario")]

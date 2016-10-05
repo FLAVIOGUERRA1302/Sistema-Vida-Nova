@@ -8,7 +8,7 @@
 
 <section class="content-header">
     <h1>
-        Editar Usuário
+        Criar Usuário
     </h1>
 
 </section>
@@ -46,7 +46,8 @@
                             <div class="col-xs-6">
                                 <label asp-for="Cpf"></label>
                                 <div class="col-md-12">
-                                    <input asp-for="Cpf" class="form-control" placeholder="Cpf" ng-model="cpf" ui-br-cpf-mask/>
+                                    <input class="form-control" placeholder="Cpf" ng-model="cpf" ui-br-cpf-mask/>
+                                    <input type="hidden" name="Cpf" value="{{cpf}}" />
 
                                 </div>
                             </div>

@@ -28,3 +28,15 @@ app.directive('calendar', function () {
         }
     }
 });
+
+app.directive('listaErro', function () {
+    return {
+        restrict: 'E',
+        scope: {
+            lista: '=?'
+        },
+        template: '<div><p class="text-red" ng-repeat="erro in lista">{{erro}}</p></div>',
+        link: function (scope, element, attrs, ctrl) {            
+        }
+    }
+});

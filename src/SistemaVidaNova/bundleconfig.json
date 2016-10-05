@@ -34,8 +34,7 @@
       "wwwroot/lib/admin-lte/dist/js/app.js",
       "wwwroot/lib/ng-dialog/js/ngDialog.min.js",
       "wwwroot/lib/angular-br-filters/release/angular-br-filters.js",
-      "wwwroot/lib/angular-input-masks/angular-input-masks-dependencies.js",
-      "wwwroot/lib/angular-input-masks/angular-input-masks.br.min.js",
+      
       "wwwroot/lib/angular-input-masks/angular-input-masks-standalone.js",
       "wwwroot/lib/ng-file-upload/ng-file-upload-shim.js",
       "wwwroot/lib/ng-file-upload/ng-file-upload.js",
@@ -65,7 +64,7 @@
       "wwwroot/js/controllers/InteressadoControl.js",
       "wwwroot/js/controllers/EventoControl.js",
       "wwwroot/js/controllers/FavorecidoControl.js",
-      "wwwroot/js/controllers/InformativoControl.js",
+      "wwwroot/js/controllers/InformativoControl.js"
       
 
     ],
