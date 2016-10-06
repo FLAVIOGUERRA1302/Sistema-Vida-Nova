@@ -64,8 +64,9 @@
       "wwwroot/js/controllers/InteressadoControl.js",
       "wwwroot/js/controllers/EventoControl.js",
       "wwwroot/js/controllers/FavorecidoControl.js",
+      "wwwroot/js/controllers/DoadorControl.js",
       "wwwroot/js/controllers/InformativoControl.js"
-      
+
 
     ],
     // Optionally specify minification options
