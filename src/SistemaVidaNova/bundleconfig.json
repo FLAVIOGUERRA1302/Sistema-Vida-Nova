@@ -34,7 +34,7 @@
       "wwwroot/lib/admin-lte/dist/js/app.js",
       "wwwroot/lib/ng-dialog/js/ngDialog.min.js",
       "wwwroot/lib/angular-br-filters/release/angular-br-filters.js",
-      
+
       "wwwroot/lib/angular-input-masks/angular-input-masks-standalone.js",
       "wwwroot/lib/ng-file-upload/ng-file-upload-shim.js",
       "wwwroot/lib/ng-file-upload/ng-file-upload.js",
@@ -42,12 +42,15 @@
 
       "wwwroot/lib/textAngular/dist/textAngular-rangy.min.js",
       "wwwroot/lib/textAngular/dist/textAngular-sanitize.min.js",
-      "wwwroot/lib/textAngular/dist/textAngular.min.js"
+      "wwwroot/lib/textAngular/dist/textAngular.min.js",
+
+      "wwwroot/lib/echarts/build/dist/echarts-all.js",
+      "wwwroot/lib/angular-echarts/dist/angular-echarts.js"
 
     ],
     // Optionally specify minification options
     "minify": {
-      "enabled": false,
+      "enabled": true,
       "renameLocals": false
     },
     // Optinally generate .map file
@@ -65,8 +68,8 @@
       "wwwroot/js/controllers/EventoControl.js",
       "wwwroot/js/controllers/FavorecidoControl.js",
       "wwwroot/js/controllers/DoadorControl.js",
-      "wwwroot/js/controllers/InformativoControl.js"
-
+      "wwwroot/js/controllers/InformativoControl.js",
+      "wwwroot/js/controllers/ChartControl.js"
 
     ],
     // Optionally specify minification options

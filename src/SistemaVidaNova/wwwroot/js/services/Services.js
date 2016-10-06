@@ -597,6 +597,43 @@ app.factory('UsuarioService', ["$http", "$q", function ($http, $q) {
 
 }]);
 
+app.factory('ChartService', ["$http", "$q", function ($http, $q) {
+    var s = {};
+    s.Read = function (id, params) {
+        var deferred = $q.defer();
+        
+        var req = {
+            method: 'GET',
+            url: '/api/Chart/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        if (params != undefined && params != null)
+            req.params = params;
+        
+        $http(req).then(function successCallback(response) {            
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+
+
+
+
+    return s;
+
+
+}]);
+
 app.factory('InformativoService', ["$http", "$q", "Upload", function ($http, $q, Upload) {
     var s = {};
 

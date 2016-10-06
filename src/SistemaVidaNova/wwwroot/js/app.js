@@ -8,7 +8,8 @@
     'ui.utils.masks',    
     'idf.br-filters',
     'ngTagsInput',    
-    'textAngular'
+    'textAngular',
+    'angular-echarts'
     
 
 ]).config(function ($routeProvider, $locationProvider) {
