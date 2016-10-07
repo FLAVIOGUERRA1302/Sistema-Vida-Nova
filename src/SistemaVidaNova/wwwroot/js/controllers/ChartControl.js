@@ -14,7 +14,14 @@
         stack: false,
         loading: "Carregando...",
         calculable: true,
-        theme: 'infographic' //'infographic', 'macarons', 'shine', 'dark', 'blue', 'green', 'red'
+        theme: 'infographic', //'infographic', 'macarons', 'shine', 'dark', 'blue', 'green', 'red',
+        center: ['50%', '50%'],
+        radius: '80%',
+        legend:{
+            orient : 'verticle',
+            x : 'left',
+            y : 'top'
+        }
     };
 
    

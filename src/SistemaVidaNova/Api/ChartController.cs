@@ -72,43 +72,43 @@ namespace SistemaVidaNova.Api
                 serie.datapoints.Add(new DataPointString()
                 {
                     x = "Domingo",
-                    y = _context.Voluntario.Where(q => q.Domingo == true).Count()
+                    y = _context.Voluntario.Where(q => q.Domingo == true && q.IsDeletado ==false).Count()
                 });
 
                 serie.datapoints.Add(new DataPointString()
                 {
                     x = "Segunda-feira",
-                    y = _context.Voluntario.Where(q => q.SegundaFeira == true).Count()
+                    y = _context.Voluntario.Where(q => q.SegundaFeira == true && q.IsDeletado == false).Count()
                 });
 
                 serie.datapoints.Add(new DataPointString()
                 {
                     x = "Terça-feira",
-                    y = _context.Voluntario.Where(q => q.TercaFeira == true).Count()
+                    y = _context.Voluntario.Where(q => q.TercaFeira == true && q.IsDeletado == false).Count()
                 });
 
                 serie.datapoints.Add(new DataPointString()
                 {
                     x = "Quarta-feira",
-                    y = _context.Voluntario.Where(q => q.QuartaFeira == true).Count()
+                    y = _context.Voluntario.Where(q => q.QuartaFeira == true && q.IsDeletado == false).Count()
                 });
 
                 serie.datapoints.Add(new DataPointString()
                 {
                     x = "Quinta-feira",
-                    y = _context.Voluntario.Where(q => q.QuintaFeira == true).Count()
+                    y = _context.Voluntario.Where(q => q.QuintaFeira == true && q.IsDeletado == false).Count()
                 });
 
                 serie.datapoints.Add(new DataPointString()
                 {
                     x = "Sexta-feira",
-                    y = _context.Voluntario.Where(q => q.SextaFeira == true).Count()
+                    y = _context.Voluntario.Where(q => q.SextaFeira == true && q.IsDeletado == false).Count()
                 });
 
                 serie.datapoints.Add(new DataPointString()
                 {
                     x = "Sábado",
-                    y = _context.Voluntario.Where(q => q.Sabado == true).Count()
+                    y = _context.Voluntario.Where(q => q.Sabado == true && q.IsDeletado == false).Count()
                 });
 
 

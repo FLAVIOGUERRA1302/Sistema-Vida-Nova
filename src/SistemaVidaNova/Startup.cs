@@ -77,7 +77,7 @@ namespace SistemaVidaNova
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
 
-           // InitializeDatabase(app);
+            InitializeDatabase(app);
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
