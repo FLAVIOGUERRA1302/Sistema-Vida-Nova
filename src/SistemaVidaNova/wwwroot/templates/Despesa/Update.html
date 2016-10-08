@@ -1,6 +1,6 @@
 ﻿<section class="content-header">
     <h1>
-        Cadastrar Doador Pessoa Física
+        Editar Doador
     </h1>
 
 </section>
@@ -9,16 +9,16 @@
         <div class="col-md-12">
             <div id="main" class="box box-warning">
 
-                <!-- formulario -->                
+                <!-- formulario -->
                 <form method='post' ng-submit="salvar()" name="form">
                     <div class="box-body">
 
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div class="row" ng-if="doador.tipo=='PF'">
+                            <div class="col-xs-6">
                                 <label for="nome">Nome</label>
                                 <input type="text" class="form-control" ng-model="doador.nomeRazaoSocial" name='nome' id="nome" required placeholder="Digite o Nome do Voluntário">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-xs-6">
                                 <!--  -->
                                 <label for="cpf">CPF</label>
                                 <input type="text" class="form-control" ng-model="doador.cpfCnpj " name='cpf' id="cpf" required ui-br-cpf-mask>
@@ -26,12 +26,25 @@
                             </div>
                         </div>
 
+                        <div class="row" ng-if="doador.tipo=='PJ'">
+                            <div class="col-xs-6">
+                                <label for="nome">Razão Social</label>
+                                <input type="text" class="form-control" ng-model="doador.nomeRazaoSocial" name='nome' id="nome" required placeholder="Digite o Nome do Voluntário">
+                            </div>
+                            <div class="col-xs-6">
+                                <!--  -->
+                                <label for="cpf">CNPJ</label>
+                                <input type="text" class="form-control" ng-model="doador.cpfCnpj " name='cnpj' id="cnpj" required ui-br-cnpj-mask>
+                                <lista-erro lista="erros.Cnpj"></lista-erro>
+                            </div>
+                        </div>
+
 
 
 
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-xs-6">
 
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" ng-model="doador.email" name='email' id="email" placeholder="email@exemplo.com" required title="email@exemplo.com">
@@ -39,15 +52,15 @@
                             </div>
 
 
-                            
 
 
-                            <div class="col-md-3">
+
+                            <div class="col-xs-3">
                                 <label for="telefone">Telefone</label>
                                 <input type="text" class="form-control" ng-model="doador.telefone" name='telefone' id="telefone" ui-br-phone-number-fixo>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-xs-3">
                                 <label for="celular">Celular</label>
                                 <input type="text" class="form-control" name='celular' ng-model="doador.celular" id="celular" ui-br-phone-number>
                             </div>
@@ -55,17 +68,17 @@
 
                         </div>
 
-                       
+
 
 
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-xs-6">
                                 <label for="cep">Cep {{msgErro}}</label>
                                 <input id="cep" name="cep" type="text" ng-model="doador.endereco.cep" placeholder="Digite o CEP" class="form-control" required ui-br-cep-mask ng-blur="buscaCep()">
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-xs-6">
                                 <label for="logradouro">Rua, Avenida:</label>
                                 <input type="text" class="form-control" name='logradouro' ng-model="doador.endereco.logradouro" id="logradouro">
                             </div>
@@ -77,12 +90,12 @@
 
                         <div class="row">
 
-                            <div class="col-md-6">
+                            <div class="col-xs-6">
                                 <label for="numero">Numero</label>
                                 <input type="text" class="form-control" name='numero' ng-model="doador.endereco.numero" required id="numero">
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-xs-6">
                                 <label for="complemento">Complemento</label>
                                 <input type="text" class="form-control" name='complemento' ng-model="doador.endereco.complemento" id="complemento">
                             </div>
@@ -90,7 +103,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-xs-6">
                                 <label for="bairro">Bairro</label>
                                 <input type="text" class="form-control" name='bairro' ng-model="doador.endereco.bairro" required id="bairro">
                             </div>
@@ -111,22 +124,12 @@
                                     <option ng-repeat="(key, value) in ufs" value="{{key}}">{{value}}</option>
                                 </select>
                             </div>
-                                                        
-                        </div>
-
-
-
-                        <div class="row">
-
-
-
-
-                            <div class="col-md-3">
-                            </div>
-
-
 
                         </div>
+
+
+
+                       
 
 
                     </div>
@@ -134,8 +137,7 @@
 
 
                     <div class="box-footer">
-                        <a href="/Doador" class="btn btn-primary">Voltar</a>
-                        <button type="reset" class="btn btn-default">Limpar Campos</button>
+                        <a href="/Doador" class="btn btn-primary">Voltar</a>                        
                         <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
                     </div>
 

@@ -28,7 +28,7 @@
             loadingDialod: function (ngDialog) {
                 return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
             }
-            
+
         }
     })
     .when('/Voluntario/Criar', {
@@ -164,8 +164,8 @@
         resolve: {
 
             doadores: function (DoadorService) {
-                return DoadorService.Read(null, 0, 10,'PF');//id,skip,take
-            },            
+                return DoadorService.Read(null, 0, 10, 'PF');//id,skip,take
+            },
             loadingDialod: function (ngDialog) {
                 return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
             }
@@ -177,7 +177,7 @@
             resolve: {
                 doador: function () {
                     return { tipo: "PF" };
-                }                
+                }
             }
 
         })
@@ -274,10 +274,122 @@
             }
         }
     })
-       ;
 
-    
+     //------------Item----------
+    .when('/Item', {
+        templateUrl: '/templates/Item/List.html',
+        controller: 'ItemControl',
+        resolve: {
 
+            itens: function (ItemService) {
+                return ItemService.Read(null, 0, 10);//id,skip,take
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+            }
+        }
+    })
+        .when('/Item/Criar', {
+            templateUrl: '/templates/Item/Create.html',
+            controller: 'ItemCreateControl'
+
+        })
+            .when('/Item/Editar/:id', {
+                templateUrl: '/templates/Item/Update.html',
+                controller: 'ItemUpdateControl',
+                resolve: {
+                    item: function (ItemService, $route) {
+                        return ItemService.Read($route.current.params.id);
+                    },
+                    loadingDialod: function (ngDialog) {
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    }
+                }
+            })
+        .when('/Item/Visualizar/:id', {
+            templateUrl: '/templates/Item/Detalhe.html',
+            controller: 'ItemUpdateControl',
+            resolve: {
+                item: function (ItemService, $route) {
+                    return ItemService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                }
+            }
+        })
+
+
+    //------------Despesa----------
+    .when('/Despesa', {
+        templateUrl: '/templates/Despesa/List.html',
+        controller: 'DespesaControl',
+        resolve: {
+
+            despesas: function (DespesaService) {
+                return DespesaService.Read(null, 0, 10, 'ASSOCIACAO');//id,skip,take
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+            }
+        }
+    })
+        .when('/Despesa/Criar/Associacao', {
+            templateUrl: '/templates/Despesa/Create.html',
+            controller: 'DespesaCreateControl',
+            resolve: {
+                despesa: function () {
+                    return { tipo: "ASSOCIACAO" };
+                }
+            }
+
+        })
+        .when('/Despesa/Criar/Sopa', {
+            templateUrl: '/templates/Despesa/Create.html',
+            controller: 'DespesaCreateControl',
+            resolve: {
+                despesa: function () {
+                    return { tipo: "SOPA" };
+                }
+            }
+
+        })
+        .when('/Despesa/Criar/Favorecido', {
+            templateUrl: '/templates/Despesa/Create.html',
+            controller: 'DespesaCreateControl',
+            resolve: {
+                despesa: function () {
+                    return { tipo: "FAVORECIDO" };
+                }
+            }
+
+        })
+            .when('/Despesa/Editar/:id', {
+                templateUrl: '/templates/Despesa/Update.html',
+                controller: 'DespesaUpdateControl',
+                resolve: {
+                    despesa: function (DespesaService, $route) {
+                        return DespesaService.Read($route.current.params.id);
+                    },
+                    loadingDialod: function (ngDialog) {
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    }
+                }
+            })
+        .when('/Despesa/Visualizar/:id', {
+            templateUrl: '/templates/Despesa/Detalhe.html',
+            controller: 'DespesaUpdateControl',
+            resolve: {
+                despesa: function (DespesaService, $route) {
+                    return DespesaService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                }
+            }
+        })
+
+    ;
 
     $locationProvider.html5Mode(true);
 });
@@ -438,3 +550,65 @@ var ufs = {
     'SE': 'Sergipe',
     'TO': 'Tocantins'
 };
+
+var unidadesDeMedida = {
+    "AMPOLA": "Ampola",
+    "BALDE": "Balde",
+    "BANDEJ": "Bandeja",
+    "BARRA": "Barra",
+    "BISNAG": "Bisnaga",
+    "BLOCO": "Bloco",
+    "BOBINA": "Bobina",
+    "BOMB": "Bombona",
+    "CAPS": "Capsula",
+    "CART": "Cartela",
+    "CENTO": "Cento",
+    "CJ": "Conjunto",
+    "CM": "Centimetro",
+    "CM2": "Centimetro Quadrado",
+    "CX": "Caixa",
+    "DISP": "Display",
+    "DUZIA": "Duzia",
+    "EMBAL": "Embalagem",
+    "FARDO": "Fardo",
+    "FOLHA": "Folha",
+    "FRASCO": "Frasco",
+    "GALAO": "Galão",
+    "GF": "Garrafa",
+    "GRAMAS": "Gramas",
+    "JOGO": "Jogo",
+    "KG": "Quilograma",
+    "KIT": "Kit",
+    "LATA": "Lata",
+    "LITRO": "Litro",
+    "M": "Metro",
+    "M2": "Metro Quadrado",
+    "M3": "Metro Cúbico",
+    "MILHEI": "Milheiro",
+    "ML": "Mililitro",
+    "MWH": "Megawatt Hora",
+    "PACOTE": "Pacote",
+    "PALETE": "Palete",
+    "PARES": "Pares",
+    "PC": "Peça",
+    "POTE": "Pote",
+    "K": "Quilate",
+    "RESMA": "Resma",
+    "ROLO": "Rolo",
+    "SACO": "Saco",
+    "SACOLA": "Sacola",
+    "TAMBOR": "Tambor",
+    "TANQUE": "Tanque",
+    "TON": "Tonelada",
+    "TUBO": "Tubo",
+    "UNID": "Unidade",
+    "VASIL": "Vasilhame",
+    "VIDRO": "Vidro"
+
+}
+
+var destinos = {
+    "ASSOCIACAO": "Associação",
+    "FAVORECIDO": "Favorecido",
+    "SOPA":"Sopa"
+}

@@ -40,3 +40,16 @@ app.directive('listaErro', function () {
         }
     }
 });
+
+app.directive('goBack', ['$window',function ($window) {
+    return {
+        restrict: 'A',
+        
+        link: function (scope, element, attrs) {
+            element.on('click', function () {
+                $window.history.back();
+            });
+        }
+    }
+}]);
+

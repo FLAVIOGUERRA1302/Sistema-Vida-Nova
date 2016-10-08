@@ -765,3 +765,209 @@ app.factory('InformativoService', ["$http", "$q", "Upload", function ($http, $q,
 
 
 }]);;
+
+app.factory('DespesaService', ["$http", "$q", function ($http, $q) {
+    var s = {};
+
+    s.Create = function (despesa) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/Despesa',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(despesa),
+            dataType: 'json'
+        };
+
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Read = function (id, skip, take, tipo, filtro) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/Despesa/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        if (tipo !== null && tipo !== undefined && tipo !== "") {
+            req.params.tipo = tipo;
+        }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.Update = function (despesa) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'PUT',
+            url: '/api/Despesa/' + despesa.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(despesa),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Delete = function (despesa) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'DELETE',
+            url: '/api/Despesa/' + despesa.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    return s;
+
+
+}]);
+
+app.factory('ItemService', ["$http", "$q", function ($http, $q) {
+    var s = {};
+
+    s.Create = function (item) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/Item',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(item),
+            dataType: 'json'
+        };
+
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Read = function (id, skip, take, filtro, destino) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/Item/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        if (destino !== null && destino !== undefined && destino !== "") {
+            req.params.destino = destino;
+        }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.Update = function (item) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'PUT',
+            url: '/api/Item/' + item.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(item),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Delete = function (item) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'DELETE',
+            url: '/api/Item/' + item.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    return s;
+
+
+}]);

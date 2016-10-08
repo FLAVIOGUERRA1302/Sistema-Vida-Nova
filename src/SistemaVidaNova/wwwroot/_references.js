@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="js/app.min.js" />
+/// <reference path="js/controllers/ChartControl.js" />
 /// <reference path="js/controllers/doadorcontrol - copy.js" />
 /// <reference path="js/controllers/doadorcontrol.js" />
 /// <reference path="js/controllers/eventocontrol.js" />
@@ -7,6 +8,7 @@
 /// <reference path="js/controllers/homecontrol.js" />
 /// <reference path="js/controllers/informativocontrol.js" />
 /// <reference path="js/controllers/InteressadoControl.js" />
+/// <reference path="js/controllers/itemcontrol.js" />
 /// <reference path="js/controllers/voluntariocontrol.js" />
 /// <reference path="js/directives/Directives.js" />
 /// <reference path="js/services/services.js" />

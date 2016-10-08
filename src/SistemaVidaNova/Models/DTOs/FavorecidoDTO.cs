@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SistemaVidaNova.Models.DTO
+namespace SistemaVidaNova.Models.DTOs
 {
     public class FavorecidoDTO
     {

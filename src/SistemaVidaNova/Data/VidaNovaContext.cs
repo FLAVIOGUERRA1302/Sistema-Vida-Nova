@@ -29,9 +29,17 @@ namespace SistemaVidaNova.Models
         public DbSet<VoluntarioEvento> VoluntarioEvento { get; set; }
         public DbSet<Informativo> Informativo { get; set; }
         public DbSet<Attachment> Attachment { get; set; }
-
-
+        
         public DbSet<Endereco> Endereco { get; set; }
+
+        public DbSet<Item> Item { get; set; }
+        public DbSet<ItemAssociacao> ItemAssociacao { get; set; }
+        public DbSet<ItemFavorecido> ItemFavorecido { get; set; }
+        public DbSet<ItemSopa> ItemSopa { get; set; }
+        public DbSet<Despesa> Despesa { get; set; }
+        public DbSet<DespesaAssociacao> DespesaAssociacao { get; set; }
+        public DbSet<DespesaFavorecido> DespesaFavorecido { get; set; }
+        public DbSet<DespesaSopa> DespesaSopa { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -76,15 +84,22 @@ namespace SistemaVidaNova.Models
             modelBuilder.Entity<InformativoVoluntario>()
                 .HasKey(t => new { t.IdVoluntario, t.IdInformativo });
 
+            //chave unica, somente uma descrição por destino
+            modelBuilder.Entity<Item>()
+                .HasIndex(c => new { c.Nome, c.Destino }).IsUnique();
 
-            /*  modelBuilder.Entity<TUserRole>()
-              .HasKey(r => new { r.UserId, r.RoleId })
-              .ToTable("AspNetUserRoles");
+            modelBuilder.Entity<Item>()
+               .HasDiscriminator<string>("Destino")
+               .HasValue<ItemAssociacao>("ASSOCIACAO")
+               .HasValue<ItemFavorecido>("FAVORECIDO")
+               .HasValue<ItemSopa>("SOPA");
 
-              modelBuilder.Entity<TUserLogin>()
-                  .HasKey(l => new { l.LoginProvider, l.ProviderKey, l.UserId })
-                  .ToTable("AspNetUserLogins");*/
-
+            modelBuilder.Entity<Despesa>()
+              .HasDiscriminator<string>("Tipo")
+              .HasValue<DespesaAssociacao>("ASSOCIACAO")
+              .HasValue<DespesaFavorecido>("FAVORECIDO")
+              .HasValue<DespesaSopa>("SOPA");
+            
         }
 
     }

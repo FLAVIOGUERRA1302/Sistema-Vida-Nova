@@ -8,9 +8,10 @@ using SistemaVidaNova.Models;
 namespace SistemaVidaNova.Migrations
 {
     [DbContext(typeof(VidaNovaContext))]
-    partial class VidaNovaContextModelSnapshot : ModelSnapshot
+    [Migration("20161007182120_M9")]
+    partial class M9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -165,30 +166,19 @@ namespace SistemaVidaNova.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DataDaCompra");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 200);
 
                     b.Property<int>("IdItem");
 
-                    b.Property<string>("IdUsuario")
-                        .IsRequired();
-
-                    b.Property<double>("Quantidade");
-
                     b.Property<string>("Tipo")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 10);
 
-                    b.Property<double>("ValorUnitario");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdItem");
-
-                    b.HasIndex("IdUsuario");
 
                     b.ToTable("Despesa");
 
@@ -476,7 +466,7 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<string>("UnidadeDeMedida")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 10);
+                        .HasAnnotation("MaxLength", 4);
 
                     b.HasKey("Id");
 
@@ -644,8 +634,6 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<int>("CodFavorecido");
 
-                    b.HasIndex("CodFavorecido");
-
                     b.ToTable("DespesaFavorecido");
 
                     b.HasDiscriminator().HasValue("FAVORECIDO");
@@ -781,11 +769,6 @@ namespace SistemaVidaNova.Migrations
                         .WithMany()
                         .HasForeignKey("IdItem")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Doador", b =>
@@ -913,14 +896,6 @@ namespace SistemaVidaNova.Migrations
                     b.HasOne("SistemaVidaNova.Models.Voluntario", "Voluntario")
                         .WithMany()
                         .HasForeignKey("IdVoluntario")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DespesaFavorecido", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Favorecido", "Favorecido")
-                        .WithMany()
-                        .HasForeignKey("CodFavorecido")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

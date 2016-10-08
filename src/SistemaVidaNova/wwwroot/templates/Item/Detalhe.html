@@ -1,0 +1,46 @@
+﻿  <!-- Horizontal Form -->
+<section class="content-header">
+    <h1>
+        Item
+    </h1>
+
+</section>
+<section class="content">
+    
+    <div class="row">
+        <div class="col-md-11">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->                
+                <form action="">
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p><strong>Item:</strong></p>
+                                <p>{{item.nome}}</p>
+                            </div>
+                                                       
+
+                            <div class="col-md-4">
+                                <p><strong>Destino:</strong></p>
+                                <p>{{destinos[item.destino]}}&nbsp;</p>
+                            </div>
+
+
+
+                            <div class="col-md-4">
+                                <p><strong>Telefone:</strong></p>
+                                <p>{{unidadesDeMedida[item.unidadeDeMedida]}}&nbsp;</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <a href="/Item" class="btn btn-primary">voltar</a>
+                        <a class='btn btn-danger' href=""> Gerar PDF</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

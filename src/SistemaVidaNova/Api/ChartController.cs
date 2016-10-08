@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SistemaVidaNova.Models;
 using Microsoft.AspNetCore.Http;
-using SistemaVidaNova.Models.DTO;
+using SistemaVidaNova.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +16,7 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Net.Http;
-using SistemaVidaNova.Models.DTOs;
+
 using SistemaVidaNova.Services;
 using MimeKit;
 

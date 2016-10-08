@@ -8,9 +8,10 @@ using SistemaVidaNova.Models;
 namespace SistemaVidaNova.Migrations
 {
     [DbContext(typeof(VidaNovaContext))]
-    partial class VidaNovaContextModelSnapshot : ModelSnapshot
+    [Migration("20161008185351_M10")]
+    partial class M10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -476,7 +477,7 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<string>("UnidadeDeMedida")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 10);
+                        .HasAnnotation("MaxLength", 4);
 
                     b.HasKey("Id");
 
