@@ -272,8 +272,11 @@ namespace SistemaVidaNova.Api
             if (ModelState.IsValid && (dto.Tipo.ToUpper() == "ASSOCIACAO" || dto.Tipo.ToUpper() == "FAVORECIDO" || dto.Tipo.ToUpper() == "SOPA"))
             {
                 Usuario user = await _userManager.GetUserAsync(HttpContext.User);
+                //corrige fuso horario do js
+                dto.DataDaCompra = dto.DataDaCompra.AddHours(-dto.DataDaCompra.Hour);
                 switch (dto.Tipo)
                 {
+                    
                     case "ASSOCIACAO":
                         try
                         {
@@ -375,6 +378,8 @@ namespace SistemaVidaNova.Api
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             if (ModelState.IsValid)
             {
+                //corrige fuso horario do js
+                dto.DataDaCompra = dto.DataDaCompra.AddHours(-dto.DataDaCompra.Hour);
                 Usuario user = await _userManager.GetUserAsync(HttpContext.User);
                 Despesa despesa = _context.Despesa.SingleOrDefault(q => q.Id == id);
                 if (despesa == null)

@@ -81,6 +81,10 @@ function getLinkFunction($http, theme, util, type) {
             if (config.polar) {
                 options.polar = config.polar;
             }
+            if (scope.advancedOptions) {
+                options = angular.extend(options, scope.advancedOptions);
+            }
+
             return options;
         }
         var isAjaxInProgress = false;
@@ -202,7 +206,8 @@ for (var i = 0, n = types.length; i < n; i++) {
                         template: '<div></div>',
                         scope: {
                             config: '=config',
-                            data: '=data'
+                            data: '=data',
+                            advancedOptions: '=advancedOptions',
                         },
                         link: getLinkFunction($http, theme, util, type)
                     };
@@ -258,7 +263,9 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                     type: type || 'line',
                     name: serie.name,
                     data: datapoints
-                };
+            };
+            conf = angular.extend(conf, angular.isDefined(config.itemStyle) ? { itemStyle: config.itemStyle } : {});
+
             // area chart is actually line chart with special itemStyle
             if (type === 'area') {
                 conf.type = 'line';

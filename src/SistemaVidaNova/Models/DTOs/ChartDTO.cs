@@ -24,20 +24,25 @@ namespace SistemaVidaNova.Models.DTOs
     public class DataPointString: IDataPoint
     {
         public string x { get; set; }
-        public float y { get; set; }
+        public double y { get; set; }
     }
 
+    public class DataPointDateTime : IDataPoint
+    {
+        public DateTime x { get; set; }
+        public double y { get; set; }
+    }
     public class DataPointFloat: IDataPoint
     {
-        public float x { get; set; }
-        public float y { get; set; }
+        public double x { get; set; }
+        public double y { get; set; }
     }
 
 
     public class DataPointLong: IDataPoint
     {
         public long x { get; set; }
-        public float y { get; set; }
+        public double y { get; set; }
     }
 
 }

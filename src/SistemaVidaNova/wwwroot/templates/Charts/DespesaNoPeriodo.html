@@ -1,0 +1,17 @@
+﻿<div ng-controller="ChartDespesaPeriodoControl">
+    <div class="row">
+        <div class="col-md-2 col-md-offset-4">
+            <label>Início da consulta</label>
+            <input type="date" ng-model="start" class="form-control "/>
+        </div>
+        <div class="col-md-2">
+            <label>Fim da consulta</label>
+            <input type="date" ng-model="end" class="form-control "/>
+        </div>
+
+    </div>
+    <div style="height:500px;"><bar-chart config="chartConfig" data="chartData" advanced-options="advancedOptions"></bar-chart></div>
+
+
+
+</div>

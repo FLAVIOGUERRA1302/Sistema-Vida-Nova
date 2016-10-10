@@ -44,20 +44,54 @@ namespace SistemaVidaNova.Api
 
         // GET: api/values
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public IActionResult Get(string id, [FromQuery]DateTime? start, [FromQuery]DateTime? end, string filtro)
         {
             switch (id.ToUpper())
             {
                 case "VOLUNTARIODIADASEMANA":
                         return new ObjectResult(VoluntarioDiaDaSemana());
-                    
+                case "DESPESAPORITEMNOPERIODO":
+                    return new ObjectResult(DespesaPorItemNoPeriodo(start.Value,end.Value,filtro));
+
             }
 
             return new NoContentResult();
         }
 
-        
-       private ChartDTO VoluntarioDiaDaSemana()
+        private ChartDTO DespesaPorItemNoPeriodo(DateTime start, DateTime end, string filtro)
+        {
+            ChartDTO chart = new ChartDTO();
+            SerieDTO serie = new SerieDTO()
+            {
+                Name = "Despesas",
+                Type = "bar",
+                datapoints = new List<IDataPoint>()
+            };
+            chart.Data.Add(serie);
+
+            var query = from q in _context.Despesa
+                        where q.Tipo == filtro
+                        && q.DataDaCompra >= start && q.DataDaCompra <= end
+                        group q by q.Item into g
+                        orderby g.Key.Nome
+                        select new
+                        {
+                            item = g.Key,
+                            valorTotal = g.Sum(v => v.Quantidade * v.ValorUnitario)
+                        };
+
+            foreach(var q in query)
+            {
+                serie.datapoints.Add(new DataPointString()
+                {
+                    x = q.item.Nome,
+                    y = q.valorTotal
+                });
+            }
+            return chart;
+        }
+
+        private ChartDTO VoluntarioDiaDaSemana()
         {
             ChartDTO chart = new ChartDTO();
             SerieDTO serie = new SerieDTO()

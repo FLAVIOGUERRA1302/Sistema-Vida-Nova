@@ -5,7 +5,7 @@
     $scope.despesas = despesas;
     for (var i = 0; i < $scope.despesas.length; i++) {
         if (!($scope.despesas[i].dataDaCompra instanceof Date))
-            $scope.despesas[i].dataDaCompra = new Date($scope.despesas[i].dataDaCompra);
+            $scope.despesas[i].dataDaCompra = Date.parse($scope.despesas[i].dataDaCompra);
     }
 
     $scope.destinos = destinos;
@@ -24,7 +24,7 @@
             $scope.totalItems = DespesaService.totalItems;
             for (var i = 0; i < $scope.despesas.length; i++) {
                 if (!($scope.despesas[i].dataDaCompra instanceof Date))
-                    $scope.despesas[i].dataDaCompra = new Date($scope.despesas[i].dataDaCompra);
+                    $scope.despesas[i].dataDaCompra = Date.parse($scope.despesas[i].dataDaCompra);
             }
         }, function (erros) {
 
@@ -80,6 +80,12 @@
             //não faz nada
         });
     }
+
+
+    $scope.$watch('tipo', function (newValue, oldValue) {
+        if (newValue != oldValue)
+            $scope.$broadcast('tipo', $scope.tipo);
+    });
 
 
 }])
