@@ -3,6 +3,11 @@
     loadingDialod.close();
     var itensPorPagina = 10;
     $scope.despesas = despesas;
+    for (var i = 0; i < $scope.despesas.length; i++) {
+        if (!($scope.despesas[i].dataDaCompra instanceof Date))
+            $scope.despesas[i].dataDaCompra = new Date($scope.despesas[i].dataDaCompra);
+    }
+
     $scope.destinos = destinos;
     $scope.unidadesDeMedida = unidadesDeMedida;
     
@@ -17,6 +22,10 @@
         .then(function (despesas) {
             $scope.despesas = despesas;
             $scope.totalItems = DespesaService.totalItems;
+            for (var i = 0; i < $scope.despesas.length; i++) {
+                if (!($scope.despesas[i].dataDaCompra instanceof Date))
+                    $scope.despesas[i].dataDaCompra = new Date($scope.despesas[i].dataDaCompra);
+            }
         }, function (erros) {
 
         });
@@ -74,8 +83,9 @@
 
 
 }])
-.controller('DespesaUpdateControl', ['$scope', 'DespesaService', 'despesa', 'loadingDialod', '$location', 'CepService', function ($scope, DespesaService, despesa, loadingDialod, $location, CepService) {
+.controller('DespesaUpdateControl', ['$scope', 'DespesaService', 'despesa', 'loadingDialod', '$location', 'CepService','ItemService','FavorecidoService', function ($scope, DespesaService, despesa, loadingDialod, $location, CepService,ItemService,FavorecidoService) {
     loadingDialod.close();
+    despesa.dataDaCompra = new Date(despesa.dataDaCompra);
     $scope.despesa = despesa;//angular.copy(despesa);
     $scope.random = new Date().getTime();
     
@@ -94,9 +104,20 @@
     }
 
 
+    $scope.getItens = function (val) {
+        return ItemService.Read(null, 0, 10, val, despesa.tipo);//id,skip, take, filtro, destino
+
+    };
+
+    $scope.getFavorecidos = function (val) {
+        return FavorecidoService.Read(null, 0, 10, val);//id,skip, take, filtro
+
+    };
+
+
 
 }])
-.controller('DespesaCreateControl', ['$scope', 'DespesaService','ItemService', '$location', 'CepService', 'despesa', function ($scope, DespesaService,ItemService, $location, CepService, despesa) {
+.controller('DespesaCreateControl', ['$scope', 'DespesaService','ItemService','FavorecidoService', '$location', 'CepService', 'despesa', function ($scope, DespesaService,ItemService,FavorecidoService, $location, CepService, despesa) {
     $scope.despesa = despesa;
     $scope.destinos = destinos;
     $scope.unidadesDeMedida = unidadesDeMedida;
@@ -114,6 +135,11 @@
     $scope.getItens = function (val) {
         return ItemService.Read(null, 0, 10,val, despesa.tipo );//id,skip, take, filtro, destino
         
+    };
+
+    $scope.getFavorecidos = function (val) {
+        return FavorecidoService.Read(null, 0, 10, val);//id,skip, take, filtro
+
     };
 
 }]);

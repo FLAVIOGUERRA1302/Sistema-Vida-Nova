@@ -7,31 +7,58 @@
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <div id="main" class="box box-warning">
-
+            <div id="main" class="box box-warning">                
                 <!-- formulario -->
                 <form method='post' ng-submit="salvar()" name="form">
                     <div class="box-body">
+                        <div class="row" ng-if="despesa.tipo==='FAVORECIDO'">
+                            <div class="col-md-3">
+                                <label>Favorecido</label>
+                                <input type="text"
+                                       ng-model="despesa.favorecido"
+                                       placeholder="Pesquise o favorecido aqui"
+                                       uib-typeahead="favorecido as favorecido.nome for favorecido in getFavorecidos($viewValue)"
+                                       typeahead-loading="loandingFavorecido"
+                                       typeahead-no-results="noResultsFavorecido"
+                                       class="form-control "
+                                       typeahead-editable="false"
+                                       required>
+                                <i ng-show="loandingFavorecido" class="glyphicon glyphicon-refresh"></i>
+                                <div ng-show="noResultsFavorecido">
+                                    <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                </div>
+                                <lista-erro lista="erros.Favorecido"></lista-erro>
+                            </div>
+                         
+
+                        </div>
 
                         <div class="row">
                             <div class="col-md-3">
                                 <label >Item</label>
-                                <input type="text"
-                                       ng-model="despesa.item"
-                                       placeholder="Pesquise um item aqui"
-                                       uib-typeahead="item as item.nome for item in getItens($viewValue)"
-                                       typeahead-loading="loandingItem"
-                                       typeahead-no-results="noResults"
-                                       class="form-control "
-                                       typeahead-editable="false"
-                                       required
-                                       >
-                                <i ng-show="loandingItem" class="glyphicon glyphicon-refresh"></i>
-                                <div ng-show="noResults">
-                                    <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                <div class="input-group">
+                                    <input type="text"
+                                           ng-model="despesa.item"
+                                           placeholder="Pesquise um item aqui"
+                                           uib-typeahead="item as item.nome for item in getItens($viewValue)"
+                                           typeahead-loading="loandingItem"
+                                           typeahead-no-results="noResults"
+                                           class="form-control "
+                                           typeahead-editable="false"
+                                           required>
+                                    
+                                    <span class="input-group-btn" uib-popover="Criar um Item que não foi encontrado durante a pesquisa." popover-trigger="'mouseenter'">
+                                        
+                                        <a class="btn btn-primary btn-flat" href="/Item/Criar/"><i class="fa fa-plus-circle"></i></a>
+                                    </span>
                                 </div>
-                                <lista-erro lista="erros.Item"></lista-erro>
-                            </div>
+
+                                    <i ng-show="loandingItem" class="glyphicon glyphicon-refresh"></i>
+                                    <div ng-show="noResults">
+                                        <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                    </div>
+                                    <lista-erro lista="erros.Item"></lista-erro>
+                                </div>
                             <div class="col-md-9">
                                 <label>Descrição</label>
                                 <input type="text"

@@ -73,7 +73,7 @@ namespace SistemaVidaNova.Api
                        Quantidade = q.Quantidade,
                        Tipo = q.Tipo,
                        ValorUnitario = q.ValorUnitario,
-                        Item = new ItemDTO()
+                        Item = new ItemDespesaDTO()
                         {
                               Id = q.Item.Id,
                                Nome = q.Item.Nome,
@@ -105,7 +105,7 @@ namespace SistemaVidaNova.Api
                        Quantidade = q.Quantidade,
                        Tipo = q.Tipo,
                        ValorUnitario = q.ValorUnitario,
-                       Item = new ItemDTO()
+                       Item = new ItemDespesaDTO()
                        {
                            Id = q.Item.Id,
                            Nome = q.Item.Nome,
@@ -127,7 +127,7 @@ namespace SistemaVidaNova.Api
                    }).ToList();
                     break;
                 case "SOPA":
-                    IQueryable<DespesaAssociacao> queryS = _context.DespesaAssociacao.Include(q => q.Item)
+                    IQueryable<DespesaSopa> queryS = _context.DespesaSopa.Include(q => q.Item)
                .OrderByDescending(q => q.DataDaCompra);
                     if (!String.IsNullOrEmpty(filtro))
                         queryS = queryS.Where(q => q.Descricao.Contains(filtro) || q.Item.Nome.Contains(filtro));
@@ -143,7 +143,7 @@ namespace SistemaVidaNova.Api
                        Quantidade = q.Quantidade,
                        Tipo = q.Tipo,
                        ValorUnitario = q.ValorUnitario,
-                       Item = new ItemDTO()
+                       Item = new ItemDespesaDTO()
                        {
                            Id = q.Item.Id,
                            Nome = q.Item.Nome,
@@ -172,7 +172,9 @@ namespace SistemaVidaNova.Api
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Despesa despesa =_context.Despesa.Include(q=>q.Item)                
+            Despesa despesa =_context.Despesa
+                .Include(q=>q.Item)
+                .Include(q=>q.Usuario)                
                 .SingleOrDefault(q => q.Id == id);
 
             if (despesa == null)
@@ -187,7 +189,7 @@ namespace SistemaVidaNova.Api
                 dto.ValorUnitario = despesa.ValorUnitario;
                 dto.Quantidade = despesa.Quantidade;
                 dto.Tipo = despesa.Tipo;
-                dto.Item = new ItemDTO()
+                dto.Item = new ItemDespesaDTO()
                 {
                     Id = despesa.Item.Id,
                     Nome = despesa.Item.Nome,
@@ -208,7 +210,7 @@ namespace SistemaVidaNova.Api
                 dto.ValorUnitario = despesa.ValorUnitario;
                 dto.Quantidade = despesa.Quantidade;
                 dto.Tipo = despesa.Tipo;
-                dto.Item = new ItemDTO()
+                dto.Item = new ItemDespesaDTO()
                 {
                     Id = despesa.Item.Id,
                     Nome = despesa.Item.Nome,
@@ -229,7 +231,7 @@ namespace SistemaVidaNova.Api
                 dto.ValorUnitario = despesa.ValorUnitario;
                 dto.Quantidade = despesa.Quantidade;
                 dto.Tipo = despesa.Tipo;
-                dto.Item = new ItemDTO()
+                dto.Item = new ItemDespesaDTO()
                 {
                     Id = despesa.Item.Id,
                     Nome = despesa.Item.Nome,

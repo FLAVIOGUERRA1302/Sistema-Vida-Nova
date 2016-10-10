@@ -12,124 +12,103 @@
                 <!-- formulario -->
                 <form method='post' ng-submit="salvar()" name="form">
                     <div class="box-body">
-
-                        <div class="row" ng-if="doador.tipo=='PF'">
-                            <div class="col-xs-6">
-                                <label for="nome">Nome</label>
-                                <input type="text" class="form-control" ng-model="doador.nomeRazaoSocial" name='nome' id="nome" required placeholder="Digite o Nome do Voluntário">
-                            </div>
-                            <div class="col-xs-6">
-                                <!--  -->
-                                <label for="cpf">CPF</label>
-                                <input type="text" class="form-control" ng-model="doador.cpfCnpj " name='cpf' id="cpf" required ui-br-cpf-mask>
-                                <lista-erro lista="erros.Cpf"></lista-erro>
-                            </div>
-                        </div>
-
-                        <div class="row" ng-if="doador.tipo=='PJ'">
-                            <div class="col-xs-6">
-                                <label for="nome">Razão Social</label>
-                                <input type="text" class="form-control" ng-model="doador.nomeRazaoSocial" name='nome' id="nome" required placeholder="Digite o Nome do Voluntário">
-                            </div>
-                            <div class="col-xs-6">
-                                <!--  -->
-                                <label for="cpf">CNPJ</label>
-                                <input type="text" class="form-control" ng-model="doador.cpfCnpj " name='cnpj' id="cnpj" required ui-br-cnpj-mask>
-                                <lista-erro lista="erros.Cnpj"></lista-erro>
-                            </div>
-                        </div>
-
-
-
-
-
-                        <div class="row">
-                            <div class="col-xs-6">
-
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" ng-model="doador.email" name='email' id="email" placeholder="email@exemplo.com" required title="email@exemplo.com">
-                                <lista-erro lista="erros.Email"></lista-erro>
+                        <div class="row" ng-if="despesa.tipo==='FAVORECIDO'">
+                            <div class="col-md-3">
+                                <label>Favorecido</label>
+                                <input type="text"
+                                       ng-model="despesa.favorecido"
+                                       placeholder="Pesquise o favorecido aqui"
+                                       uib-typeahead="favorecido as favorecido.nome for favorecido in getFavorecidos($viewValue)"
+                                       typeahead-loading="loandingFavorecido"
+                                       typeahead-no-results="noResultsFavorecido"
+                                       class="form-control "
+                                       typeahead-editable="false"
+                                       required>
+                                <i ng-show="loandingFavorecido" class="glyphicon glyphicon-refresh"></i>
+                                <div ng-show="noResultsFavorecido">
+                                    <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                </div>
+                                <lista-erro lista="erros.Favorecido"></lista-erro>
                             </div>
 
-
-
-
-
-                            <div class="col-xs-3">
-                                <label for="telefone">Telefone</label>
-                                <input type="text" class="form-control" ng-model="doador.telefone" name='telefone' id="telefone" ui-br-phone-number-fixo>
-                            </div>
-
-                            <div class="col-xs-3">
-                                <label for="celular">Celular</label>
-                                <input type="text" class="form-control" name='celular' ng-model="doador.celular" id="celular" ui-br-phone-number>
-                            </div>
-
-
-                        </div>
-
-
-
-
-
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <label for="cep">Cep {{msgErro}}</label>
-                                <input id="cep" name="cep" type="text" ng-model="doador.endereco.cep" placeholder="Digite o CEP" class="form-control" required ui-br-cep-mask ng-blur="buscaCep()">
-                            </div>
-
-                            <div class="col-xs-6">
-                                <label for="logradouro">Rua, Avenida:</label>
-                                <input type="text" class="form-control" name='logradouro' ng-model="doador.endereco.logradouro" id="logradouro">
-                            </div>
-
-
-                        </div>
-
-
-
-                        <div class="row">
-
-                            <div class="col-xs-6">
-                                <label for="numero">Numero</label>
-                                <input type="text" class="form-control" name='numero' ng-model="doador.endereco.numero" required id="numero">
-                            </div>
-
-                            <div class="col-xs-6">
-                                <label for="complemento">Complemento</label>
-                                <input type="text" class="form-control" name='complemento' ng-model="doador.endereco.complemento" id="complemento">
-                            </div>
 
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-6">
-                                <label for="bairro">Bairro</label>
-                                <input type="text" class="form-control" name='bairro' ng-model="doador.endereco.bairro" required id="bairro">
-                            </div>
+                            <div class="col-md-3">
+                                <label>Item</label>
+                                <div class="input-group">
+                                    <input type="text"
+                                           ng-model="despesa.item"
+                                           placeholder="Pesquise um item aqui"
+                                           uib-typeahead="item as item.nome for item in getItens($viewValue)"
+                                           typeahead-loading="loandingItem"
+                                           typeahead-no-results="noResults"
+                                           class="form-control "
+                                           typeahead-editable="false"
+                                           required>
 
-                            <div class="form-group col-md-6">
-                                <label for="cidade">Cidade</label>
-                                <input type="text" class="form-control" name='cidade' ng-model="doador.endereco.cidade" required id="cidade">
+                                    <span class="input-group-btn" uib-popover="Criar um Item que não foi encontrado durante a pesquisa." popover-trigger="'mouseenter'">
+
+                                        <a class="btn btn-primary btn-flat" href="/Item/Criar/"><i class="fa fa-plus-circle"></i></a>
+                                    </span>
+                                </div>
+
+                                <i ng-show="loandingItem" class="glyphicon glyphicon-refresh"></i>
+                                <div ng-show="noResults">
+                                    <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                </div>
+                                <lista-erro lista="erros.Item"></lista-erro>
+                            </div>
+                            <div class="col-md-9">
+                                <label>Descrição</label>
+                                <input type="text"
+                                       ng-model="despesa.descricao"
+                                       placeholder="Descrição da despesa"
+                                       class="form-control "
+                                       required>
+                                <lista-erro lista="erros.Descricao"></lista-erro>
                             </div>
 
                         </div>
-
                         <div class="row">
-
-
-                            <div class="form-group col-md-6">
-                                <label for="uf">UF</label>
-                                <select class="form-control" ng-model="doador.endereco.estado">
-                                    <option ng-repeat="(key, value) in ufs" value="{{key}}">{{value}}</option>
-                                </select>
+                            <div class="col-md-3">
+                                <label>Data da compra</label>
+                                <input type="date"
+                                       ng-model="despesa.dataDaCompra"
+                                       class="form-control "
+                                       required>
+                                <lista-erro lista="erros.DataDaCompra"></lista-erro>
                             </div>
-
+                            <div class="col-md-3">
+                                <label>Quantidade</label>
+                                <input type="text"
+                                       ng-model="despesa.quantidade"
+                                       placeholder="Quantidade da despesa"
+                                       class="form-control "
+                                       required
+                                       ui-number-mask="2">
+                                <lista-erro lista="erros.Quantidade"></lista-erro>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Valor Unitário</label>
+                                <input type="text"
+                                       ng-model="despesa.valorUnitario"
+                                       placeholder="Valor unitário"
+                                       class="form-control "
+                                       required
+                                       ui-money-mask="2">
+                                <lista-erro lista="erros.ValorUnitario"></lista-erro>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Valor Total</label>
+                                <div>
+                                    <b>{{despesa.valorUnitario*despesa.quantidade | finance:true:2}}</b>
+                                </div>
+                            </div>
                         </div>
 
 
-
-                       
 
 
                     </div>
@@ -137,7 +116,7 @@
 
 
                     <div class="box-footer">
-                        <a href="/Doador" class="btn btn-primary">Voltar</a>                        
+                        <a href="/Despesa" class="btn btn-primary">Voltar</a>                        
                         <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
                     </div>
 

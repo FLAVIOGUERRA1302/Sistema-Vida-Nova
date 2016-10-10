@@ -37,5 +37,21 @@ namespace SistemaVidaNova.Controllers
             return View();
         }
 
+        public IActionResult Associacao(int id)
+        {
+
+            return View();
+        }
+        public IActionResult Sopa(int id)
+        {
+
+            return View();
+        }
+        public IActionResult Favorecido(int id)
+        {
+
+            return View();
+        }
+
     }
 }

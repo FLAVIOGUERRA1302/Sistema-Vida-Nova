@@ -334,7 +334,7 @@
             }
         }
     })
-        .when('/Despesa/Criar/Associacao', {
+        .when('/Despesa/Associacao/Criar', {
             templateUrl: '/templates/Despesa/Create.html',
             controller: 'DespesaCreateControl',
             resolve: {
@@ -344,7 +344,7 @@
             }
 
         })
-        .when('/Despesa/Criar/Sopa', {
+        .when('/Despesa/Sopa/Criar', {
             templateUrl: '/templates/Despesa/Create.html',
             controller: 'DespesaCreateControl',
             resolve: {
@@ -354,7 +354,7 @@
             }
 
         })
-        .when('/Despesa/Criar/Favorecido', {
+        .when('/Despesa/Favorecido/Criar', {
             templateUrl: '/templates/Despesa/Create.html',
             controller: 'DespesaCreateControl',
             resolve: {

@@ -30,9 +30,9 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a href="/Despesa/Criar/Associacao">Associação</a></li>
-                    <li><a href="/Despesa/Criar/Favorecido">Favorecido</a></li>
-                    <li><a href="/Despesa/Criar/Sopa">Sopa</a></li>
+                    <li><a href="/Despesa/Associacao/Criar">Associação</a></li>
+                    <li><a href="/Despesa/Favorecido/Criar">Favorecido</a></li>
+                    <li><a href="/Despesa/Sopa/Criar">Sopa</a></li>
 
                 </ul>
             </div>
@@ -76,7 +76,7 @@
                                     <tr ng-repeat="d in despesas">
                                         <td>{{d.item.nome}}</td>
                                         <th>{{d.dataDaCompra| date :'dd/MM/yyyy' }}</th>
-                                        <td>{{d.quantidade | number : 2}}</td>
+                                        <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
                                         <td>{{d.quantidade *d.valorUnitario   | finance:true:2}}</td>
                                         <td>{{d.usuario.nome}}</td>
                                         <td class='actions'>
@@ -111,7 +111,7 @@
                                         <td>{{d.favorecido.nome}}</td>
                                         <td>{{d.item.nome}}</td>
                                         <th>{{d.dataDaCompra| date :'dd/MM/yyyy' }}</th>
-                                        <td>{{d.quantidade | number : 2}}</td>
+                                        <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
                                         <td>{{d.quantidade *d.valorUnitario   | finance:true:2}}</td>
                                         <td>{{d.usuario.nome}}</td>
                                         <td class='actions'>
@@ -146,7 +146,7 @@
                                     <tr ng-repeat="d in despesas">
                                         <td>{{d.item.nome}}</td>
                                         <th>{{d.dataDaCompra| date :'dd/MM/yyyy' }}</th>
-                                        <td>{{d.quantidade | number : 2}}</td>
+                                        <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
                                         <td>{{d.quantidade *d.valorUnitario   | finance:true:2}}</td>
                                         <td>{{d.usuario.nome}}</td>
                                         <td class='actions'>

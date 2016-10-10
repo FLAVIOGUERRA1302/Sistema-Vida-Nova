@@ -69,7 +69,9 @@
       "wwwroot/js/controllers/FavorecidoControl.js",
       "wwwroot/js/controllers/DoadorControl.js",
       "wwwroot/js/controllers/InformativoControl.js",
-      "wwwroot/js/controllers/ChartControl.js"
+      "wwwroot/js/controllers/ChartControl.js",
+      "wwwroot/js/controllers/ItemControl.js",
+      "wwwroot/js/controllers/DespesaControl.js"
 
     ],
     // Optionally specify minification options

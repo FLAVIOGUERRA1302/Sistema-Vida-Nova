@@ -19,7 +19,7 @@ namespace SistemaVidaNova.Models.DTOs
         public string Tipo { get; set; }
 
         [Required]
-        public ItemDTO Item { get; set; }
+        public ItemDespesaDTO Item { get; set; }
 
         [Required]
         public DateTime DataDaCompra { get; set; }
