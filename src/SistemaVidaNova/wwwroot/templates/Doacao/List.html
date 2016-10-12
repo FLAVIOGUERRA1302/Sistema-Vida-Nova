@@ -1,0 +1,187 @@
+﻿
+<div id="top" class="content-header">
+    <div class="row">
+        <div class="col-md-2">
+            <h3 class="box-title">Lista de Doações</h3>
+        </div>
+
+        <div class="col-md-8">
+
+            <form ng-submit="pesquisar()">
+                <div class="input-group h2">
+                    <input type="text" ng-model="valorPesquisa" name="pesquisar" class="form-control" id="exampleInputName2" placeholder="Pesquisar Doação">
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2">
+            <div class="dropdown h2">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Criar Doação
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="/Doacao/Dinheiro/Criar">Dinheiro</a></li>
+                    <li><a href="/Doacao/Objeto/Criar">Objetos</a></li>
+                    <li><a href="/Doacao/Sopa/Criar">Itens Sopa</a></li>
+
+                </ul>
+            </div>
+        </div>
+
+       
+    </div>
+    
+</div>
+
+<div id="list" class="row">
+
+
+    <section class="content body">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box-body">
+
+                    
+
+
+                    <uib-tabset >
+                        <uib-tab index="0" heading="Dinheiro" select="Select('DINHEIRO')">
+                            <table class="table table-striped" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <tr>
+
+                                        <th>Doador</th>
+                                        <th>Data da doação</th>
+                                        <th>Valor</th>
+                                        
+
+                                        <th class="actions">Ações</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr ng-repeat="d in doacoes">
+                                        <td>{{d.doador.nomeRazaoSocial}}</td>
+                                        <th>{{d.dataDaDoacao| date :'dd/MM/yyyy' }}</th>                                        
+                                        <td>{{d.valor | finance:true:2}}</td>
+                                        
+                                        <td class='actions'>
+
+                                            <a class='btn btn-success btn-xs' href='/Doacao/Dinheiro/Visualizar/{{d.id}}'>Visualizar</a>
+                                            <a class='btn btn-warning btn-xs' href='/Doacao/Dinheiro/Editar/{{d.id}}'>Editar</a>
+                                            <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </uib-tab>
+                        <uib-tab index="1" heading="Objeto" select="Select('OBJETO')" >
+                            <table class="table table-striped" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <tr>
+
+                                        <th>Doador</th>
+                                        <th>Data da doação</th>
+                                        <th>Data de retirada</th>
+                                        <th>Descrição</th>
+
+
+                                        <th class="actions">Ações</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr ng-repeat="d in doacoes">
+                                        <td>{{d.doador.nomeRazaoSocial}}</td>
+                                        <th>{{d.dataDaDoacao| date :'dd/MM/yyyy' }}</th>
+                                        <th>{{d.dataDeRetirada| date :'dd/MM/yyyy' }}</th>                                        
+                                        <td>{{d.descricao}}</td>
+
+                                        <td class='actions'>
+
+                                            <a class='btn btn-success btn-xs' href='/Doacao/Objeto/Visualizar/{{d.id}}'>Visualizar</a>
+                                            <a class='btn btn-warning btn-xs' href='/Doacao/Objeto/Editar/{{d.id}}'>Editar</a>
+                                            <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </uib-tab>
+
+                        <uib-tab index="2" heading="Itens Sopa" select="Select('SOPA')" >
+                            <table class="table table-striped" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <tr>
+
+                                        <th>Doador</th>
+                                        <th>Item</th>
+                                        <th>Data da doação</th>
+                                        <th>Quantidade</th>
+
+
+                                        <th class="actions">Ações</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr ng-repeat="d in doacoes">
+                                        <td>{{d.doador.nomeRazaoSocial}}</td>
+                                        <td>{{d.item.nome}}</td>
+                                        <th>{{d.dataDaDoacao| date :'dd/MM/yyyy' }}</th>
+                                        <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
+
+                                        <td class='actions'>
+
+                                            <a class='btn btn-success btn-xs' href='/Doacao/Sopa/Visualizar/{{d.id}}'>Visualizar</a>
+                                            <a class='btn btn-warning btn-xs' href='/Doacao/Sopa/Editar/{{d.id}}'>Editar</a>
+                                            <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </uib-tab>
+
+                     
+                        
+                    </uib-tabset>
+                    <div class="col-lg-12">
+
+                        <button type="button" class="btn btn-success pull-right h2">Importar para Excel</button>
+
+                    </div>
+
+
+                    <nav class="text-center">
+
+                        <ul uib-pagination boundary-links="true" ng-change="pageChanged()" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+
+                    </nav>
+                    
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+</div>
+
+

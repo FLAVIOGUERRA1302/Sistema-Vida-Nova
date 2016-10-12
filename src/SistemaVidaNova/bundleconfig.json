@@ -45,7 +45,8 @@
       "wwwroot/lib/textAngular/dist/textAngular.min.js",
 
       "wwwroot/lib/echarts/build/dist/echarts-all.js",
-      "wwwroot/lib/angular-echarts/dist/angular-echarts.js"
+      "wwwroot/lib/angular-echarts/dist/angular-echarts.js",
+      "wwwroot/js/date.js"
 
     ],
     // Optionally specify minification options

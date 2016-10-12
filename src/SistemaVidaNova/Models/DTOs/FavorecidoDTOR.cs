@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace SistemaVidaNova.Models.DTOs
+
 {
-    public class DespesaFavorecidoDTO
+    public class FavorecidoDTOR
     {
         [Required]
         public int Id { get; set; }

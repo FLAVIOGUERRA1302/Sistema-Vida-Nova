@@ -1,0 +1,137 @@
+﻿<section class="content-header">
+    <h1>
+        Modificar Doação Item Sopa
+    </h1>
+
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">
+                <!-- formulario -->
+                <form method='post' ng-submit="salvar()" name="form">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>
+                                        <input type="radio" class="flat-red" ng-model="tipo" value="PF">
+                                        Doador pessoa física
+                                    </label>
+                                    <label>
+                                        <input type="radio" class="flat-red" ng-model="tipo" value="PJ">
+                                        Doador pessoa jurídica
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label>Doador</label>
+                                <div class="input-group">
+                                    <input type="text"
+                                           ng-model="doacao.doador"
+                                           placeholder="Pesquise o Doador aqui"
+                                           uib-typeahead="doador as doador.nomeRazaoSocial for doador in getDoadores($viewValue)"
+                                           typeahead-loading="loandingDoador"
+                                           typeahead-no-results="noResultsDoador"
+                                           class="form-control "
+                                           typeahead-editable="false"
+                                           required>
+                                    <span class="input-group-btn" uib-popover="Cadastrar um Doador que não foi encontrado durante a pesquisa." popover-trigger="'mouseenter'">
+
+                                        <a class="btn btn-primary btn-flat" href="/Doador/Criar/{{tipo}}"><i class="fa fa-plus-circle"></i></a>
+                                    </span>
+                                </div>
+                                <i ng-show="loandingDoador" class="glyphicon glyphicon-refresh"></i>
+                                <div ng-show="noResultsDoador">
+                                    <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                </div>
+                                <lista-erro lista="erros.Doador"></lista-erro>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Item</label>
+                                <div class="input-group">
+                                    <input type="text"
+                                           ng-model="doacao.item"
+                                           placeholder="Pesquise o Item aqui"
+                                           uib-typeahead="item as item.nome for item in getItens($viewValue)"
+                                           typeahead-loading="loandingItem"
+                                           typeahead-no-results="noResultsItem"
+                                           class="form-control "
+                                           typeahead-editable="false"
+                                           required>
+                                    <span class="input-group-btn" uib-popover="Cadastrar um Item que não foi encontrado durante a pesquisa." popover-trigger="'mouseenter'">
+
+                                        <a class="btn btn-primary btn-flat" href="/Item/Criar"><i class="fa fa-plus-circle"></i></a>
+                                    </span>
+                                </div>
+                                <i ng-show="loandingItem" class="glyphicon glyphicon-refresh"></i>
+                                <div ng-show="noResultsItem">
+                                    <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                </div>
+                                <lista-erro lista="erros.Item"></lista-erro>
+                            </div>
+
+
+
+                            <div class="col-md-9">
+                                <label>Descrição</label>
+                                <input type="text"
+                                       ng-model="doacao.descricao"
+                                       placeholder="Descrição da doação"
+                                       class="form-control "
+                                       required>
+                                <lista-erro lista="erros.Descricao"></lista-erro>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Data da Doação</label>
+                                <input type="date"
+                                       ng-model="doacao.dataDaDoacao"
+                                       class="form-control "
+                                       required>
+                                <lista-erro lista="erros.DataDaDoacao"></lista-erro>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Quantidade</label>
+                                <div class="input-group">
+                                    <input type="text"
+                                           ng-model="doacao.quantidade"
+                                           placeholder="Quantidade doada"
+                                           class="form-control "
+                                           required
+                                           ui-number-mask="2">
+                                    
+                                    <span class="input-group-addon">{{doacao.item.unidadeDeMedida}}</span>
+                                </div>
+
+                                <lista-erro lista="erros.Quantidade"></lista-erro>
+                            </div>
+
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+                    <div class="box-footer">
+                        <a href="/Doacao" class="btn btn-primary">Voltar</a>                        
+                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
+                    </div>
+
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>

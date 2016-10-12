@@ -26,7 +26,7 @@
                 return VoluntarioService.Read(null, 0, 10);//id,skip,take
             },
             loadingDialod: function (ngDialog) {
-                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
             }
 
         }
@@ -45,7 +45,7 @@
                 }
                 ,
                 loadingDialod: function (ngDialog) {
-                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                 }
             }
         })
@@ -57,7 +57,7 @@
                 return VoluntarioService.Read($route.current.params.id);
             },
             loadingDialod: function (ngDialog) {
-                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
             }
         }
     })
@@ -73,7 +73,7 @@
                 return InteressadoService.Read(null, 0, 10);//id,skip,take
             },
             loadingDialod: function (ngDialog) {
-                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
             }
         }
     })
@@ -90,7 +90,7 @@
                         return InteressadoService.Read($route.current.params.id);
                     },
                     loadingDialod: function (ngDialog) {
-                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                     }
                 }
             })
@@ -102,7 +102,7 @@
                     return InteressadoService.Read($route.current.params.id);
                 },
                 loadingDialod: function (ngDialog) {
-                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                 }
             }
         })
@@ -119,7 +119,7 @@
                 return EventoService.Read(null, 0, 10);//id,skip,take
             },
             loadingDialod: function (ngDialog) {
-                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
             }
         }
     })
@@ -140,7 +140,7 @@
                         return EventoService.Read($route.current.params.id);
                     },
                     loadingDialod: function (ngDialog) {
-                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                     }
                 }
             })
@@ -152,7 +152,7 @@
                     return EventoService.Read($route.current.params.id);
                 },
                 loadingDialod: function (ngDialog) {
-                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                 }
             }
         })
@@ -167,7 +167,7 @@
                 return DoadorService.Read(null, 0, 10, 'PF');//id,skip,take
             },
             loadingDialod: function (ngDialog) {
-                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
             }
         }
     })
@@ -199,7 +199,7 @@
                         return DoadorService.Read($route.current.params.id);
                     },
                     loadingDialod: function (ngDialog) {
-                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                     }
                 }
             })
@@ -211,7 +211,7 @@
                     return DoadorService.Read($route.current.params.id);
                 },
                 loadingDialod: function (ngDialog) {
-                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                 }
             }
         })
@@ -226,7 +226,7 @@
                 return FavorecidoService.Read(null, 0, 10);//id,skip,take
             },
             loadingDialod: function (ngDialog) {
-                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
             }
         }
     })
@@ -243,7 +243,7 @@
                         return FavorecidoService.Read($route.current.params.id);
                     },
                     loadingDialod: function (ngDialog) {
-                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                     }
                 }
             })
@@ -255,7 +255,7 @@
                     return FavorecidoService.Read($route.current.params.id);
                 },
                 loadingDialod: function (ngDialog) {
-                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                 }
             }
         })
@@ -270,7 +270,7 @@
                 return InformativoService.Read();
             },
             loadingDialod: function (ngDialog) {
-                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
             }
         }
     })
@@ -285,7 +285,7 @@
                 return ItemService.Read(null, 0, 10);//id,skip,take
             },
             loadingDialod: function (ngDialog) {
-                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
             }
         }
     })
@@ -302,7 +302,7 @@
                         return ItemService.Read($route.current.params.id);
                     },
                     loadingDialod: function (ngDialog) {
-                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                     }
                 }
             })
@@ -314,7 +314,7 @@
                     return ItemService.Read($route.current.params.id);
                 },
                 loadingDialod: function (ngDialog) {
-                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                 }
             }
         })
@@ -330,7 +330,7 @@
                 return DespesaService.Read(null, 0, 10, 'ASSOCIACAO');//id,skip,take
             },
             loadingDialod: function (ngDialog) {
-                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
             }
         }
     })
@@ -372,7 +372,7 @@
                         return DespesaService.Read($route.current.params.id);
                     },
                     loadingDialod: function (ngDialog) {
-                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                     }
                 }
             })
@@ -384,7 +384,115 @@
                     return DespesaService.Read($route.current.params.id);
                 },
                 loadingDialod: function (ngDialog) {
-                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+
+
+
+    //------------Doacao----------
+    .when('/Doacao', {
+        templateUrl: '/templates/Doacao/List.html',
+        controller: 'DoacaoControl',
+        resolve: {
+
+            doacoes: function (DoacaoDinheiroService) {
+                return DoacaoDinheiroService.Read(null, 0, 10);//id,skip,take
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            }
+        }
+    })
+        .when('/Doacao/Dinheiro/Criar', {
+            templateUrl: '/templates/Doacao/CreateDinheiro.html',
+            controller: 'DoacaoCreateDinheiroControl'
+
+        })
+        .when('/Doacao/Objeto/Criar', {
+            templateUrl: '/templates/Doacao/CreateObjeto.html',
+            controller: 'DoacaoCreateObjetoControl'
+
+        })
+        .when('/Doacao/Sopa/Criar', {
+            templateUrl: '/templates/Doacao/CreateSopa.html',
+            controller: 'DoacaoCreateSopaControl'
+
+        })
+      
+
+        .when('/Doacao/Dinheiro/Editar/:id', {
+            templateUrl: '/templates/Doacao/UpdateDinheiro.html',
+            controller: 'DoacaoUpdateDinheiroControl',
+            resolve: {
+                doacao: function (DoacaoDinheiroService, $route) {
+                    return DoacaoDinheiroService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+        .when('/Doacao/Objeto/Editar/:id', {
+            templateUrl: '/templates/Doacao/UpdateObjeto.html',
+            controller: 'DoacaoUpdateObjetoControl',
+            resolve: {
+                doacao: function (DoacaoObjetoService, $route) {
+                    return DoacaoObjetoService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+        .when('/Doacao/Sopa/Editar/:id', {
+            templateUrl: '/templates/Doacao/UpdateSopa.html',
+            controller: 'DoacaoUpdateSopaControl',
+            resolve: {
+                doacao: function (DoacaoSopaService, $route) {
+                    return DoacaoSopaService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+
+
+        .when('/Doacao/Dinheiro/Visualizar/:id', {
+            templateUrl: '/templates/Doacao/DetalheDinheiro.html',
+            controller: 'DoacaoUpdateDinheiroControl',
+            resolve: {
+                doacao: function (DoacaoDinheiroService, $route) {
+                    return DoacaoDinheiroService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+        .when('/Doacao/Objeto/Visualizar/:id', {
+            templateUrl: '/templates/Doacao/DetalheObjeto.html',
+            controller: 'DoacaoUpdateObjetoControl',
+            resolve: {
+                doacao: function (DoacaoObjetoService, $route) {
+                    return DoacaoObjetoService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+        .when('/Doacao/Sopa/Visualizar/:id', {
+            templateUrl: '/templates/Doacao/DetalheSopa.html',
+            controller: 'DoacaoUpdateSopaControl',
+            resolve: {
+                doacao: function (DoacaoSopaService, $route) {
+                    return DoacaoSopaService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
                 }
             }
         })

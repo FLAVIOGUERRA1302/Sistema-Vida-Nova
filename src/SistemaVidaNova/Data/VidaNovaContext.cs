@@ -40,6 +40,9 @@ namespace SistemaVidaNova.Models
         public DbSet<DespesaAssociacao> DespesaAssociacao { get; set; }
         public DbSet<DespesaFavorecido> DespesaFavorecido { get; set; }
         public DbSet<DespesaSopa> DespesaSopa { get; set; }
+        public DbSet<DoacaoDinheiro> DoacaoDinheiro { get; set; }
+        public DbSet<DoacaoObjeto> DoacaoObjeto { get; set; }
+        public DbSet<DoacaoSopa> DoacaoSopa { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -971,3 +971,305 @@ app.factory('ItemService', ["$http", "$q", function ($http, $q) {
 
 
 }]);
+
+
+app.factory('DoacaoDinheiroService', ["$http", "$q", function ($http, $q) {
+    var s = {};
+
+    s.Create = function (doacao) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/DoacaoDinheiro',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(doacao),
+            dataType: 'json'
+        };
+
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Read = function (id, skip, take, filtro) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/DoacaoDinheiro/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.Update = function (doacao) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'PUT',
+            url: '/api/DoacaoDinheiro/' + doacao.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(doacao),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Delete = function (doacao) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'DELETE',
+            url: '/api/DoacaoDinheiro/' + doacao.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    return s;
+
+
+}]);
+
+
+app.factory('DoacaoSopaService', ["$http", "$q", function ($http, $q) {
+    var s = {};
+
+    s.Create = function (doacao) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/DoacaoSopa',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(doacao),
+            dataType: 'json'
+        };
+
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Read = function (id, skip, take, filtro) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/DoacaoSopa/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.Update = function (doacao) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'PUT',
+            url: '/api/DoacaoSopa/' + doacao.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(doacao),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Delete = function (doacao) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'DELETE',
+            url: '/api/DoacaoSopa/' + doacao.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    return s;
+
+
+}]);
+
+app.factory('DoacaoObjetoService', ["$http", "$q", function ($http, $q) {
+    var s = {};
+
+    s.Create = function (doacao) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/DoacaoObjeto',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(doacao),
+            dataType: 'json'
+        };
+
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Read = function (id, skip, take, filtro) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/DoacaoObjeto/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.Update = function (doacao) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'PUT',
+            url: '/api/DoacaoObjeto/' + doacao.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(doacao),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Delete = function (doacao) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'DELETE',
+            url: '/api/DoacaoObjeto/' + doacao.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    return s;
+
+
+}]);

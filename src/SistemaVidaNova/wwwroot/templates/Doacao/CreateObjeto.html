@@ -1,0 +1,188 @@
+﻿<section class="content-header">
+    <h1>
+        Cadastrar Doação de Objeto
+    </h1>
+
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">                
+                <!-- formulario -->
+                <form method='post' ng-submit="salvar()" name="form">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">                                   
+                                    <label>
+                                        <input type="radio"  class="flat-red" ng-model="tipo" value="PF">
+                                        Doador pessoa física
+                                    </label>
+                                    <label>
+                                        <input type="radio" class="flat-red" ng-model="tipo" value="PJ">
+                                        Doador pessoa jurídica
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Doador</label>
+                                <div class="input-group">
+                                    <input type="text"
+                                           ng-model="doacao.doador"
+                                           placeholder="Pesquise o Doador aqui"
+                                           uib-typeahead="doador as doador.nomeRazaoSocial for doador in getDoadores($viewValue)"
+                                           typeahead-loading="loandingDoador"
+                                           typeahead-no-results="noResultsDoador"
+                                           class="form-control "
+                                           typeahead-editable="false"
+                                           required>
+                                    <span class="input-group-btn" uib-popover="Cadastrar um Doador que não foi encontrado durante a pesquisa." popover-trigger="'mouseenter'">
+
+                                        <a class="btn btn-primary btn-flat" href="/Doador/Criar/{{tipo}}"><i class="fa fa-plus-circle"></i></a>
+                                    </span>
+                                </div>
+                                    <i ng-show="loandingDoador" class="glyphicon glyphicon-refresh"></i>
+                                    <div ng-show="noResultsDoador">
+                                        <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                    </div>
+                                    <lista-erro lista="erros.Doador"></lista-erro>
+                                </div>
+
+
+                        
+                                <div class="col-md-9">
+                                    <label>Descrição</label>
+                                    <input type="text"
+                                           ng-model="doacao.descricao"
+                                           placeholder="Descrição da doação"
+                                           class="form-control "
+                                           required>
+                                    <lista-erro lista="erros.Descricao"></lista-erro>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Data da Doação</label>
+                                    <input type="date"
+                                           ng-model="doacao.dataDaDoacao"
+                                           class="form-control "
+                                           required>
+                                    <lista-erro lista="erros.DataDaDoacao"></lista-erro>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Data para Retirada</label>
+                                    <input type="date"
+                                           ng-model="doacao.dataDeRetirada"
+                                           class="form-control "
+                                           required>
+                                    <lista-erro lista="erros.DataDeRetirada"></lista-erro>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Hora para Retirada</label>
+                                    <div uib-timepicker ng-model="doacao.dataDeRetirada" hour-step="1" minute-step="5" show-meridian="false"></div>
+                                    
+                                </div>
+                                
+                            </div>
+                        <div ng-if="doacao.doador!=null">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h2>Endereço para Retirada</h2>
+                                </div>
+                                
+
+                            </div>
+                            <div class="row">
+                                
+                                
+                                <div class="col-md-12">
+                                    <div class="callout callout-info">
+                                        <h4>Verifique o endereço</h4> <p>Se o endereço de retirada não for igual ao endereço do doador, altere por favor.</p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="cep">Cep </label>
+                                    <input id="cep" name="cep" type="text" ng-model="doacao.endereco.cep" placeholder="Digite o CEP" class="form-control" required ui-br-cep-mask ng-blur="buscaCep()">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="logradouro">Rua, Avenida:</label>
+                                    <input type="text" class="form-control" name='logradouro' ng-model="doacao.endereco.logradouro" id="logradouro">
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <label for="numero">Numero</label>
+                                    <input type="text" class="form-control" name='numero' ng-model="doacao.endereco.numero" required id="numero">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="complemento">Complemento</label>
+                                    <input type="text" class="form-control" name='complemento' ng-model="doacao.endereco.complemento" id="complemento">
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="bairro">Bairro</label>
+                                    <input type="text" class="form-control" name='bairro' ng-model="doacao.endereco.bairro" required id="bairro">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="cidade">Cidade</label>
+                                    <input type="text" class="form-control" name='cidade' ng-model="doacao.endereco.cidade" required id="cidade">
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+
+                                <div class="form-group col-md-6">
+                                    <label for="uf">UF</label>
+                                    <select class="form-control" ng-model="doacao.endereco.estado">
+                                        <option ng-repeat="(key, value) in ufs" value="{{key}}">{{value}}</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        </div>
+
+
+
+                    <div class="box-footer">
+                        <a href="/Doacao" class="btn btn-primary">Voltar</a>
+                        <button type="reset" class="btn btn-default">Limpar Campos</button>
+                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
+                    </div>
+
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>

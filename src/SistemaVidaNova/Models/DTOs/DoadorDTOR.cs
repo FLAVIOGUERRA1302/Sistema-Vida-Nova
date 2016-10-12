@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 
 namespace SistemaVidaNova.Models.DTOs
 {
-    public class ItemDespesaDTO
+    public class DoadorDTOR
     {
+
         [Required]
         public int Id { get; set; }
+
         
-        public string Nome { get; set; }
+        public string Tipo  { get; set; }
         
-        public string UnidadeDeMedida { get; set; }
+        public string NomeRazaoSocial { get; set; }
+        
+        public string CpfCnpj { get; set; }
+        
+        public EnderecoDTO Endereco { get; set; }
     }
 }

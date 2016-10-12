@@ -73,7 +73,7 @@ namespace SistemaVidaNova.Api
                        Quantidade = q.Quantidade,
                        Tipo = q.Tipo,
                        ValorUnitario = q.ValorUnitario,
-                        Item = new ItemDespesaDTO()
+                        Item = new ItemDTOR()
                         {
                               Id = q.Item.Id,
                                Nome = q.Item.Nome,
@@ -105,13 +105,13 @@ namespace SistemaVidaNova.Api
                        Quantidade = q.Quantidade,
                        Tipo = q.Tipo,
                        ValorUnitario = q.ValorUnitario,
-                       Item = new ItemDespesaDTO()
+                       Item = new ItemDTOR()
                        {
                            Id = q.Item.Id,
                            Nome = q.Item.Nome,
                            UnidadeDeMedida = q.Item.UnidadeDeMedida
                        },
-                       Favorecido = new DespesaFavorecidoDTO()
+                       Favorecido = new FavorecidoDTOR()
                        {
                             Id = q.Favorecido.CodFavorecido,
                              Apelido = q.Favorecido.Apelido,
@@ -143,7 +143,7 @@ namespace SistemaVidaNova.Api
                        Quantidade = q.Quantidade,
                        Tipo = q.Tipo,
                        ValorUnitario = q.ValorUnitario,
-                       Item = new ItemDespesaDTO()
+                       Item = new ItemDTOR()
                        {
                            Id = q.Item.Id,
                            Nome = q.Item.Nome,
@@ -189,7 +189,7 @@ namespace SistemaVidaNova.Api
                 dto.ValorUnitario = despesa.ValorUnitario;
                 dto.Quantidade = despesa.Quantidade;
                 dto.Tipo = despesa.Tipo;
-                dto.Item = new ItemDespesaDTO()
+                dto.Item = new ItemDTOR()
                 {
                     Id = despesa.Item.Id,
                     Nome = despesa.Item.Nome,
@@ -210,7 +210,7 @@ namespace SistemaVidaNova.Api
                 dto.ValorUnitario = despesa.ValorUnitario;
                 dto.Quantidade = despesa.Quantidade;
                 dto.Tipo = despesa.Tipo;
-                dto.Item = new ItemDespesaDTO()
+                dto.Item = new ItemDTOR()
                 {
                     Id = despesa.Item.Id,
                     Nome = despesa.Item.Nome,
@@ -231,7 +231,7 @@ namespace SistemaVidaNova.Api
                 dto.ValorUnitario = despesa.ValorUnitario;
                 dto.Quantidade = despesa.Quantidade;
                 dto.Tipo = despesa.Tipo;
-                dto.Item = new ItemDespesaDTO()
+                dto.Item = new ItemDTOR()
                 {
                     Id = despesa.Item.Id,
                     Nome = despesa.Item.Nome,
@@ -245,7 +245,7 @@ namespace SistemaVidaNova.Api
                 };
 
                 _context.Favorecido.Where(q => q.CodFavorecido == ((DespesaFavorecido)despesa).CodFavorecido).Load();
-                dto.Favorecido = new DespesaFavorecidoDTO()
+                dto.Favorecido = new FavorecidoDTOR()
                 {
 
                     Id = ((DespesaFavorecido)despesa).Favorecido.CodFavorecido,

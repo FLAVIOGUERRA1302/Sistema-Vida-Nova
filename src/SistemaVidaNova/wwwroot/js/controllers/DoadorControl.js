@@ -114,13 +114,13 @@
 
 
 }])
-.controller('DoadorCreateControl', ['$scope', 'DoadorService', '$location', 'CepService', 'doador', function ($scope, DoadorService, $location, CepService, doador) {
+.controller('DoadorCreateControl', ['$scope', 'DoadorService', '$location', 'CepService', 'doador', '$window', function ($scope, DoadorService, $location, CepService, doador, $window) {
     $scope.doador = doador;
     $scope.salvar = function () {
         DoadorService.Create($scope.doador)
             .then(function (doador) {
-                $location.path('/Doador')
-
+                //$location.path('/Doador')
+                $window.history.back();
             }, function (erros) {
                 $scope.erros = erros;
             });

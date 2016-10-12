@@ -19,7 +19,7 @@ namespace SistemaVidaNova.Models.DTOs
         public string Tipo { get; set; }
 
         [Required]
-        public ItemDespesaDTO Item { get; set; }
+        public ItemDTOR Item { get; set; }
 
         [Required]
         public DateTime DataDaCompra { get; set; }
@@ -29,7 +29,7 @@ namespace SistemaVidaNova.Models.DTOs
 
         [Required]
         public Double ValorUnitario { get; set; }
-        public DespesaFavorecidoDTO Favorecido { get; set; }
+        public FavorecidoDTOR Favorecido { get; set; }
 
         public UsuarioDTO Usuario { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿angular.module('app')
 .controller('ChartVoluntarioDiaDaSemanaControl', ['$scope', 'ChartService', 'ngDialog', function ($scope, ChartService, ngDialog) {
     
-    var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
+    var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
     //$scope.chartData = {};
     $scope.chartConfig = {        
         title : {

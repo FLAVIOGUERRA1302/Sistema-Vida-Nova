@@ -58,7 +58,7 @@
     }
 
     $scope.AdicionarTodosUsuarios = function () {
-        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', })
+        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default'})
         UsuarioService.Read(null, 0, 1000000)//id,skip,take
         .then(function (usuarios) {
             $scope.informativo.usuarios = usuarios;
@@ -70,7 +70,7 @@
     }
 
     $scope.AdicionarTodosVoluntarios = function () {
-        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', })
+        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' })
         VoluntarioService.Read(null, 0, 1000000)//id,skip,take
         .then(function (voluntarios) {
             $scope.informativo.voluntarios = voluntarios;
@@ -82,7 +82,7 @@
     }
 
     $scope.AdicionarTodosDoadoresPF = function () {
-        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', })
+        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' })
         DoadorService.Read(null, 0, 1000000,'PF')//id,skip,take,tipo
         .then(function (doadoresFisicos) {
             $scope.informativo.doadoresFisicos = doadoresFisicos;
@@ -94,7 +94,7 @@
     }
 
     $scope.AdicionarTodosDoadoresPJ = function () {
-        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', })
+        var carregando = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' })
         DoadorService.Read(null, 0, 1000000, 'PJ')//id,skip,take,tipo
         .then(function (doadoresJuridicos) {
             $scope.informativo.doadoresJuridicos = doadoresJuridicos;
@@ -108,7 +108,7 @@
 
        
     $scope.enviar = function () {
-        var enviando = ngDialog.open({ template: '/templates/enviando.html', className: 'ngdialog-theme-default', })
+        var enviando = ngDialog.open({ template: '/templates/enviando.html', className: 'ngdialog-theme-default' })
         InformativoService.Update($scope.informativo)
             .then(function () {
                 InformativoService.Send($scope.informativo)

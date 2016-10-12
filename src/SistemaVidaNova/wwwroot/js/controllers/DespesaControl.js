@@ -91,7 +91,7 @@
 }])
 .controller('DespesaUpdateControl', ['$scope', 'DespesaService', 'despesa', 'loadingDialod', '$location', 'CepService','ItemService','FavorecidoService', function ($scope, DespesaService, despesa, loadingDialod, $location, CepService,ItemService,FavorecidoService) {
     loadingDialod.close();
-    despesa.dataDaCompra = new Date(despesa.dataDaCompra);
+    despesa.dataDaCompra = Date.parse(despesa.dataDaCompra);
     $scope.despesa = despesa;//angular.copy(despesa);
     $scope.random = new Date().getTime();
     
