@@ -122,18 +122,20 @@
 
     }])
 
-.controller('DoacaoCreateDinheiroControl', ['$scope', 'DoacaoDinheiroService', 'DoadorService', '$location',
-        function ($scope, DoacaoDinheiroService,DoadorService, $location) {
+.controller('DoacaoCreateDinheiroControl', ['$scope', 'DoacaoDinheiroService', 'DoadorService', '$location','ngDialog',
+        function ($scope, DoacaoDinheiroService, DoadorService, $location, ngDialog) {
             $scope.doacao = {};
             $scope.tipo = 'PF'; //o doador começa como pessoa fisica
         
-        $scope.salvar = function () {
+            $scope.salvar = function () {
+                var dialog = ngDialog.open({ template: '/templates/salvando.html', className: 'ngdialog-theme-default' });
             DoacaoDinheiroService.Create($scope.doacao)
                 .then(function (doacao) {
-                    $location.path('/Doacao')
-
+                    dialog.close();
+                    $location.path('/Doacao')                    
                 }, function (erros) {
                     $scope.erros = erros;
+                    dialog.close();
                 });
         }
 
@@ -155,7 +157,7 @@
             $scope.tipo = doacao.doador.tipo; 
         
             $scope.salvar = function () {
-                var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                var dialog = ngDialog.open({ template: '/templates/salvando.html', className: 'ngdialog-theme-default' });
                 DoacaoDinheiroService.Update($scope.doacao)
                 .then(function (doacao) {
                     dialog.close();
@@ -177,18 +179,21 @@
 
         }])
 
-.controller('DoacaoCreateSopaControl', ['$scope', 'DoacaoSopaService', 'DoadorService','ItemService', '$location',
-        function ($scope, DoacaoSopaService, DoadorService, ItemService,$location) {
+.controller('DoacaoCreateSopaControl', ['$scope', 'DoacaoSopaService', 'DoadorService','ItemService', '$location','ngDialog',
+        function ($scope, DoacaoSopaService, DoadorService, ItemService, $location, ngDialog) {
             $scope.doacao = {};
             $scope.tipo = 'PF'; //o doador começa como pessoa fisica
 
             $scope.salvar = function () {
+                var dialog = ngDialog.open({ template: '/templates/salvando.html', className: 'ngdialog-theme-default' });
                 DoacaoSopaService.Create($scope.doacao)
                     .then(function (doacao) {
+                        dialog.close();
                         $location.path('/Doacao')
-
+                        
                     }, function (erros) {
                         $scope.erros = erros;
+                        dialog.close();
                     });
             }
 
@@ -211,11 +216,11 @@
             loadingDialod.close();
             doacao.dataDaDoacao = Date.parse(doacao.dataDaDoacao);
             $scope.doacao = doacao;
-
+            $scope.unidadesDeMedida = unidadesDeMedida;
             $scope.tipo = doacao.doador.tipo;
 
             $scope.salvar = function () {
-                var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                var dialog = ngDialog.open({ template: '/templates/salvando.html', className: 'ngdialog-theme-default' });                
                 DoacaoSopaService.Update($scope.doacao)
                 .then(function (doacao) {
                     dialog.close();
@@ -243,18 +248,20 @@
         }])
 
 
-.controller('DoacaoCreateObjetoControl', ['$scope', 'DoacaoObjetoService', 'DoadorService', '$location','CepService',
-        function ($scope, DoacaoObjetoService, DoadorService, $location, CepService) {
+.controller('DoacaoCreateObjetoControl', ['$scope', 'DoacaoObjetoService', 'DoadorService', '$location','CepService','ngDialog',
+        function ($scope, DoacaoObjetoService, DoadorService, $location, CepService, ngDialog) {
             $scope.doacao = { endereco:{}};
             $scope.tipo = 'PF'; //o doador começa como pessoa fisica
             $scope.ufs = ufs;
             $scope.salvar = function () {
+                var dialog = ngDialog.open({ template: '/templates/salvando.html', className: 'ngdialog-theme-default' });
                 DoacaoObjetoService.Create($scope.doacao)
                     .then(function (doacao) {
-                        $location.path('/Doacao')
-
+                        dialog.close();
+                        $location.path('/Doacao')                        
                     }, function (erros) {
                         $scope.erros = erros;
+                        dialog.close();
                     });
             }
 
@@ -323,7 +330,7 @@
             $scope.tipo = doacao.doador.tipo;
 
             $scope.salvar = function () {
-                var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                var dialog = ngDialog.open({ template: '/templates/salvando.html', className: 'ngdialog-theme-default' });
                 DoacaoObjetoService.Update($scope.doacao)
                 .then(function (doacao) {
                     dialog.close();

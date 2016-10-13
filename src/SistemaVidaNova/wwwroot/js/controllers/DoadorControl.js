@@ -72,7 +72,7 @@
 
 
 }])
-.controller('DoadorUpdateControl', ['$scope', 'DoadorService', 'doador', 'loadingDialod', '$location', 'CepService', function ($scope, DoadorService, doador, loadingDialod, $location, CepService) {
+.controller('DoadorUpdateControl', ['$scope', 'DoadorService', 'doador', 'loadingDialod', '$location', 'CepService', '$window', function ($scope, DoadorService, doador, loadingDialod, $location, CepService, $window) {
     loadingDialod.close();
     $scope.doador = doador;//angular.copy(doador);
     $scope.random = new Date().getTime();
@@ -111,6 +111,10 @@
             });
     }
 
+    $scope.voltar = function () {
+        $window.history.back();
+    }
+
 
 
 }])
@@ -124,6 +128,9 @@
             }, function (erros) {
                 $scope.erros = erros;
             });
+    }
+    $scope.voltar = function () {
+        $window.history.back();
     }
 
     $scope.ufs = ufs;

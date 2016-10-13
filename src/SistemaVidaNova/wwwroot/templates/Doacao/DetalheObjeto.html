@@ -1,0 +1,111 @@
+﻿  <!-- Horizontal Form -->
+<section class="content-header">
+    <h1>
+        Doação de Objeto
+    </h1>
+
+
+</section>
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-11">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+
+                <form action="">
+                    <div class="box-body">
+
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <p><strong>Doador:</strong></p>
+                                <p>{{doacao.doador.nomeRazaoSocial}}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Descrição:</strong></p>
+                                <p>{{doacao.descricao}}</p>
+                            </div>
+
+
+
+                            <div class="col-md-4">
+                                <p><strong>Data da Doação:</strong></p>
+                                <p>{{doacao.dataDaDoacao| date :'dd/MM/yyyy'}}&nbsp;</p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <p><strong>Data de Retirada:</strong></p>
+                                <p>{{doacao.dataDeRetirada| date :'dd/MM/yyyy'}}&nbsp;</p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <p><strong>Hora de Retirada:</strong></p>
+                                <p>{{doacao.dataDeRetirada| date :'HH:mm'}}&nbsp;</p>
+                            </div>
+
+
+
+
+                            <div class="col-md-4">
+                                <p><strong>CEP:</strong></p>
+                                <p>{{doacao.endereco.cep | brCep}}</p>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <p><strong>Rua,Avenida:</strong></p>
+                                <p>{{doacao.endereco.logradouro}}</p>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <p><strong>Número:</strong></p>
+                                <p>{{doacao.endereco.numero}}</p>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <p><strong>Complemento:</strong></p>
+                                <p>{{doacao.endereco.complemento}}&nbsp;</p>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <p><strong>Bairro:</strong></p>
+                                <p>{{doacao.endereco.bairro}}</p>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <p><strong>Cidade:</strong></p>
+                                <p>{{doacao.endereco.cidade}}</p>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <p><strong>UF:</strong></p>
+                                <p>{{doacao.endereco.estado}}</p>
+                            </div>
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="box-footer">
+                        <a href="/Doacao" class="btn btn-primary">voltar</a>
+                        <a class='btn btn-danger' href=""> Gerar PDF</a>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

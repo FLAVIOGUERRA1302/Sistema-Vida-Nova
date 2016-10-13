@@ -72,7 +72,8 @@
       "wwwroot/js/controllers/InformativoControl.js",
       "wwwroot/js/controllers/ChartControl.js",
       "wwwroot/js/controllers/ItemControl.js",
-      "wwwroot/js/controllers/DespesaControl.js"
+      "wwwroot/js/controllers/DespesaControl.js",
+      "wwwroot/js/controllers/DoacaoControl.js"
 
     ],
     // Optionally specify minification options

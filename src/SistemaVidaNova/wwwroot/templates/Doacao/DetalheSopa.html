@@ -1,0 +1,71 @@
+﻿  <!-- Horizontal Form -->
+<section class="content-header">
+    <h1>
+        Doação de Item para Sopa
+    </h1>
+
+
+</section>
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-11">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+
+                <form action="">
+                    <div class="box-body">
+
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <p><strong>Doador:</strong></p>
+                                <p>{{doacao.doador.nomeRazaoSocial}}</p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <p><strong>Item:</strong></p>
+                                <p>{{doacao.item.nome}}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Descrição:</strong></p>
+                                <p>{{doacao.descricao}}</p>
+                            </div>
+
+
+
+                            <div class="col-md-4">
+                                <p><strong>Data da Doação:</strong></p>
+                                <p>{{doacao.dataDaDoacao| date :'dd/MM/yyyy'}}&nbsp;</p>
+                            </div>
+
+
+
+                            <div class="col-md-4">
+                                <p><strong>Quantidade:</strong></p>
+                                <p>{{doacao.quantidade| number:2}} ({{unidadesDeMedida[doacao.item.unidadeDeMedida]}})</p>
+                            </div>
+
+                            
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="box-footer">
+                        <a href="/Doacao" class="btn btn-primary">voltar</a>
+                        <a class='btn btn-danger' href=""> Gerar PDF</a>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

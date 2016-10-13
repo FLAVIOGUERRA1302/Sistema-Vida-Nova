@@ -48,7 +48,7 @@ namespace SistemaVidaNova
             // Add framework services.
             services.AddMvc();
 
-            //var connection = @"Server=GUERRA-PC\SQLEXPRESS;Database=VidaNovaDB;Trusted_Connection=True;";
+            
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<VidaNovaContext>(options => options.UseSqlServer(connection));
 

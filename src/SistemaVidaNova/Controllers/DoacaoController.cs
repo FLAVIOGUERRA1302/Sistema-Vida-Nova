@@ -37,17 +37,20 @@ namespace SistemaVidaNova.Controllers
             return View();
         }
 
+        [Route("Doacao/Dinheiro/{a}/{b}")]
+        public IActionResult Dinheiro(string a, string b)
+        {
+
+            return View();
+        }
         
-        public IActionResult Dinheiro(string a, string b, string c)
+        [Route("Doacao/Sopa/{a}/{b}")]
+        public IActionResult Sopa(string a, string b)
         {
 
             return View();
         }
-        public IActionResult Sopa(string a, string b, string c)
-        {
-
-            return View();
-        }
+        [Route("Doacao/Obejto/{a}/{b}")]
         public IActionResult Obejto(string a, string b, string c)
         {
 
