@@ -43,6 +43,8 @@ namespace SistemaVidaNova.Models
         public DbSet<DoacaoDinheiro> DoacaoDinheiro { get; set; }
         public DbSet<DoacaoObjeto> DoacaoObjeto { get; set; }
         public DbSet<DoacaoSopa> DoacaoSopa { get; set; }
+
+        public DbSet<ModeloDeReceita> ModeloDeReceita { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -102,7 +104,12 @@ namespace SistemaVidaNova.Models
               .HasValue<DespesaAssociacao>("ASSOCIACAO")
               .HasValue<DespesaFavorecido>("FAVORECIDO")
               .HasValue<DespesaSopa>("SOPA");
-            
+
+            modelBuilder.Entity<ModeloDeReceitaItem>()
+                .HasKey(t => new { t.IdItem, t.IdModeloDeReceita });
+
+            modelBuilder.Entity<ModeloDeReceita>()
+                .HasIndex(c => c.Nome).IsUnique();
         }
 
     }

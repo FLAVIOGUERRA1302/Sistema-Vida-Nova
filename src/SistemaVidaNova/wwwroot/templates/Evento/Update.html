@@ -15,7 +15,7 @@
                     <div class="box-body">
 
                         <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-md-12">
                                 <label class="control-label">Título</label>
                                 <input type="text" class="form-control" ng-model="evento.title" required />
                             </div>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="row">
 
-                            <div class="col-xs-12">
+                            <div class="col-md-12">
 
                                 <label for="email">Descrição</label>
                                 <textarea class="form-control" ng-model="evento.descricao" required />
@@ -35,35 +35,35 @@
 
 
                         <div class="row">
-                            <div class="col-xs-2">
+                            <div class="col-md-2">
                                 <label class="control-label">Data Início</label>
                                 <input type="date" class="form-control" ng-model="evento.start" required />
                             </div>
 
-                            <div class="col-xs-2">
+                            <div class="col-md-2">
                                 <label class="control-label">Date Fim</label>
                                 <input type="date" class="form-control" ng-model="evento.end" required />
 
                             </div>
 
 
-                            <div class="col-xs-2">
+                            <div class="col-md-2">
                                 <label class="control-label">Hora Início</label>
                                 <div uib-timepicker ng-model="evento.start" hour-step="1" minute-step="5" show-meridian="false"></div>
                             </div>
 
-                            <div class="col-xs-2">
+                            <div class="col-md-2">
                                 <label class="control-label">Hora Fim</label>
                                 <div uib-timepicker ng-model="evento.end" hour-step="1" minute-step="5" show-meridian="false"></div>
 
                             </div>
-                            <div class="col-xs-2">
+                            <div class="col-md-2">
                                 <label class="control-label">Cor do Evento</label>
                                 <color-picker ng-model="evento.color" options="options"></color-picker>
 
                             </div>
 
-                            <div class="col-xs-2">
+                            <div class="col-md-2">
                                 <label class="control-label">Cor da fonte</label>
                                 <color-picker ng-model="evento.textColor " options="options"></color-picker>
 
@@ -73,7 +73,7 @@
 
                         <div class="row">
 
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 
 
                                 <label class="control-label">Voluntários</label>
@@ -116,7 +116,7 @@
                             </div>
 
 
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <label class="control-label">Interessados</label>
 
 
@@ -165,14 +165,14 @@
 
                         <div class="row">
 
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <label class="control-label">Valor arrecadado</label>
                                 <input type="text" class="form-control" ng-model="evento.valorArrecadado " required ui-money-mask/>
                             </div>
 
 
 
-                            <div class="col-xs-6">
+                            <div class="col-md-6">
                                 <label class="control-label">Relato</label>
                                 <textarea class="form-control" ng-model="evento.relato" />
                             </div>

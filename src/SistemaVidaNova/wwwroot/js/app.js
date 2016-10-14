@@ -497,6 +497,53 @@
             }
         })
 
+
+     //------------ModeloDeReceita----------
+    .when('/ModeloDeReceita', {
+        templateUrl: '/templates/ModeloDeReceita/List.html',
+        controller: 'ModeloDeReceitaControl',
+        resolve: {
+
+            modelos: function (ModeloDeReceitaService) {
+                return ModeloDeReceitaService.Read(null, 0, 10);//id,skip,take
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            }
+
+        }
+    })
+    .when('/ModeloDeReceita/Criar', {
+        templateUrl: '/templates/ModeloDeReceita/Create.html',
+        controller: 'ModeloDeReceitaCreateControl'
+
+    })
+        .when('/ModeloDeReceita/Editar/:id', {
+            templateUrl: '/templates/ModeloDeReceita/Update.html',
+            controller: 'ModeloDeReceitaUpdateControl',
+            resolve: {
+                modelo: function (ModeloDeReceitaService, $route) {
+                    return ModeloDeReceitaService.Read($route.current.params.id);
+                }
+                ,
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+    .when('/ModeloDeReceita/Visualizar/:id', {
+        templateUrl: '/templates/ModeloDeReceita/Detalhe.html',
+        controller: 'ModeloDeReceitaUpdateControl',
+        resolve: {
+            modelo: function (ModeloDeReceitaService, $route) {
+                return ModeloDeReceitaService.Read($route.current.params.id);
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            }
+        }
+    })
+
     ;
 
     $locationProvider.html5Mode(true);

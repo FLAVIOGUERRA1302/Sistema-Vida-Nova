@@ -1,0 +1,111 @@
+﻿<section class="content-header">
+    <h1>
+        Cadastrar Modelo de Receita
+    </h1>
+
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+                
+                <form method='post' ng-submit="salvar()" name="form">
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" ng-model="modelo.nome" name='nome' id="nome" required placeholder="Digite o Nome do modelo">
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label for="email">Descrição</label>
+                                <input type="text" class="form-control" ng-model="modelo.descricao" placeholder="descreva o modelo" required>
+                                <lista-erro lista="erros.Email"></lista-erro>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+
+                                <label class="control-label">Itens</label>
+                                <div class="box box-solid ">
+
+                                    <div class="box-header with-border bg-blue">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   ng-model="itemSelected"
+                                                   placeholder="Pesquise um Item para asicionar ao modelo"
+                                                   uib-typeahead="item as item.nome for item in getItens($viewValue)"
+                                                   typeahead-loading="loandingItens"
+                                                   typeahead-no-results="noResultsItem"
+                                                   class="form-control "
+                                                   typeahead-editable="false"
+                                                   typeahead-on-select="addItem($item, $model, $label, $event)">
+
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn  btn-primary" ng-click="addItem()">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </span>
+                                            <i ng-show="loandingItens" class="glyphicon glyphicon-refresh"></i>
+                                            <div ng-show="noResultsItem">
+                                                <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="row" ng-repeat="im in modelo.itens">
+                                            <div class="form-group col-md-6">
+                                                <input type="text"
+                                                       ng-model="im.item.nome" class="form-control" disabled />
+                                            </div>
+                                            <div class="form-group col-md-5">
+                                                <div class="input-group">
+
+                                                    <input type="text"
+                                                           ng-model="im.quantidade"
+                                                           placeholder="Quantidade"
+                                                           class="form-control"
+                                                           ui-number-mask="2"
+                                                           required>
+                                                    <span class="input-group-addon">{{im.item.unidadeDeMedida}}</span>
+                                                    
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a class="btn btn-danger btn-flat" href="" uib-popover="Remover do modelo" popover-trigger="'mouseenter'" ng-click="removerItem(im)"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                            </div>
+                        </div>
+
+
+                            <div class="box-footer">
+                                <a href="" go-back class="btn btn-primary">Voltar</a>
+                                <button type="reset" class="btn btn-default">Limpar Campos</button>
+                                <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
+                            </div>
+                        </div>
+
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
