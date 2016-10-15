@@ -6,7 +6,7 @@
         $scope.unidadesDeMedida = unidadesDeMedida;
         $scope.modelos = modelos;
 
-        $scope.unidadesDeMedida = unidadesDeMedida;
+        
 
         $scope.totalItems = ModeloDeReceitaService.totalItems;
         $scope.currentPage = 1;

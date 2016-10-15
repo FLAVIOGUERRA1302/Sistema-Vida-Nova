@@ -544,6 +544,52 @@
         }
     })
 
+    //------------ResultadoSopa----------
+    .when('/ResultadoSopa', {
+        templateUrl: '/templates/ResultadoSopa/List.html',
+        controller: 'ResultadoSopaControl',
+        resolve: {
+
+            resultados: function (ResultadoSopaService) {
+                return ResultadoSopaService.Read(null, 0, 10);//id,skip,take
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            }
+
+        }
+    })
+    .when('/ResultadoSopa/Criar', {
+        templateUrl: '/templates/ResultadoSopa/Create.html',
+        controller: 'ResultadoSopaCreateControl'
+
+    })
+        .when('/ResultadoSopa/Editar/:id', {
+            templateUrl: '/templates/ResultadoSopa/Update.html',
+            controller: 'ResultadoSopaUpdateControl',
+            resolve: {
+                resultado: function (ResultadoSopaService, $route) {
+                    return ResultadoSopaService.Read($route.current.params.id);
+                }
+                ,
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+    .when('/ResultadoSopa/Visualizar/:id', {
+        templateUrl: '/templates/ResultadoSopa/Detalhe.html',
+        controller: 'ResultadoSopaUpdateControl',
+        resolve: {
+            resultado: function (ResultadoSopaService, $route) {
+                return ResultadoSopaService.Read($route.current.params.id);
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            }
+        }
+    })
+
     ;
 
     $locationProvider.html5Mode(true);

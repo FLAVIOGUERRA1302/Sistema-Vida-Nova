@@ -45,6 +45,9 @@ namespace SistemaVidaNova.Models
         public DbSet<DoacaoSopa> DoacaoSopa { get; set; }
 
         public DbSet<ModeloDeReceita> ModeloDeReceita { get; set; }
+        public DbSet<ResultadoSopa> ResultadoSopa { get; set; }
+
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -110,6 +113,9 @@ namespace SistemaVidaNova.Models
 
             modelBuilder.Entity<ModeloDeReceita>()
                 .HasIndex(c => c.Nome).IsUnique();
+
+            modelBuilder.Entity<ResultadoSopaItem>()
+                .HasKey(t => new { t.IdItem, t.IdResultadoSopa });
         }
 
     }

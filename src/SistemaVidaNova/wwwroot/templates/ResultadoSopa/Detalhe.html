@@ -1,0 +1,69 @@
+﻿  <!-- Horizontal Form -->
+<section class="content-header">
+    <h1>
+        Resultado de Sopa
+    </h1>
+
+</section>
+<section class="content">
+    
+    <div class="row">
+        <div class="col-md-11">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+                
+                <form action="">
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p><strong>Nome:</strong></p>
+                                <p>{{resultado.nome}}</p>
+                            </div>
+                                                       
+
+                            <div class="col-md-4">
+                                <p><strong>Descrição:</strong></p>
+                                <p>{{resultado.descricao}}&nbsp;</p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <p><strong>Data:</strong></p>
+                                <p>{{resultado.data | date :'dd/MM/yyyy'}}&nbsp;</p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <p><strong>Listros de Sopa Produzidos:</strong></p>
+                                <p>{{resultado.litrosProduzidos | number:2}}&nbsp;</p>
+                            </div>
+
+
+
+                            <div class="col-md-6">
+                                <p><strong>Itens:</strong></p>
+                                <p ng-repeat="im in resultado.itens">{{im.item.nome}} - {{im.quantidade | number :2}}({{unidadesDeMedida[im.item.unidadeDeMedida]}})</p>
+                            </div>
+
+                            
+
+
+                            
+
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="box-footer">
+                        <a href="" go-back class="btn btn-primary">voltar</a>
+                        <a class='btn btn-danger' href=""> Gerar PDF</a>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

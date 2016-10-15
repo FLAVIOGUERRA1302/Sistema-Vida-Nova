@@ -15,17 +15,17 @@ namespace SistemaVidaNova.Api
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class ModeloDeReceitaController : Controller
+    public class ResultadoSopaController : Controller
     {
         // GET: api/values
         private VidaNovaContext _context;
-        public ModeloDeReceitaController(VidaNovaContext context)
+        public ResultadoSopaController(VidaNovaContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public IEnumerable<ModeloDeReceitaDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
+        public IEnumerable<ResultadoSopaDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
         {
 
             if (skip == null)
@@ -33,22 +33,29 @@ namespace SistemaVidaNova.Api
             if (take == null)
                 take = 1000;
 
-            IQueryable<ModeloDeReceita> query = _context.ModeloDeReceita.Include(q=>q.Itens).ThenInclude(q=>q.Item)                
-                .OrderBy(q => q.Nome);
+            IQueryable<ResultadoSopa> query = _context.ResultadoSopa
+                .Include(q=>q.Itens)
+                .ThenInclude(q=>q.Item)
+                .Include(q=>q.ModeloDeReceita)
+                .OrderByDescending(q => q.Data);
 
             if (!String.IsNullOrEmpty(filtro))
-                query = query.Where(q =>  q.Descricao.Contains(filtro) || q.Nome.Contains(filtro) );
+                query = query.Where(q =>  q.Descricao.Contains(filtro) || q.ModeloDeReceita.Nome.Contains(filtro) );
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
                         
             query = query.Skip(skip.Value).Take(take.Value);
 
-            List<ModeloDeReceitaDTO> modelos = query.Select(q => new ModeloDeReceitaDTO()
+            List<ResultadoSopaDTO> modelos = query.Select(q => new ResultadoSopaDTO()
             {
                  Id = q.Id,
-                  Nome = q.Nome,
+                     ModeloDeReceita = new ModeloDeReceitaDTOR()
+                     {
+                          Id = q.ModeloDeReceita.Id,
+                           Nome = q.ModeloDeReceita.Nome
+                     },
                    Descricao = q.Descricao,
-                   Itens = q.Itens.Select(i=> new ModeloDeReceitaItemDTO()
+                   Itens = q.Itens.Select(i=> new ResultadoSopaItemDTO()
                    {
                         Item = new ItemDTOR()
                         {
@@ -57,7 +64,9 @@ namespace SistemaVidaNova.Api
                                UnidadeDeMedida = i.Item.UnidadeDeMedida
                         },
                          Quantidade = i.Quantidade
-                   }).ToList()
+                   }).ToList(),
+                    Data = q.Data,
+                     LitrosProduzidos = q.LitrosProduzidos
             }).ToList();
 
 
@@ -68,16 +77,24 @@ namespace SistemaVidaNova.Api
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            ModeloDeReceita q = _context.ModeloDeReceita.Include(i => i.Itens).ThenInclude(i => i.Item).SingleOrDefault(i => i.Id == id);
+            ResultadoSopa q = _context.ResultadoSopa
+                .Include(r => r.Itens)
+                .ThenInclude(r => r.Item)
+                .Include(r => r.ModeloDeReceita)
+                .SingleOrDefault(r => r.Id == id);
             if (q == null)
                 return new NotFoundResult();
 
-            ModeloDeReceitaDTO dto = new ModeloDeReceitaDTO()
+            ResultadoSopaDTO dto = new ResultadoSopaDTO()
             {
                 Id = q.Id,
-                Nome = q.Nome,
+                 ModeloDeReceita = new ModeloDeReceitaDTOR()
+                 {
+                      Id=q.ModeloDeReceita.Id,
+                       Nome = q.ModeloDeReceita.Nome
+                 },
                 Descricao = q.Descricao,
-                Itens = q.Itens.Select(i => new ModeloDeReceitaItemDTO()
+                Itens = q.Itens.Select(i => new ResultadoSopaItemDTO()
                 {
                     Item = new ItemDTOR()
                     {
@@ -86,29 +103,42 @@ namespace SistemaVidaNova.Api
                         UnidadeDeMedida = i.Item.UnidadeDeMedida
                     },
                     Quantidade = i.Quantidade
-                }).ToList()
+                }).ToList(),
+                 Data=q.Data,
+                  LitrosProduzidos =q.LitrosProduzidos
             };
             return new ObjectResult(dto);
         }
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]ModeloDeReceitaDTO dto)
+        public IActionResult Post([FromBody]ResultadoSopaDTO dto)
         {
             if (ModelState.IsValid)
             {
-                if(dto.Itens.Count ==0)
+                //corrige fuso horario do js
+                dto.Data = dto.Data.AddHours(-dto.Data.Hour);
+
+                if (dto.Itens.Count ==0)
                 {
                     ModelState.AddModelError("Itens", "O modelo precisa ter itens");
                     return new BadRequestObjectResult(ModelState);
                 }
-
-                ModeloDeReceita modelo = new ModeloDeReceita()
+                ModeloDeReceita mr = _context.ModeloDeReceita.SingleOrDefault(q => q.Id == dto.ModeloDeReceita.Id);
+                if (mr == null)
                 {
-                    Nome = dto.Nome,
+                    ModelState.AddModelError("ModeloDeReceita", "Modelo de receita inexitente");
+                    return new BadRequestObjectResult(ModelState);
+                }
+
+                ResultadoSopa resultadoSopa = new ResultadoSopa()
+                {
+                    ModeloDeReceita = mr,
                     Descricao = dto.Descricao,
-                    Itens = new List<ModeloDeReceitaItem>()
-               };
+                    Data = dto.Data,
+                    LitrosProduzidos = dto.LitrosProduzidos,
+                    Itens = new List<ResultadoSopaItem>()
+                };
 
 
                 var itensNovos = from i in _context.Item
@@ -127,7 +157,7 @@ namespace SistemaVidaNova.Api
 
                 foreach (var i in itensNovos)
                 {
-                    modelo.Itens.Add(new ModeloDeReceitaItem
+                    resultadoSopa.Itens.Add(new ResultadoSopaItem
                     {
                         Item = i.item,
                         Quantidade = i.quantidade
@@ -139,10 +169,10 @@ namespace SistemaVidaNova.Api
 
                 try
                 {
-                    _context.ModeloDeReceita.Add(modelo);
+                    _context.ResultadoSopa.Add(resultadoSopa);
                 
                     _context.SaveChanges();
-                    dto.Id = modelo.Id;
+                    dto.Id = resultadoSopa.Id;
                     return new ObjectResult(dto);
                 }
                 catch {
@@ -160,23 +190,37 @@ namespace SistemaVidaNova.Api
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]ModeloDeReceitaDTO dto)
+        public IActionResult Put(int id, [FromBody]ResultadoSopaDTO dto)
         {
             if (id != dto.Id)
                 return new BadRequestResult();
             if (ModelState.IsValid)
             {
-
+                //corrige fuso horario do js
+                dto.Data = dto.Data.AddHours(-dto.Data.Hour);
                 if (dto.Itens.Count == 0)
                 {
                     ModelState.AddModelError("Itens", "O modelo precisa ter itens");
                     return new BadRequestObjectResult(ModelState);
                 }
-                
-                ModeloDeReceita modelo = _context.ModeloDeReceita.Include(q=>q.Itens).ThenInclude(q=>q.Item).SingleOrDefault(q => q.Id == id);
 
-                modelo.Nome = dto.Nome;
-                modelo.Descricao = dto.Descricao;
+                ModeloDeReceita mr = _context.ModeloDeReceita.SingleOrDefault(q => q.Id == dto.ModeloDeReceita.Id);
+                if (mr == null)
+                {
+                    ModelState.AddModelError("ModeloDeReceita", "Modelo de receita inexitente");
+                    return new BadRequestObjectResult(ModelState);
+                }
+
+                ResultadoSopa resultadoSopa = _context.ResultadoSopa
+                    .Include(q => q.Itens)
+                    .ThenInclude(q => q.Item)
+                    .Include(q=>q.ModeloDeReceita)
+                    .SingleOrDefault(q => q.Id == id);
+
+                resultadoSopa.ModeloDeReceita = mr;
+                resultadoSopa.Descricao = dto.Descricao;
+                resultadoSopa.Data = dto.Data;
+                resultadoSopa.LitrosProduzidos = dto.LitrosProduzidos;
 
                 var itensNovos = from i in _context.Item
                             join d in dto.Itens on i.Id equals d.Item.Id
@@ -191,21 +235,21 @@ namespace SistemaVidaNova.Api
                     ModelState.AddModelError("Itens", "A lista de itens contém itens inválidos");
                     return new BadRequestObjectResult(ModelState);
                 }
-                List<ModeloDeReceitaItem> itensCorretos = new List<ModeloDeReceitaItem>();
+                List<ResultadoSopaItem> itensCorretos = new List<ResultadoSopaItem>();
 
                 foreach(var i in itensNovos)
                 {
-                    var existente = modelo.Itens.SingleOrDefault(q => q.IdItem == i.item.Id);
+                    var existente = resultadoSopa.Itens.SingleOrDefault(q => q.IdItem == i.item.Id);
                     if (existente == null)
                     {
 
-                        ModeloDeReceitaItem novoItem =new ModeloDeReceitaItem
+                        ResultadoSopaItem novoItem =new ResultadoSopaItem
                         {
                             Item = i.item,
                             Quantidade = i.quantidade
                         };
 
-                        modelo.Itens.Add(novoItem);
+                        resultadoSopa.Itens.Add(novoItem);
                         itensCorretos.Add(novoItem);
                     }
                     else
@@ -216,8 +260,8 @@ namespace SistemaVidaNova.Api
                 }
 
                 //remove os incorretos
-                foreach (var item in modelo.Itens.Except(itensCorretos).ToArray())
-                    modelo.Itens.Remove(item);
+                foreach (var item in resultadoSopa.Itens.Except(itensCorretos).ToArray())
+                    resultadoSopa.Itens.Remove(item);
 
 
             
@@ -244,8 +288,8 @@ namespace SistemaVidaNova.Api
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            ModeloDeReceita dd = _context.ModeloDeReceita.Single(q => q.Id == id);
-            _context.ModeloDeReceita.Remove(dd);
+            ResultadoSopa dd = _context.ResultadoSopa.Single(q => q.Id == id);
+            _context.ResultadoSopa.Remove(dd);
             try
             {
                 _context.SaveChanges();
@@ -253,8 +297,7 @@ namespace SistemaVidaNova.Api
             }
             catch
             {
-                ModelState.AddModelError("ResultadoSopa", "Não é possível deletar. Este modelo já foi aplicado a pelo menos um Resultado de Sopa");
-                return new BadRequestObjectResult(ModelState);
+                return new BadRequestResult();
             }
         }
     }

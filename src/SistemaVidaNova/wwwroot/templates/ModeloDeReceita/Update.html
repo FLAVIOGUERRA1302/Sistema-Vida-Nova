@@ -17,13 +17,14 @@
                             <div class="col-md-6">
                                 <label for="nome">Nome</label>
                                 <input type="text" class="form-control" ng-model="modelo.nome" name='nome' id="nome" required placeholder="Digite o Nome do modelo">
+                                <lista-erro lista="erros.Nome"></lista-erro>
                             </div>
 
                             <div class="col-md-6">
 
                                 <label for="email">Descrição</label>
                                 <input type="text" class="form-control" ng-model="modelo.descricao" placeholder="descreva o modelo" required>
-                                <lista-erro lista="erros.Email"></lista-erro>
+                                <lista-erro lista="erros.Descricao"></lista-erro>
                             </div>
 
                         </div>
@@ -40,7 +41,7 @@
                                         <div class="input-group">
                                             <input type="text"
                                                    ng-model="itemSelected"
-                                                   placeholder="Pesquise um Item para asicionar ao modelo"
+                                                   placeholder="Pesquise um Item para adicionar ao modelo"
                                                    uib-typeahead="item as item.nome for item in getItens($viewValue)"
                                                    typeahead-loading="loandingItens"
                                                    typeahead-no-results="noResultsItem"
@@ -88,6 +89,7 @@
                                     </div>
                                     <!-- /.box-body -->
                                 </div>
+                                <lista-erro lista="erros.Itens"></lista-erro>
                             </div>
                         </div>
 

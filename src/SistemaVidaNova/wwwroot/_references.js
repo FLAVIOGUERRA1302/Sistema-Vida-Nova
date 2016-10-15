@@ -11,6 +11,7 @@
 /// <reference path="js/controllers/InteressadoControl.js" />
 /// <reference path="js/controllers/itemcontrol.js" />
 /// <reference path="js/controllers/modelodereceitacontrol.js" />
+/// <reference path="js/controllers/resultadosopacontrol.js" />
 /// <reference path="js/controllers/voluntariocontrol.js" />
 /// <reference path="js/date.js" />
 /// <reference path="js/directives/Directives.js" />

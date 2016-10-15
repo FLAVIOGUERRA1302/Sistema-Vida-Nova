@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SistemaVidaNova.Models
 {
-    public class ModeloDeReceitaItem
+    public class ResultadoSopaItem
     {
         
         [Required]
@@ -17,10 +17,10 @@ namespace SistemaVidaNova.Models
         public Item Item { get; set; }
 
         [Required]
-        public int IdModeloDeReceita { get; set; }
+        public int IdResultadoSopa { get; set; }
 
-        [ForeignKey("IdModeloDeReceita")]
-        public ModeloDeReceita ModeloDeReceita  { get; set; }
+        [ForeignKey("IdResultadoSopa")]
+        public ResultadoSopa ResultadoSopa { get; set; }
 
         [Required]
         [Range(0.0, Double.MaxValue)]//não pode doar valor negativo

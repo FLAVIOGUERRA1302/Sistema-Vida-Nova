@@ -1373,3 +1373,103 @@ app.factory('ModeloDeReceitaService', ["$http", "$q", function ($http, $q) {
 
 
 }]);
+
+app.factory('ResultadoSopaService', ["$http", "$q", function ($http, $q) {
+    var s = {};
+
+    s.Create = function (resultado) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/ResultadoSopa',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(resultado),
+            dataType: 'json'
+        };
+
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Read = function (id, skip, take, filtro) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/ResultadoSopa/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.Update = function (resultado) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'PUT',
+            url: '/api/ResultadoSopa/' + resultado.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(resultado),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Delete = function (resultado) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'DELETE',
+            url: '/api/ResultadoSopa/' + resultado.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    return s;
+
+
+}]);
