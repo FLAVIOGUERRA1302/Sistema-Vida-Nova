@@ -590,6 +590,47 @@
         }
     })
 
+    //------------Estoque----------
+    .when('/Estoque', {
+        templateUrl: '/templates/Estoque/List.html',
+        controller: 'EstoqueControl',
+        resolve: {
+
+            itens: function (EstoqueService) {
+                return EstoqueService.Read(null, 0, 10);//id,skip,take
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            }
+        }
+    })
+        
+            .when('/Estoque/Ajustar/:id', {
+                templateUrl: '/templates/Estoque/Update.html',
+                controller: 'EstoqueUpdateControl',
+                resolve: {
+                    item: function (EstoqueService, $route) {
+                        return EstoqueService.Read($route.current.params.id);
+                    },
+                    loadingDialod: function (ngDialog) {
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                    }
+                }
+            })
+        .when('/Estoque/Visualizar/:id', {
+            templateUrl: '/templates/Estoque/Detalhe.html',
+            controller: 'EstoqueUpdateControl',
+            resolve: {
+                item: function (EstoqueService, $route) {
+                    return EstoqueService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+
+
     ;
 
     $locationProvider.html5Mode(true);

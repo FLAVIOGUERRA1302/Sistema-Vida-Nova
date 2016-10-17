@@ -49,7 +49,7 @@ namespace SistemaVidaNova.Api
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
 
-            List<ItemDTO> interessados = query
+            List<ItemDTO> itens = query
                 .Skip(skip.Value)
                 .Take(take.Value).Select(v => new ItemDTO
                 {
@@ -61,7 +61,7 @@ namespace SistemaVidaNova.Api
                     
                 }).ToList();
 
-              return interessados;
+              return itens;
         }
 
         // GET api/values/5

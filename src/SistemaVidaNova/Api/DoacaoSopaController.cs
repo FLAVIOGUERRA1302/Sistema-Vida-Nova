@@ -8,6 +8,8 @@ using SistemaVidaNova.Models;
 using SistemaVidaNova.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using SistemaVidaNova.Services;
+using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,9 +21,13 @@ namespace SistemaVidaNova.Api
     {
         // GET: api/values
         private VidaNovaContext _context;
-        public DoacaoSopaController(VidaNovaContext context)
+        private readonly IEstoqueManager _estoqueManager;
+        private readonly UserManager<Usuario> _userManager;
+        public DoacaoSopaController(VidaNovaContext context, IEstoqueManager estoqueManager, UserManager<Usuario> userManager)
         {
             _context = context;
+            _estoqueManager = estoqueManager;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -102,19 +108,19 @@ namespace SistemaVidaNova.Api
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]DoacaoSopaDTO dto)
+        public async Task<IActionResult> Post([FromBody]DoacaoSopaDTO dto)
         {
             if (ModelState.IsValid)
             {
-                
+
                 Doador doador = _context.Doador.SingleOrDefault(q => q.CodDoador == dto.Doador.Id);
-                if(doador == null)
+                if (doador == null)
                 {
                     ModelState.AddModelError("Doador", "Doador inválido");
                     return new BadRequestObjectResult(ModelState);
                 }
 
-                Item item = _context.Item.SingleOrDefault(q => q.Id == dto.Item.Id && q.Destino=="SOPA");
+                Item item = _context.Item.SingleOrDefault(q => q.Id == dto.Item.Id && q.Destino == "SOPA");
                 if (item == null)
                 {
                     ModelState.AddModelError("Item", "Item inválido");
@@ -135,27 +141,32 @@ namespace SistemaVidaNova.Api
                 try
                 {
                     _context.DoacaoSopa.Add(novo);
-                
+
                     _context.SaveChanges();
+                    //atualiza o estoque
+                    Usuario usuario = await _userManager.GetUserAsync(HttpContext.User);                    
+                    _estoqueManager.DarEntrada(usuario, item, novo.Quantidade);
+
                     dto.Id = novo.Id;
                     return new ObjectResult(dto);
                 }
-                catch {
-                    
+                catch
+                {
+
                     return new BadRequestObjectResult(ModelState);
                 }
-                
+
 
 
             }
-            
-                return new BadRequestObjectResult(ModelState);
-            
+
+            return new BadRequestObjectResult(ModelState);
+
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]DoacaoSopaDTO dto)
+        public async Task<IActionResult> Put(int id, [FromBody]DoacaoSopaDTO dto)
         {
             if (id != dto.Id)
                 return new BadRequestResult();
@@ -177,7 +188,7 @@ namespace SistemaVidaNova.Api
                     ModelState.AddModelError("Item", "Item inválido");
                     return new BadRequestObjectResult(ModelState);
                 }
-
+                double diferencaQuantidade = dd.Quantidade - dto.Quantidade;
                 dd.Doador = doador;
                 dd.Data = dto.DataDaDoacao;
                 dd.Descricao = dto.Descricao;
@@ -188,10 +199,19 @@ namespace SistemaVidaNova.Api
                 try
                 {
                     _context.SaveChanges();
+                    Usuario usuario = await _userManager.GetUserAsync(HttpContext.User);
+
+                    //atualiza o estoque
+                    if (diferencaQuantidade>0)
+                        _estoqueManager.DarSaida(usuario, item, diferencaQuantidade);
+                    else if (diferencaQuantidade < 0)
+                        _estoqueManager.DarEntrada(usuario, item, -diferencaQuantidade);
+
+
                 }
                 catch
                 {
-                    
+
                     return new BadRequestObjectResult(ModelState);
                 }
 
@@ -205,13 +225,19 @@ namespace SistemaVidaNova.Api
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             DoacaoSopa ds = _context.DoacaoSopa.Single(q => q.Id == id);
+            double quantidade = ds.Quantidade;
+            Item item = ds.Item;
             _context.DoacaoSopa.Remove(ds);
             try
             {
                 _context.SaveChanges();
+                //atualiza o estoque
+                Usuario usuario = await _userManager.GetUserAsync(HttpContext.User);                               
+                _estoqueManager.DarSaida(usuario, item, quantidade);
+                
                 return new NoContentResult();
             }
             catch

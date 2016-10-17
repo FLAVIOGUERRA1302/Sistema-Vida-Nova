@@ -58,6 +58,7 @@ namespace SistemaVidaNova
 
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<IEstoqueManager, EstoqueService>();
 
             services.AddDeveloperIdentityServer()
                 .AddInMemoryScopes(Config.GetScopes())

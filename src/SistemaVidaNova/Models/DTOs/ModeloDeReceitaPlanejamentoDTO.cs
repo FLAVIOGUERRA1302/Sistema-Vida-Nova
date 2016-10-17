@@ -7,18 +7,12 @@ using System.Threading.Tasks;
 
 namespace SistemaVidaNova.Models.DTOs
 {
-    public class ModeloDeReceitaDTOR
+    public class ModeloDeReceitaPlanejamentoDTO
     {
 
         
-        public int Id { get; set; }
-                
+        public int Id { get; set; }                        
         
-        public string Nome { get; set; }
-
-        
-        public string Descricao { get; set; }
-
-        
+        public double Quantidade { get; set; }
     }
 }

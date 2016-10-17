@@ -45,6 +45,9 @@ namespace SistemaVidaNova.Models
         public DbSet<DoacaoSopa> DoacaoSopa { get; set; }
 
         public DbSet<ModeloDeReceita> ModeloDeReceita { get; set; }
+        public DbSet<ModeloDeReceitaItem> ModeloDeReceitaItem { get; set; }
+
+        
         public DbSet<ResultadoSopa> ResultadoSopa { get; set; }
 
         
@@ -116,6 +119,13 @@ namespace SistemaVidaNova.Models
 
             modelBuilder.Entity<ResultadoSopaItem>()
                 .HasKey(t => new { t.IdItem, t.IdResultadoSopa });
+
+
+            modelBuilder.Entity<Item>()
+                .Property(b => b.QuantidadeEmEstoque)
+                .HasDefaultValue(0.0d);
+
+
         }
 
     }

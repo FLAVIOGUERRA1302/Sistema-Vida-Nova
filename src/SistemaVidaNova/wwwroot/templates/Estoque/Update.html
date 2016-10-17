@@ -1,0 +1,66 @@
+﻿<section class="content-header">
+    <h1>
+        Ajutar item em estoque
+    </h1>
+
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+                
+                <form method='post' ng-submit="salvar()" name="form">
+                    <div class="box-body">
+
+                        <div class="row">
+
+
+                            
+                            <div class="col-md-4">
+                                <label for="nome">Item</label>
+                                <input type="text" class="form-control" ng-model="item.nome" name='nome' id="nome" disabled placeholder="Item" >
+                                <lista-erro lista="erros.Item"></lista-erro>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="um">Unidade de Medida</label>
+                                <input type="text" class="form-control" value="{{unidadesDeMedida[item.unidadeDeMedida]}}"  disabled placeholder="unidade de medida" >
+                                <lista-erro lista="erros.UnidadeDeMedida"></lista-erro>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="um">Quantidade</label>
+                                <input type="text"
+                                       ng-model="item.quantidade"
+                                       placeholder="quantidade"
+                                       class="form-control "
+                                       required
+                                       ui-number-mask="2"
+                                       ui-negative-number>
+                                <lista-erro lista="erros.Quantidade"></lista-erro>
+                            </div>
+
+
+
+                           
+
+
+
+                        </div>
+
+                        <div class="box-footer">
+                            <a href="" go-back class="btn btn-primary">voltar</a>
+                            <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
+                        </div>
+                    </div>
+
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>

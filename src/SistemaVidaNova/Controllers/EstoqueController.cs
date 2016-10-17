@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace SistemaVidaNova.Controllers
 {
     [Authorize]
-    public class DespesaController : Controller
+    public class EstoqueController : Controller
     {
         // GET: /<controller>/
         
@@ -32,27 +32,6 @@ namespace SistemaVidaNova.Controllers
         }
 
         public IActionResult Editar(int id)
-        {
-
-            return View();
-        }
-
-        [Route("Despesa/Associacao/{a}/{b}")]
-        public IActionResult Associacao(string a, string b)
-        {
-
-            return View();
-        }
-
-        [Route("Despesa/Sopa/{a}/{b}")]
-        public IActionResult Sopa(string a, string b)
-        {
-
-            return View();
-        }
-
-        [Route("Despesa/Favorecido/{a}/{b}")]
-        public IActionResult Favorecido(string a, string b)
         {
 
             return View();

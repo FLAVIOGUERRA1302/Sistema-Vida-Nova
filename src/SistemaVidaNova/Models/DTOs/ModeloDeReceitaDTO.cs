@@ -21,5 +21,7 @@ namespace SistemaVidaNova.Models.DTOs
         [StringLength(200)]
         public string Descricao { get; set; }
         public List<ModeloDeReceitaItemDTO> Itens { get; set; }
+
+        public double Quantidade { get; set; }
     }
 }

@@ -8,6 +8,8 @@ using SistemaVidaNova.Models;
 using SistemaVidaNova.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using SistemaVidaNova.Services;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,9 +21,13 @@ namespace SistemaVidaNova.Api
     {
         // GET: api/values
         private VidaNovaContext _context;
-        public ResultadoSopaController(VidaNovaContext context)
+        private readonly UserManager<Usuario> _userManager;
+        private readonly IEstoqueManager _estoqueManager;
+        public ResultadoSopaController(VidaNovaContext context, UserManager<Usuario> userManager, IEstoqueManager estoqueManager)
         {
             _context = context;
+            _userManager = userManager;
+            _estoqueManager = estoqueManager;
         }
 
         [HttpGet]
@@ -112,14 +118,14 @@ namespace SistemaVidaNova.Api
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]ResultadoSopaDTO dto)
+        public async Task<IActionResult> Post([FromBody]ResultadoSopaDTO dto)
         {
             if (ModelState.IsValid)
             {
                 //corrige fuso horario do js
                 dto.Data = dto.Data.AddHours(-dto.Data.Hour);
 
-                if (dto.Itens.Count ==0)
+                if (dto.Itens.Count == 0)
                 {
                     ModelState.AddModelError("Itens", "O modelo precisa ter itens");
                     return new BadRequestObjectResult(ModelState);
@@ -155,6 +161,7 @@ namespace SistemaVidaNova.Api
                     return new BadRequestObjectResult(ModelState);
                 }
 
+                Dictionary<Item, double> dicEstoque = new Dictionary<Item, double>();//para atualizar o estoque
                 foreach (var i in itensNovos)
                 {
                     resultadoSopa.Itens.Add(new ResultadoSopaItem
@@ -162,6 +169,8 @@ namespace SistemaVidaNova.Api
                         Item = i.item,
                         Quantidade = i.quantidade
                     });
+
+                    dicEstoque.Add(i.item, i.quantidade);
                 }
 
 
@@ -170,27 +179,34 @@ namespace SistemaVidaNova.Api
                 try
                 {
                     _context.ResultadoSopa.Add(resultadoSopa);
-                
+
                     _context.SaveChanges();
+
+                    Usuario usuario = await _userManager.GetUserAsync(HttpContext.User);
+
+                    //atualiza o estoque
+                    _estoqueManager.DarSaida(usuario, dicEstoque);
+
                     dto.Id = resultadoSopa.Id;
                     return new ObjectResult(dto);
                 }
-                catch {
-                    
+                catch
+                {
+
                     return new BadRequestObjectResult(ModelState);
                 }
-                
+
 
 
             }
-            
-                return new BadRequestObjectResult(ModelState);
-            
+
+            return new BadRequestObjectResult(ModelState);
+
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]ResultadoSopaDTO dto)
+        public async Task<IActionResult> Put(int id, [FromBody]ResultadoSopaDTO dto)
         {
             if (id != dto.Id)
                 return new BadRequestResult();
@@ -214,7 +230,7 @@ namespace SistemaVidaNova.Api
                 ResultadoSopa resultadoSopa = _context.ResultadoSopa
                     .Include(q => q.Itens)
                     .ThenInclude(q => q.Item)
-                    .Include(q=>q.ModeloDeReceita)
+                    .Include(q => q.ModeloDeReceita)
                     .SingleOrDefault(q => q.Id == id);
 
                 resultadoSopa.ModeloDeReceita = mr;
@@ -222,28 +238,30 @@ namespace SistemaVidaNova.Api
                 resultadoSopa.Data = dto.Data;
                 resultadoSopa.LitrosProduzidos = dto.LitrosProduzidos;
 
+
                 var itensNovos = from i in _context.Item
-                            join d in dto.Itens on i.Id equals d.Item.Id
-                            where i.Destino == "SOPA"
-                            select new
-                            {
-                                item = i,
-                                quantidade = d.Quantidade
-                            };
-                if(itensNovos.Count()!= dto.Itens.Count)
+                                 join d in dto.Itens on i.Id equals d.Item.Id
+                                 where i.Destino == "SOPA"
+                                 select new
+                                 {
+                                     item = i,
+                                     quantidade = d.Quantidade
+                                 };
+                if (itensNovos.Count() != dto.Itens.Count)
                 {
                     ModelState.AddModelError("Itens", "A lista de itens contém itens inválidos");
                     return new BadRequestObjectResult(ModelState);
                 }
                 List<ResultadoSopaItem> itensCorretos = new List<ResultadoSopaItem>();
-
-                foreach(var i in itensNovos)
+                Dictionary<Item, double> dicEstoqueSaida = new Dictionary<Item, double>();//para atualizar o estoque
+                Dictionary<Item, double> dicEstoqueEntrada = new Dictionary<Item, double>();//para atualizar o estoque
+                foreach (var i in itensNovos)
                 {
                     var existente = resultadoSopa.Itens.SingleOrDefault(q => q.IdItem == i.item.Id);
                     if (existente == null)
                     {
 
-                        ResultadoSopaItem novoItem =new ResultadoSopaItem
+                        ResultadoSopaItem novoItem = new ResultadoSopaItem
                         {
                             Item = i.item,
                             Quantidade = i.quantidade
@@ -251,9 +269,21 @@ namespace SistemaVidaNova.Api
 
                         resultadoSopa.Itens.Add(novoItem);
                         itensCorretos.Add(novoItem);
+                        //para dar saida no estoque 
+                        dicEstoqueSaida.Add(i.item, i.quantidade);
                     }
                     else
                     {
+                        //se alterou o quantidade do item necessita alterar o estoque
+                        double diferenca = existente.Quantidade - i.quantidade;
+                        if (diferenca> 0)
+                            dicEstoqueEntrada.Add(existente.Item, diferenca);
+                        if (diferenca < 0)
+                            dicEstoqueSaida.Add(existente.Item, -diferenca);
+
+
+
+
                         existente.Quantidade = i.quantidade;
                         itensCorretos.Add(existente);
                     }
@@ -261,18 +291,29 @@ namespace SistemaVidaNova.Api
 
                 //remove os incorretos
                 foreach (var item in resultadoSopa.Itens.Except(itensCorretos).ToArray())
+                {
+                    //para adiciona novamente no estoque os itens q foram removido do resultado
+                    dicEstoqueEntrada.Add(item.Item, item.Quantidade);
                     resultadoSopa.Itens.Remove(item);
 
+                }
 
-            
+
+
 
                 try
                 {
                     _context.SaveChanges();
+
+                    Usuario usuario = await _userManager.GetUserAsync(HttpContext.User);
+
+                    //atualiza o estoque
+                    _estoqueManager.DarSaida(usuario, dicEstoqueSaida);
+                    _estoqueManager.DarEntrada(usuario, dicEstoqueEntrada);
                 }
                 catch
                 {
-                
+
                     return new BadRequestObjectResult(ModelState);
                 }
 
@@ -286,13 +327,24 @@ namespace SistemaVidaNova.Api
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            ResultadoSopa dd = _context.ResultadoSopa.Single(q => q.Id == id);
+            ResultadoSopa dd = _context.ResultadoSopa.Include(q=>q.Itens).ThenInclude(q=>q.Item).Single(q => q.Id == id);
+            Dictionary<Item, double> dicEstoque = new Dictionary<Item, double>();
+            foreach(var i in dd.Itens)
+            {
+                dicEstoque.Add(i.Item, i.Quantidade);
+            }
             _context.ResultadoSopa.Remove(dd);
             try
             {
                 _context.SaveChanges();
+
+                Usuario usuario = await _userManager.GetUserAsync(HttpContext.User);
+
+                //atualiza o estoque                
+                _estoqueManager.DarEntrada(usuario, dicEstoque);
+
                 return new NoContentResult();
             }
             catch

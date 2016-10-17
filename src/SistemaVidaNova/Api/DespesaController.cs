@@ -16,6 +16,7 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Net.Http;
+using SistemaVidaNova.Services;
 
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -28,14 +29,18 @@ namespace SistemaVidaNova.Api
     {
         private VidaNovaContext _context;
         private readonly UserManager<Usuario> _userManager;
-        
+        private readonly IEstoqueManager _estoqueManager;
+
         public DespesaController(
             VidaNovaContext context,
-            UserManager<Usuario> userManager)
+            UserManager<Usuario> userManager,
+            IEstoqueManager estoqueManager)
         {
             _context = context;
             _userManager = userManager;
-            
+            _estoqueManager = estoqueManager;
+
+
         }
 
         // GET: api/values
@@ -348,6 +353,9 @@ namespace SistemaVidaNova.Api
                             };
                             _context.DespesaSopa.Add(ds);
                             _context.SaveChanges();
+                            //atualiza o estoque
+                            
+                            _estoqueManager.DarEntrada(user, isopa, ds.Quantidade);
                             dto.Id = ds.Id;
                         }
                         catch (Exception e)
@@ -390,6 +398,7 @@ namespace SistemaVidaNova.Api
                     ModelState.AddModelError("Item", "Item inválido");
                     return new BadRequestObjectResult(ModelState);
                 }
+                double diferencaQuantidade = despesa.Quantidade - dto.Quantidade;
                 despesa.Item = item;
                 despesa.Quantidade = dto.Quantidade;
                 despesa.ValorUnitario = dto.ValorUnitario;
@@ -433,6 +442,13 @@ namespace SistemaVidaNova.Api
                     try
                     {
                         _context.SaveChanges();
+                        //atualiza o estoque
+                        if (diferencaQuantidade > 0)
+                            _estoqueManager.DarSaida(user, item, diferencaQuantidade);
+                        else if (diferencaQuantidade < 0)
+                            _estoqueManager.DarEntrada(user, item, -diferencaQuantidade);
+
+
                         return new ObjectResult(dto);
                     }
                     catch (Exception e)
@@ -455,14 +471,19 @@ namespace SistemaVidaNova.Api
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Despesa doador = _context.Despesa.Single(q => q.Id == id);            
-            _context.Despesa.Remove(doador);
+            Despesa d = _context.Despesa.Single(q => q.Id == id);
+            Item item = d.Item;
+            double quantidade = d.Quantidade;
+            _context.Despesa.Remove(d);
 
             try
             {
                 _context.SaveChanges();
+                //atualiza o estoque
+                Usuario usuario = await _userManager.GetUserAsync(HttpContext.User);
+                _estoqueManager.DarSaida(usuario, item, quantidade);
                 return new NoContentResult();
             }
             catch

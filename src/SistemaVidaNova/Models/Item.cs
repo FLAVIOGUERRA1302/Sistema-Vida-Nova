@@ -24,6 +24,9 @@ namespace SistemaVidaNova.Models
         [StringLength(10)]
         public string UnidadeDeMedida { get; set; }
 
+        [Required]
+        public double QuantidadeEmEstoque { get; set; }
+
     }
 
     public class ItemAssociacao : Item

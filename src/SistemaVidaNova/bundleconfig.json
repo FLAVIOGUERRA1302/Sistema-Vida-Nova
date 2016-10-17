@@ -75,7 +75,8 @@
       "wwwroot/js/controllers/DespesaControl.js",
       "wwwroot/js/controllers/DoacaoControl.js",
       "wwwroot/js/controllers/ModeloDeReceitaControl.js",
-      "wwwroot/js/controllers/ResultadoSopaControl.js"
+      "wwwroot/js/controllers/ResultadoSopaControl.js",
+      "wwwroot/js/controllers/EstoqueControl.js"
 
 
     ],
