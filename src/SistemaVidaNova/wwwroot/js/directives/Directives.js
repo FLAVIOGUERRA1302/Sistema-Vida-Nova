@@ -53,3 +53,54 @@ app.directive('goBack', ['$window',function ($window) {
     }
 }]);
 
+
+app.directive('echart', ['theme',  function (theme) {
+    return {
+        restrict: 'EA',
+        template: '<div></div>',
+        scope: {
+            
+            options: '=?',
+            tema: '=?'
+        },
+        link: function (scope, element, attrs) {
+            var ndWrapper = element.find('div')[0],
+            ndParent = element.parent()[0],
+            parentWidth = ndParent.clientWidth,
+            parentHeight = ndParent.clientHeight,
+            width, height, chart;
+
+            function getSizes() {
+                width =  parseInt(attrs.width) || parentWidth || 320;
+                height = parseInt(attrs.height) || parentHeight || 240;
+
+                ndWrapper.style.width = width + 'px';
+                ndWrapper.style.height = height + 'px';
+            }
+
+            function aplicarOptions() {
+                if (scope.options) {
+                    getSizes();
+                    if (!chart) {
+                        chart = echarts.init(ndWrapper, theme.get(scope.tema || 'macarons'));
+                    }
+                    chart.clear();
+                    chart.setOption(scope.options);
+                    chart.resize();
+                }
+            }
+
+            scope.$watch('options', function (newValue, oldValue) {
+                aplicarOptions();
+            });
+            
+
+        }
+
+
+    }
+}]);
+
+
+
+

@@ -1539,3 +1539,35 @@ app.factory('EstoqueService', ["$http", "$q", function ($http, $q) {
 
 
 }]);
+
+app.factory('PlanejamentoService', ["$http", "$q", function ($http, $q) {
+    var s = {};    
+    s.Consulta = function (modelos) {
+        var m = [];
+        for (var i = 0; i < modelos.length; i++)
+            m.push({ id: modelos[i].modelo.id, quantidade: modelos[i].quantidade });
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/Planejamento',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(m),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+
+
+    return s;
+
+
+}]);

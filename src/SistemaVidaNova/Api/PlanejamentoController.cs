@@ -48,29 +48,21 @@ namespace SistemaVidaNova.Api
                                 quantidadeNecessaria = g.Sum(x=>x.quantidade)
                             };
 
+                Dictionary<string, double> dic = new Dictionary<string, double>();
 
-                ChartDTO chart = new ChartDTO();
-                SerieDTO serie = new SerieDTO()
-                {
-                    Name = "Despesas",
-                    Type = "bar",
-                    datapoints = new List<IDataPoint>()
-                };
-                chart.Data.Add(serie);
+                
                 foreach (var q in query)
                 {
                     double quantidade = Math.Floor(q.item.QuantidadeEmEstoque / q.quantidadeNecessaria);
 
-                    serie.datapoints.Add(new DataPointString()
-                    {
-                        x = q.item.Nome,
-                        y = quantidade
-                    });
+
+
+                    dic.Add(q.item.Nome, quantidade);
                 }
 
 
 
-                return new ObjectResult(chart);
+                return new ObjectResult(dic);
 
             }            
             return new BadRequestObjectResult(ModelState);

@@ -117,6 +117,11 @@
         });
     }
 
+    $scope.$watch('tipo', function (newValue, oldValue) {
+        if (newValue != oldValue)
+            $scope.$broadcast('tipo', $scope.tipo);
+    });
+
 
 
 

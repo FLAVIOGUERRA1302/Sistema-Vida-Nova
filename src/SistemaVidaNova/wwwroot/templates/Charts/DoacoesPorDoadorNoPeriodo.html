@@ -1,0 +1,25 @@
+﻿<div ng-controller="ChartDoacoesPorDoadorPeriodoControl">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2>Gráfico</h2>
+        </div>
+    </div>
+    
+        <div class="row">
+            <div class="col-md-2 col-md-offset-4">
+                <label>Início da consulta</label>
+                <input type="date" ng-model="start" class="form-control " />
+            </div>
+            <div class="col-md-2">
+                <label>Fim da consulta</label>
+                <input type="date" ng-model="end" class="form-control " />
+            </div>
+
+        </div>
+        <div style="height:500px;">
+            <div echart options="options" tema="'infographic'"></div>
+        </div>
+
+
+
+    </div>

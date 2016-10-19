@@ -9,7 +9,8 @@
     'idf.br-filters',
     'ngTagsInput',    
     'textAngular',
-    'angular-echarts'
+    'angular-echarts',
+    'angular-echarts.theme'
     
 
 ]).config(function ($routeProvider, $locationProvider) {
@@ -629,6 +630,12 @@
                 }
             }
         })
+        //Planejamento
+     .when('/Planejamento', {
+         templateUrl: '/templates/Planejamento/Planejamento.html',
+         controller: 'PlanejamentoControl'
+         
+     })
 
 
     ;

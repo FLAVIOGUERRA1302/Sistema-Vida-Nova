@@ -13,6 +13,7 @@
         showLegend: true,
         stack: false,
         loading: "Carregando...",
+        errorMsg :"Erro",
         calculable: true,
         theme: 'infographic', //'infographic', 'macarons', 'shine', 'dark', 'blue', 'green', 'red',
         center: ['50%', '50%'],
@@ -54,6 +55,7 @@
         showLegend: false,
         stack: true,
         loading: "Carregando...",
+        errorMsg: "Erro",
         calculable: true,
         theme: 'infographic', //'infographic', 'macarons', 'shine', 'dark', 'blue', 'green', 'red',
         center: ['60%', '10%'],        
@@ -121,6 +123,184 @@
         $scope.tipo = tipo;
         read();
     });
+
+}])
+.controller('ChartDoacoesPeriodoControl', ['$scope', 'ChartService', 'ngDialog', '$filter', function ($scope, ChartService, ngDialog, $filter) {
+    
+    $scope.start = null;
+    $scope.end = null;
+    
+    
+    var getOptions = function (labels, valores) {
+        return {
+            title: {
+                text: 'Doações por mês',
+                subtext: "Doações em Dinheiro",
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            
+
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    data: labels
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: 'R$ {value} '
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: 'Valor',
+                    type: 'bar',
+                    data: valores,
+                    
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                position: 'top',
+                                formatter: 'R${c}'
+                            }
+                        }
+                
+                        }
+                }
+            ]
+        };
+    }
+
+    var read = function () {
+        if ($scope.start != null && $scope.end != null) {
+
+           
+            
+            var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            var params = {  start: $scope.start, end: $scope.end }
+            ChartService.Read('DoacoesMensaisNoPeriodo', params)
+            .then(function (result) {                
+                var labels = result.labels;
+                var valores = result.series[0];
+
+                for (var i = 0; i < labels.length; i++)
+                    labels[i] = $filter('date')(Date.parse(labels[i]), 'MMMM-yyyy');
+               
+
+                $scope.options = getOptions(labels, valores);
+                dialog.close();                
+
+            }, function (erros) {
+                $scope.erros = erros;
+            });
+        }
+    };
+
+    $scope.$watch('start', function (newValue, oldValue) {
+        read();
+    });
+    $scope.$watch('end', function (newValue, oldValue) {
+        read();
+    });
+
+    
+
+}])
+.controller('ChartDoacoesPorDoadorPeriodoControl', ['$scope', 'ChartService', 'ngDialog', '$filter', function ($scope, ChartService, ngDialog, $filter) {
+
+    $scope.start = null;
+    $scope.end = null;
+
+
+    var getOptions = function (labels, valores) {
+        return {
+            title: {
+                text: 'Doações por mês',
+                subtext: "Doações em Dinheiro",
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+
+
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    data: labels
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: 'R$ {value} '
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: 'Valor',
+                    type: 'bar',
+                    data: valores,
+
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                position: 'top',
+                                formatter: 'R${c}'
+                            }
+                        }
+
+                    }
+                }
+            ]
+        };
+    }
+
+    var read = function () {
+        if ($scope.start != null && $scope.end != null) {
+
+
+
+            var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            var params = { start: $scope.start, end: $scope.end, id: $scope.doador.id };
+            ChartService.Read('DoacoesMensaisPorDoadorNoPeriodo', params)
+            .then(function (result) {
+                var labels = result.labels;
+                var valores = result.series[0];
+
+                for (var i = 0; i < labels.length; i++)
+                    labels[i] = $filter('date')(Date.parse(labels[i]), 'MMMM-yyyy');
+
+
+                $scope.options = getOptions(labels, valores);
+                dialog.close();
+
+            }, function (erros) {
+                $scope.erros = erros;
+            });
+        }
+    };
+
+    $scope.$watch('start', function (newValue, oldValue) {
+        read();
+    });
+    $scope.$watch('end', function (newValue, oldValue) {
+        read();
+    });
+
+
 
 }])
 ;

@@ -70,7 +70,7 @@
                                 <tbody>
 
                                     <tr ng-repeat="d in doacoes">
-                                        <td>{{d.doador.nomeRazaoSocial}}</td>
+                                        <td><a href="/Doador/Visualizar/{{d.doador.id}}">{{d.doador.nomeRazaoSocial}}</a></td>
                                         <th>{{d.dataDaDoacao| date :'dd/MM/yyyy' }}</th>                                        
                                         <td>{{d.valor | finance:true:2}}</td>
                                         
@@ -103,7 +103,7 @@
                                 <tbody>
 
                                     <tr ng-repeat="d in doacoes">
-                                        <td>{{d.doador.nomeRazaoSocial}}</td>
+                                        <td><a href="/Doador/Visualizar/{{d.doador.id}}">{{d.doador.nomeRazaoSocial}}</a></td>
                                         <th>{{d.dataDaDoacao| date :'dd/MM/yyyy' }}</th>
                                         <th>{{d.dataDeRetirada| date :'dd/MM/yyyy' }}</th>                                        
                                         <td>{{d.descricao}}</td>
@@ -138,7 +138,7 @@
                                 <tbody>
 
                                     <tr ng-repeat="d in doacoes">
-                                        <td>{{d.doador.nomeRazaoSocial}}</td>
+                                        <td><a href="/Doador/Visualizar/{{d.doador.id}}">{{d.doador.nomeRazaoSocial}}</a></td>
                                         <td>{{d.item.nome}}</td>
                                         <th>{{d.dataDaDoacao| date :'dd/MM/yyyy' }}</th>
                                         <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
@@ -183,5 +183,13 @@
     </section>
 
 </div>
+
+<div class="row">
+    <div class="col-md-12" ng-include="'/templates/Charts/DoacoesNoPeriodo.html'">
+
+    </div>
+</div>
+
+<hr />
 
 

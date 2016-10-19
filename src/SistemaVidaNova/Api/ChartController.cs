@@ -43,15 +43,19 @@ namespace SistemaVidaNova.Api
         }
 
         // GET: api/values
-        [HttpGet("{id}")]
-        public IActionResult Get(string id, [FromQuery]DateTime? start, [FromQuery]DateTime? end, string filtro)
+        [HttpGet("{grafico}")]
+        public IActionResult Get(string grafico, [FromQuery]DateTime? start, [FromQuery]DateTime? end, string filtro,int? id)
         {
-            switch (id.ToUpper())
+            switch (grafico.ToUpper())
             {
                 case "VOLUNTARIODIADASEMANA":
                         return new ObjectResult(VoluntarioDiaDaSemana());
                 case "DESPESAPORITEMNOPERIODO":
                     return new ObjectResult(DespesaPorItemNoPeriodo(start.Value,end.Value,filtro));
+                case "DOACOESMENSAISNOPERIODO":
+                    return new ObjectResult(DoacoesMensaisNoPeriodo(start.Value, end.Value));
+                case "DOACOESMENSAISPORDOADORNOPERIODO":
+                    return new ObjectResult(DoacoesMensaisPorDoadorNoPeriodo(start.Value, end.Value,id.Value));
 
             }
 
@@ -151,5 +155,73 @@ namespace SistemaVidaNova.Api
             return chart;
         }
 
+
+        private SimpleCharDataDTO<DateTime> DoacoesMensaisNoPeriodo(DateTime start, DateTime end)
+        {
+            SimpleCharDataDTO<DateTime> chart = new SimpleCharDataDTO<DateTime>();
+            List<double> serie = new List<double>();
+            chart.Series.Add(serie);
+            
+                    var queryD = from q in (from dd in _context.DoacaoDinheiro
+                                            where dd.Data >= start && dd.Data <= end
+                                            select new
+                                            {
+                                                mes = new DateTime(dd.Data.Year, dd.Data.Month, 1),
+                                                valor = dd.Valor
+                                            })
+                                 group q by q.mes into g
+                                 orderby g.Key
+                                 select new
+                                 {
+                                     mes = g.Key,
+                                     valor = g.Sum(v => v.valor)
+                                 };
+                    foreach(var qd in queryD)
+                    {
+                        chart.Labels.Add(qd.mes);
+                        serie.Add(qd.valor);
+                    }
+
+                   
+            
+
+
+
+            return chart;
+        }
+
+        private SimpleCharDataDTO<DateTime> DoacoesMensaisPorDoadorNoPeriodo(DateTime start, DateTime end, int id)
+        {
+            SimpleCharDataDTO<DateTime> chart = new SimpleCharDataDTO<DateTime>();
+            List<double> serie = new List<double>();
+            chart.Series.Add(serie);
+
+            var queryD = from q in (from dd in _context.DoacaoDinheiro
+                                    where dd.Data >= start && dd.Data <= end && dd.CodDoador == id
+                                    select new
+                                    {
+                                        mes = new DateTime(dd.Data.Year, dd.Data.Month, 1),
+                                        valor = dd.Valor
+                                    })
+                         group q by q.mes into g
+                         orderby g.Key
+                         select new
+                         {
+                             mes = g.Key,
+                             valor = g.Sum(v => v.valor)
+                         };
+            foreach (var qd in queryD)
+            {
+                chart.Labels.Add(qd.mes);
+                serie.Add(qd.valor);
+            }
+
+
+
+
+
+
+            return chart;
+        }
     }
 }

@@ -45,4 +45,18 @@ namespace SistemaVidaNova.Models.DTOs
         public double y { get; set; }
     }
 
+
+    public class SimpleCharDataDTO<T>
+    {
+        public List<T> Labels { get; set; }
+        public List<List<double>> Series { get; set; }
+
+        public SimpleCharDataDTO()
+        {
+            Labels = new List<T>();
+            Series = new List<List<double>>();
+        }
+
+    }
+
 }
