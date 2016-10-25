@@ -48,7 +48,8 @@
                                 <th>Telefone</th>
                                 <th>Celular</th>
                                 <th>Função</th>
-                                <th>Data de cadastro</th>
+                                <th>Data do Curso</th>
+                                <th>Data agendamento Curso</th>
 
                                 <th class="actions">Ações</th>
                             </tr>
@@ -56,18 +57,21 @@
 
                         <tbody>
                             
-                            <tr ng-repeat="v in voluntarios">
+                            <tr ng-repeat="v in voluntarios"  ng-class="{'text-red': v.diasEmAtraso>0}">
                                 <td>{{v.nome}}</td>
                                 <td>{{v.email}}</td>
                                 <td>{{v.telefone | brPhoneNumber}}</td>
                                 <td>{{v.celular | brPhoneNumber}}</td>
                                 <td>{{v.funcao}}</td>
-                                <td>{{v.dataDeCadastro | date :'dd/MM/yyyy'}}</td>
+                                <td>{{v.dataCurso | date :'dd/MM/yyyy'}}</td>
+                                <td>{{v.dataAgendamentoCurso | date :'dd/MM/yyyy'}}</td>
+                                
                                 
                                 <td class='actions'>
 
                                     <a class='btn btn-success btn-xs' href='/Voluntario/Visualizar/{{v.id}}'>Visualizar</a>
                                     <a class='btn btn-warning btn-xs' href='/Voluntario/Editar/{{v.id}}'>Editar</a>
+                                    <a class='btn btn-primary btn-xs' href='/Voluntario/Curso/{{v.id}}'>Curso</a>
                                     <a class='btn btn-danger btn-xs' href='' ng-click="delete(v)">Excluir</a>
                                 </td>
                             </tr>

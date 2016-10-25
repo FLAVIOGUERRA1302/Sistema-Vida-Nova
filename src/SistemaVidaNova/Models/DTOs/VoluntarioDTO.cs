@@ -50,5 +50,9 @@ namespace SistemaVidaNova.Models.DTOs
         [Required]
         public EnderecoDTO Endereco { get; set; }
         public List<EventoDTO> Eventos { get; set; }
+                
+        public DateTime DataCurso { get; set; }
+        public DateTime? DataAgendamentoCurso { get; set; }
+        public int DiasEmAtraso { get; set; }
     }
 }

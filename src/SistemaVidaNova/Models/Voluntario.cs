@@ -56,5 +56,10 @@ namespace SistemaVidaNova.Models
 
         public Endereco Endereco { get; set; }
         public List<Evento> Eventos { get; set; }
+
+        [Required]
+        public DateTime DataCurso { get; set; }
+        public DateTime? DataAgendamentoCurso { get; set; }
+
     }
 }

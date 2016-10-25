@@ -125,6 +125,10 @@ namespace SistemaVidaNova.Models
                 .Property(b => b.QuantidadeEmEstoque)
                 .HasDefaultValue(0.0d);
 
+            modelBuilder.Entity<Voluntario>()
+               .Property(b => b.DataCurso)
+               .HasDefaultValue(DateTime.Today);
+
 
         }
 

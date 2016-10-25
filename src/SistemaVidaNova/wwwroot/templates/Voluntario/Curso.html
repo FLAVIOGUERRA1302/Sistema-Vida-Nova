@@ -1,0 +1,101 @@
+﻿<section class="content-header">
+    <h1>
+        Agendar data do curso
+    </h1>
+
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+
+                <form ng-submit="salvar()" novalidate name="form">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="/images/voluntarios/{{voluntario.id}}.jpg?{{random}}" alt="Foto" height="100" width="100">
+                            </div>
+                            
+                        </div>
+
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" ng-model="voluntario.nome" name='nome' id="nome" disabled placeholder="Digite o Nome do Voluntário">
+                            </div>
+                            <div class="col-md-3">
+                                <!--  -->
+                                <label for="cpf">CPF</label>
+                                <input type="text" class="form-control" ng-model="voluntario.cpf" name='cpf_field' id="cpf_field" disabled ui-br-cpf-mask>
+                                <lista-erro lista="erros.Cpf"></lista-erro>
+                            </div>
+                            <div class="col-md-3">
+
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" ng-model="voluntario.email" name='email' id="email" placeholder="email@exemplo.com" disabled="required" title="email@exemplo.com">
+                                <lista-erro lista="erros.Email"></lista-erro>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+
+
+                            <div class="col-md-3">
+                                <label for="telefone">Telefone</label>
+                                <input type="text" class="form-control" ng-model="voluntario.telefone" name='telefone'disabled id="telefone" ui-br-phone-number-fixo>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="celular">Celular</label>
+                                <input type="text" class="form-control" name='celular' ng-model="voluntario.celular" disabled id="celular" ui-br-phone-number>
+                            </div>
+
+                            <div class="col-xs-6">
+                                <label for="celular">Função</label>
+                                <input type="text" class="form-control" name='funcao' ng-model="voluntario.funcao" disabled id="funcao">
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+
+
+                            <div class="col-md-3">
+                                <label for="dataAgendamentoCurso">Data de Agendamento do Curso</label>
+                                <input type="date" class="form-control" ng-model="voluntario.dataAgendamentoCurso" name='dataAgendamentoCurso' required="required" id="dataAgendamentoCurso">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="dataAgendamentoCurso">Data de Realização do Curso</label>
+                                <input type="date" class="form-control" ng-model="voluntario.dataCurso" name='dataCurso' required="required" id="dataCurso">
+                            </div>
+
+
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+                    <div class="box-footer">
+                        <a href="/Voluntario" class="btn btn-primary">voltar</a>
+                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
+                    </div>
+
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>

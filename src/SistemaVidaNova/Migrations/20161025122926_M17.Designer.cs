@@ -8,9 +8,10 @@ using SistemaVidaNova.Models;
 namespace SistemaVidaNova.Migrations
 {
     [DbContext(typeof(VidaNovaContext))]
-    partial class VidaNovaContextModelSnapshot : ModelSnapshot
+    [Migration("20161025122926_M17")]
+    partial class M17
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -713,7 +714,7 @@ namespace SistemaVidaNova.Migrations
                     b.Property<string>("Cpf")
                         .IsRequired();
 
-                    b.Property<DateTime?>("DataAgendamentoCurso");
+                    b.Property<DateTime>("DataAgendamentoCurso");
 
                     b.Property<DateTime>("DataCurso")
                         .ValueGeneratedOnAdd()

@@ -48,16 +48,21 @@
     }
 
 }])
-.controller('VoluntarioUpdateControl', ['$scope', 'VoluntarioService', 'voluntario', 'CepService', 'loadingDialod','$location', function ($scope, VoluntarioService, voluntario, CepService, loadingDialod,$location) {
+.controller('VoluntarioUpdateControl', ['$scope', 'VoluntarioService', 'voluntario', 'CepService', 'loadingDialod','$location','$rootScope', function ($scope, VoluntarioService, voluntario, CepService, loadingDialod,$location,$rootScope) {
     loadingDialod.close();
     $scope.voluntario = voluntario;//angular.copy(voluntario);
     $scope.random = new Date().getTime();
     $scope.ufs = ufs;
     if (!($scope.voluntario.dataNascimento instanceof Date))
-        $scope.voluntario.dataNascimento = new Date($scope.voluntario.dataNascimento);
+        $scope.voluntario.dataNascimento = new Date.parse($scope.voluntario.dataNascimento);
+    if (!($scope.voluntario.dataCurso instanceof Date))
+        $scope.voluntario.dataCurso = new Date.parse($scope.voluntario.dataCurso);
+    if (!($scope.voluntario.dataAgendamentoCurso instanceof Date))
+        $scope.voluntario.dataAgendamentoCurso = new Date.parse($scope.voluntario.dataAgendamentoCurso);
     $scope.salvar = function () {
         VoluntarioService.Update($scope.voluntario)
             .then(function (voluntario) {
+                $rootScope.$broadcast('voluntario.update', voluntario);
                 $location.path('/Voluntario' )
             }, function (erros) {
                 $scope.erros = erros;
@@ -158,4 +163,32 @@
     }
 
 
-    }]);
+}])
+.controller('VoluntarioNotificacaoControl', ['$scope', 'VoluntarioService',  function ($scope, VoluntarioService) {
+    $scope.voluntarios = [];
+    $scope.semAgendamento = "";
+
+    var read = function () {
+        VoluntarioService.ReadCursoAtrasado()
+        .then(function (voluntarios) {            
+            $scope.voluntarios = voluntarios;
+            $scope.semAgendamento = VoluntarioService.totalItemsAtrasado;
+            //corrige de texto para Date as datas
+            var umAnoAtras = Date.today().addYears(-1);
+            angular.forEach(voluntarios, function (voluntario, key) {
+                voluntario.dataCurso = Date.parse(voluntario.dataCurso);
+                
+            });
+
+        }, function (erros) {
+
+        });
+    }
+
+    $scope.$on('voluntario.update', function (event, data) {
+        read();
+    });
+
+    read();
+
+}]);

@@ -73,8 +73,13 @@
                 </a>
 
                 <div class="navbar-custom-menu">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav">                        
                        
+
+                        <!-- Notifications: style can be found in dropdown.less -->
+                        <li class="dropdown notifications-menu" ng-controller="VoluntarioNotificacaoControl" ng-include="'/templates/Voluntario/Notificacao.html'">
+                        </li>
+
                         @await Html.PartialAsync("_LoginPartial")
 
                     </ul>
@@ -111,7 +116,7 @@
         <script src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
         <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
-        <script src="~/lib/bootstrap-validator/js/validator.js"></script>
+        
 
         <script src="~/lib/tinycolor/dist/tinycolor-min.js"></script>
         <script src="~/lib/angularjs-color-picker/dist/angularjs-color-picker.js"></script>

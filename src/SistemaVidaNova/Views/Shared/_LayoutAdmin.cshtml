@@ -74,7 +74,9 @@
 
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-
+                        <!-- Notifications: style can be found in dropdown.less -->
+                        <li class="dropdown notifications-menu" ng-controller="VoluntarioNotificacaoControl" ng-include="'/templates/Voluntario/Notificacao.html'">
+                        </li>
                         @await Html.PartialAsync("_LoginPartial")
 
                     </ul>
@@ -113,7 +115,7 @@
         <script src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
         <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
-        <script src="~/lib/bootstrap-validator/js/validator.js"></script>
+
 
         <script src="~/lib/tinycolor/dist/tinycolor-min.js"></script>
         <script src="~/lib/angularjs-color-picker/dist/angularjs-color-picker.js"></script>
@@ -144,16 +146,28 @@
         <script src="~/lib/textAngular/dist/textAngular.min.js"></script>
 
 
-        <script src="~/js/app.js"></script>
-        <script src="~/js/services/Services.js"></script>
-        <script src="~/js/directives/Directives.js"></script>
+        <script src="~/lib/echarts/build/dist/echarts-all.js"></script>
+        <script src="~/lib/angular-echarts/dist/angular-echarts.js"></script>
+
+        <script src="~/js/date.js"></script>
+        <script src="~/js/app.js" asp-append-version="true"></script>
+        <script src="~/js/services/Services.js" asp-append-version="true"></script>
+        <script src="~/js/directives/Directives.js" asp-append-version="false"></script>
         <script src="~/js/controllers/HomeControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/VoluntarioControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/InteressadoControl.js" asp-append-version="true"></script>
-        <script src="~/js/controllers/EventoControl.js" asp-append-version="false"></script>
-        <script src="~/js/controllers/DoadorControl.js" asp-append-version="false"></script>
-        <script src="~/js/controllers/FavorecidoControl.js" asp-append-version="false"></script>
-        <script src="~/js/controllers/InformativoControl.js"></script>
+        <script src="~/js/controllers/EventoControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/DoadorControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/FavorecidoControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/InformativoControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/ChartControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/ItemControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/DespesaControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/DoacaoControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/ModeloDeReceitaControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/ResultadoSopaControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/EstoqueControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/PlanejamentoControl.js" asp-append-version="false"></script>
     </environment>
     <environment names="Staging,Production">
 

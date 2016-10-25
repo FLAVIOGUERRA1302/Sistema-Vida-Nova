@@ -54,6 +54,32 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", function ($http, $q, 
         return deferred.promise;
     }
 
+    s.ReadCursoAtrasado = function () {
+        var deferred = $q.defer();
+        
+        var req = {
+            method: 'GET',
+            url: '/api/Voluntario/' ,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {semCurso:true,'skip': 0, 'take': 5};        
+        
+        $http(req).then(function successCallback(response) {
+            s.totalItemsAtrasado = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
     s.Update = function (voluntario) {
         var deferred = $q.defer();
         var req = {

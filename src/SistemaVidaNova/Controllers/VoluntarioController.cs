@@ -37,6 +37,12 @@ namespace SistemaVidaNova.Controllers
             return View();
         }
 
+        public IActionResult Agendar(int id)
+        {
+
+            return View();
+        }
+
 
     }
 }

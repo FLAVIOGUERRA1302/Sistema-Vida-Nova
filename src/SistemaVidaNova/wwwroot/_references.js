@@ -30,7 +30,6 @@
 /// <reference path="lib/angularjs-color-picker/dist/angularjs-color-picker.js" />
 /// <reference path="lib/angular-route/angular-route.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />
-/// <reference path="lib/bootstrap-validator/dist/validator.js" />
 /// <reference path="lib/br-masks/releases/br-masks.js" />
 /// <reference path="lib/echarts/build/dist/echarts.js" />
 /// <reference path="lib/fullcalendar/dist/fullcalendar.js" />

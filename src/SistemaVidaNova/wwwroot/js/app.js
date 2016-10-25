@@ -50,6 +50,19 @@
                 }
             }
         })
+        .when('/Voluntario/Curso/:id', {
+            templateUrl: '/templates/Voluntario/Curso.html',
+            controller: 'VoluntarioUpdateControl',
+            resolve: {
+                voluntario: function (VoluntarioService, $route) {
+                    return VoluntarioService.Read($route.current.params.id);
+                }
+                ,
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
     .when('/Voluntario/Visualizar/:id', {
         templateUrl: '/templates/Voluntario/Detalhe.html',
         controller: 'VoluntarioUpdateControl',

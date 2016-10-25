@@ -44,20 +44,27 @@ namespace SistemaVidaNova.Api
 
         // GET: api/values
         [HttpGet]
-        public IEnumerable<VoluntarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
+        public IEnumerable<VoluntarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro, [FromQuery]bool? semCurso)
         {
 
             if (skip == null)
                 skip = 0;
             if (take == null)
                 take = 1000;
-            
+            if (semCurso == null)
+                semCurso = false;
+
+
             IQueryable<Voluntario> query = _context.Voluntario
                 .Where(q => q.IsDeletado == false)
                 .OrderBy(q => q.Nome);
 
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(q => q.Nome.Contains(filtro));
+
+            DateTime umAnoAtras = DateTime.Today.AddYears(-1);
+            if (semCurso.Value)
+                query = query.Where(q => q.DataCurso <= umAnoAtras && (q.DataAgendamentoCurso == null || q.DataAgendamentoCurso<=DateTime.Today));
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
 
@@ -82,10 +89,13 @@ namespace SistemaVidaNova.Api
                     SextaFeira = v.SextaFeira,
                     Sabado = v.Sabado,
                     Domingo = v.Domingo,
-                    DataDeCadastro = v.DataDeCadastro
+                    DataDeCadastro = v.DataDeCadastro,
+                    DataCurso = v.DataCurso,
+                    DataAgendamentoCurso = v.DataAgendamentoCurso
                 }).ToList();
-
             
+            foreach (var dto in voluntarios)
+                    dto.DiasEmAtraso = ((TimeSpan)(umAnoAtras - dto.DataCurso)).Days;
             return voluntarios;
         }
 
@@ -132,9 +142,12 @@ namespace SistemaVidaNova.Api
                     Logradouro = v.Endereco.Logradouro,
                     Numero = v.Endereco.Numero
 
-                }
+                },
+                DataCurso = v.DataCurso,
+                DataAgendamentoCurso = v.DataAgendamentoCurso,                
+                DiasEmAtraso = ((TimeSpan)(DateTime.Today - v.DataCurso)).Days
 
-        };
+            };
             this.Response.Headers.Add("totalItems", "1");
             return new ObjectResult(dto);
         }
@@ -170,7 +183,8 @@ namespace SistemaVidaNova.Api
                         Domingo = v.Domingo,
                         DataDeCadastro = DateTime.Today,
                         IsDeletado = false,
-                        IdUsuario = user.Id
+                        IdUsuario = user.Id,
+                        DataCurso = DateTime.Today
                     };
 
                     voluntario.Endereco = new Endereco()
@@ -205,8 +219,9 @@ namespace SistemaVidaNova.Api
                     voluntario.DataDeCadastro = DateTime.Today;
                     voluntario.IsDeletado = false;
                     voluntario.IdUsuario = user.Id;
+                    voluntario.DataCurso = DateTime.Today;
 
-                    if(voluntario.Endereco != null)
+                    if (voluntario.Endereco != null)
                     {
                         _context.Remove(voluntario.Endereco);
                     }
@@ -253,9 +268,9 @@ namespace SistemaVidaNova.Api
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public  IActionResult Put(int id, [FromBody]VoluntarioDTO voluntario)
+        public  IActionResult Put(int id, [FromBody]VoluntarioDTO dto)
         {
-            if(id != voluntario.Id)
+            if(id != dto.Id)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             if (ModelState.IsValid)
             {
@@ -263,32 +278,35 @@ namespace SistemaVidaNova.Api
                 if (v == null)
                     return new BadRequestResult();
 
-                v.Email = voluntario.Email;
-                v.Nome = voluntario.Nome;                
-                v.Cpf = voluntario.Cpf;
-                v.Rg = voluntario.Rg;
-                v.Celular = voluntario.Celular;
-                v.Telefone = voluntario.Telefone;
-                v.Funcao = voluntario.Funcao;
-                v.Sexo = voluntario.Sexo;
-                v.DataNascimento = voluntario.DataNascimento;
-                v.SegundaFeira = voluntario.SegundaFeira;
-                v.TercaFeira = voluntario.TercaFeira;
-                v.QuartaFeira = voluntario.QuartaFeira;
-                v.QuintaFeira = voluntario.QuintaFeira;
-                v.SextaFeira = voluntario.SextaFeira;
-                v.Sabado = voluntario.Sabado;
-                v.Domingo = voluntario.Domingo;
+                v.Email = dto.Email;
+                v.Nome = dto.Nome;                
+                v.Cpf = dto.Cpf;
+                v.Rg = dto.Rg;
+                v.Celular = dto.Celular;
+                v.Telefone = dto.Telefone;
+                v.Funcao = dto.Funcao;
+                v.Sexo = dto.Sexo;
+                v.DataNascimento = dto.DataNascimento;
+                v.SegundaFeira = dto.SegundaFeira;
+                v.TercaFeira = dto.TercaFeira;
+                v.QuartaFeira = dto.QuartaFeira;
+                v.QuintaFeira = dto.QuintaFeira;
+                v.SextaFeira = dto.SextaFeira;
+                v.Sabado = dto.Sabado;
+                v.Domingo = dto.Domingo;
 
-                v.Endereco.Logradouro = voluntario.Endereco.Logradouro;
-                v.Endereco.Numero = voluntario.Endereco.Numero;
-                v.Endereco.Bairro = voluntario.Endereco.Bairro;
-                v.Endereco.Estado = voluntario.Endereco.Estado;
-                v.Endereco.Cep = voluntario.Endereco.Cep;
-                v.Endereco.Cidade = voluntario.Endereco.Cidade;
-                v.Endereco.Complemento = voluntario.Endereco.Complemento;
+                v.Endereco.Logradouro = dto.Endereco.Logradouro;
+                v.Endereco.Numero = dto.Endereco.Numero;
+                v.Endereco.Bairro = dto.Endereco.Bairro;
+                v.Endereco.Estado = dto.Endereco.Estado;
+                v.Endereco.Cep = dto.Endereco.Cep;
+                v.Endereco.Cidade = dto.Endereco.Cidade;
+                v.Endereco.Complemento = dto.Endereco.Complemento;
 
-
+                if (dto.DataCurso != null)
+                    v.DataCurso = dto.DataCurso;
+                
+                v.DataAgendamentoCurso = dto.DataAgendamentoCurso;
 
                 try
                 {
@@ -307,7 +325,7 @@ namespace SistemaVidaNova.Api
                 
                 
 
-                return new ObjectResult(voluntario);
+                return new ObjectResult(dto);
             }
             else
             {
