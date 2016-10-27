@@ -10,13 +10,21 @@
 
        
 
+    $scope.ToExcel = function () {
+        VoluntarioService.toExcel($scope.valorPesquisa)
+        /*.then(function () {            
+        }, function (erros) {
+            
+        });*/
+    };
+
     $scope.pageChanged = function () {
         VoluntarioService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa)//id,skip,take,filtro
         .then(function (voluntarios) {
             $scope.voluntarios = voluntarios;
             $scope.totalItems = VoluntarioService.totalItems;
         }, function (erros) {
-            
+
         });
     };
    

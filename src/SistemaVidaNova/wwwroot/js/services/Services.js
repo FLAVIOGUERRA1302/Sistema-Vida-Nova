@@ -1,5 +1,5 @@
 ﻿var app = angular.module('app');
-app.factory('VoluntarioService', ["$http", "$q", "Upload", function ($http, $q, Upload) {
+app.factory('VoluntarioService', ["$http", "$q", "Upload", "$window", function ($http, $q, Upload, $window) {
     var s = {};
 
     s.Create = function (voluntario) {
@@ -139,12 +139,61 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", function ($http, $q, 
         return deferred.promise;
     }
 
+    
+    s.toExcel = function (filtro) {
+        var turl = '/api/Voluntario/excel';
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '?filtro=' + filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
+        /*
+        var deferred = $q.defer();
+        
+        var req = {
+            method: 'GET',
+            url: '/api/Voluntario/excel',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        $http(req).then(function successCallback(response) {
+            
+            var blob = new Blob([response.data], {name:'voluntarios.xlsx', type: response.headers("Content-Type") });
+            var objectUrl = URL.createObjectURL(blob);
+            //$window.open(objectUrl);
+
+            var anchor = angular.element('<a/>');
+            anchor.attr({
+                href: 'data:attachment/' + response.headers("Content-Type") + ';charset=utf-8,' + encodeURI(response.data),
+                target: '_blank',
+                download: 'filename.xlsx'
+            })[0].click();
+
+
+            deferred.resolve();
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;*/
+    }
+
     return s;
 
 
 }]);
 
-app.factory('InteressadoService', ["$http", "$q", function ($http, $q) {
+app.factory('InteressadoService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (interessado) {
@@ -239,12 +288,23 @@ app.factory('InteressadoService', ["$http", "$q", function ($http, $q) {
         return deferred.promise;
     }
 
+    s.toExcel = function (filtro) {
+        var turl = '/api/Interessado/excel';
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '?filtro='+filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
+        
+       
+    }
+
     return s;
 
 
 }]);
 
-app.factory('EventoService', ["$http", "$q", function ($http, $q) {
+app.factory('EventoService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (evento) {
@@ -342,7 +402,7 @@ app.factory('EventoService', ["$http", "$q", function ($http, $q) {
 
 }]);
 
-app.factory('DoadorService', ["$http", "$q", function ($http, $q) {
+app.factory('DoadorService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (doador) {
@@ -440,12 +500,22 @@ app.factory('DoadorService', ["$http", "$q", function ($http, $q) {
         return deferred.promise;
     }
 
+    s.toExcel = function (tipo, filtro) {
+        var turl = '/api/Doador/excel?tipo='+tipo;
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '&filtro='+filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
+
+    }
+
     return s;
 
 
 }]);
 
-app.factory('FavorecidoService', ["$http", "$q", function ($http, $q) {
+app.factory('FavorecidoService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (favorecido) {
@@ -578,7 +648,7 @@ app.factory('CepService', ["$http", "$q", function ($http, $q) {
 }])
 
 
-app.factory('UsuarioService', ["$http", "$q", function ($http, $q) {
+app.factory('UsuarioService', ["$http", "$q", "$window", function ($http, $q,$window) {
     var s = {};
 
     
@@ -792,7 +862,7 @@ app.factory('InformativoService', ["$http", "$q", "Upload", function ($http, $q,
 
 }]);
 
-app.factory('DespesaService', ["$http", "$q", function ($http, $q) {
+app.factory('DespesaService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (despesa) {
@@ -890,12 +960,22 @@ app.factory('DespesaService', ["$http", "$q", function ($http, $q) {
         return deferred.promise;
     }
 
+    s.toExcel = function (tipo, filtro) {
+        var turl = '/api/Despesa/excel?tipo=' + tipo;
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '&filtro=' + filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
+
+    }
+
     return s;
 
 
 }]);
 
-app.factory('ItemService', ["$http", "$q", function ($http, $q) {
+app.factory('ItemService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (item) {
@@ -999,7 +1079,7 @@ app.factory('ItemService', ["$http", "$q", function ($http, $q) {
 }]);
 
 
-app.factory('DoacaoDinheiroService', ["$http", "$q", function ($http, $q) {
+app.factory('DoacaoDinheiroService', ["$http", "$q", "$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (doacao) {
@@ -1100,7 +1180,7 @@ app.factory('DoacaoDinheiroService', ["$http", "$q", function ($http, $q) {
 }]);
 
 
-app.factory('DoacaoSopaService', ["$http", "$q", function ($http, $q) {
+app.factory('DoacaoSopaService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (doacao) {
@@ -1200,7 +1280,7 @@ app.factory('DoacaoSopaService', ["$http", "$q", function ($http, $q) {
 
 }]);
 
-app.factory('DoacaoObjetoService', ["$http", "$q", function ($http, $q) {
+app.factory('DoacaoObjetoService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (doacao) {
@@ -1400,7 +1480,7 @@ app.factory('ModeloDeReceitaService', ["$http", "$q", function ($http, $q) {
 
 }]);
 
-app.factory('ResultadoSopaService', ["$http", "$q", function ($http, $q) {
+app.factory('ResultadoSopaService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (resultado) {
@@ -1500,7 +1580,7 @@ app.factory('ResultadoSopaService', ["$http", "$q", function ($http, $q) {
 
 }]);
 
-app.factory('EstoqueService', ["$http", "$q", function ($http, $q) {
+app.factory('EstoqueService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};
 
    
@@ -1566,7 +1646,7 @@ app.factory('EstoqueService', ["$http", "$q", function ($http, $q) {
 
 }]);
 
-app.factory('PlanejamentoService', ["$http", "$q", function ($http, $q) {
+app.factory('PlanejamentoService', ["$http", "$q","$window", function ($http, $q,$window) {
     var s = {};    
     s.Consulta = function (modelos) {
         var m = [];

@@ -16,6 +16,13 @@
     $scope.totalItems = DespesaService.totalItems;
     $scope.currentPage = 1;
     
+    $scope.ToExcel = function () {
+        DespesaService.toExcel($scope.tipo, $scope.valorPesquisa)
+        /*.then(function () {            
+        }, function (erros) {
+            
+        });*/
+    };
 
     $scope.pageChanged = function () {
         DespesaService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.tipo, $scope.valorPesquisa)//id,skip,take,tiopo,filtro

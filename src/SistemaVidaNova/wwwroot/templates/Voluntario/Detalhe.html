@@ -1,15 +1,16 @@
-﻿  <!-- Horizontal Form -->
-<section class="content-header">
-    <h1>
-        Voluntário
-    </h1>
+﻿  <!-- Horizontal Form --> 
 
-</section>
-<section class="content">
-    <div class="row">
-        <div class="col-md-1">
-            <img src="/images/voluntarios/{{voluntario.id}}.jpg?{{random}}" alt="Foto" height="100" width="100">
-        </div>
+    <section class="content-header">
+        <h1>
+            Voluntário
+        </h1>
+
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-1">
+                <img src="/images/voluntarios/{{voluntario.id}}.jpg?{{random}}" alt="Foto" height="100" width="100">
+            </div>
         </div>
         <div class="row">
             <div class="col-md-11">
@@ -117,20 +118,22 @@
 
                                 <div class="col-md-8">
                                     <p><strong>Dia da Semana:</strong></p>
-                                    <p><dl class="dl-horizontal">
-    <dd>
-        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.domingo" disabled><span>Domingo</span></label>
-        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.segundaFeira" disabled><span>Segunda</span></label>
-        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.tercaFeira" disabled><span>Terça</span></label>
-        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.quartaFeira" disabled><span>Quarta</span></label>
-        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.quintaFeira" disabled><span>Quinta</span></label>
-        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.sextaFeira" disabled><span>Sexta</span></label>
-        <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.sabado" disabled><span>Sabado</span></label>
-    </dd>
-</dl></p>
+                                    <p>
+                                        <dl class="dl-horizontal">
+                                            <dd>
+                                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.domingo" disabled><span>Domingo</span></label>
+                                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.segundaFeira" disabled><span>Segunda</span></label>
+                                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.tercaFeira" disabled><span>Terça</span></label>
+                                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.quartaFeira" disabled><span>Quarta</span></label>
+                                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.quintaFeira" disabled><span>Quinta</span></label>
+                                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.sextaFeira" disabled><span>Sexta</span></label>
+                                                <label class="ui-checkbox"><input type="checkbox" ng-model="voluntario.sabado" disabled><span>Sabado</span></label>
+                                            </dd>
+                                        </dl>
+                                    </p>
                                 </div>
 
-                                
+
 
                             </div>
 
@@ -138,7 +141,7 @@
 
                         <div class="box-footer">
                             <a href="/Voluntario" class="btn btn-primary">voltar</a>
-                            <a class='btn btn-danger' href=""> Gerar PDF</a>
+                            <a class='btn btn-danger' href="" > Gerar PDF</a>
 
                         </div>
 
@@ -146,4 +149,4 @@
                 </div>
             </div>
         </div>
-</section>
+    </section>

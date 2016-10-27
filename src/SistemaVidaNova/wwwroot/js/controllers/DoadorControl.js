@@ -9,6 +9,13 @@
     $scope.totalItems = DoadorService.totalItems;
     $scope.currentPage = 1;
     
+    $scope.ToExcel = function () {
+        DoadorService.toExcel($scope.tipo,$scope.valorPesquisa)
+        /*.then(function () {            
+        }, function (erros) {
+            
+        });*/
+    };
 
     $scope.pageChanged = function () {
         DoadorService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.tipo, $scope.valorPesquisa)//id,skip,take,tiopo,filtro

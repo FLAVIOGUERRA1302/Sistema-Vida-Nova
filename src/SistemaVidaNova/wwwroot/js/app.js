@@ -434,7 +434,7 @@
             controller: 'DoacaoCreateSopaControl'
 
         })
-      
+
 
         .when('/Doacao/Dinheiro/Editar/:id', {
             templateUrl: '/templates/Doacao/UpdateDinheiro.html',
@@ -618,7 +618,7 @@
             }
         }
     })
-        
+
             .when('/Estoque/Ajustar/:id', {
                 templateUrl: '/templates/Estoque/Update.html',
                 controller: 'EstoqueUpdateControl',
@@ -647,12 +647,10 @@
      .when('/Planejamento', {
          templateUrl: '/templates/Planejamento/Planejamento.html',
          controller: 'PlanejamentoControl'
-         
+
      })
 
-
     ;
-
     $locationProvider.html5Mode(true);
 });
 
@@ -867,10 +865,12 @@ var unidadesDeMedida = {
     "VASIL": "Vasilhame",
     "VIDRO": "Vidro"
 
-}
+};
 
 var destinos = {
     "ASSOCIACAO": "Associação",
     "FAVORECIDO": "Favorecido",
-    "SOPA":"Sopa"
-}
+    "SOPA": "Sopa"
+};
+
+

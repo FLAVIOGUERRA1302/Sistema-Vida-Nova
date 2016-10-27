@@ -25,6 +25,26 @@
     $scope.totalItems = DoacaoDinheiroService.totalItems;
     $scope.currentPage = 1;
     
+    $scope.ToExcel = function () {
+        var DoacaoService = {};
+        switch ($scope.tipo) {
+            case "DINHEIRO":
+                DoacaoService = DoacaoDinheiroService;
+                break;
+            case "SOPA":
+                DoacaoService = DoacaoSopaService;
+                break;
+            case "OBJETO":
+                DoacaoService = DoacaoObjetoService;
+                break;
+        }
+
+        DoadorService.toExcel($scope.tipo, $scope.valorPesquisa)
+        /*.then(function () {            
+        }, function (erros) {
+            
+        });*/
+    };
 
     $scope.pageChanged = function () {
         var dialog =ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
