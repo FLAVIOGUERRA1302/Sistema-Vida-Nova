@@ -39,7 +39,7 @@
                 break;
         }
 
-        DoadorService.toExcel($scope.tipo, $scope.valorPesquisa)
+        DoacaoService.toExcel($scope.valorPesquisa)
         /*.then(function () {            
         }, function (erros) {
             

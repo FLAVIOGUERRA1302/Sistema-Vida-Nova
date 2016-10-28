@@ -16,6 +16,15 @@ angular.module('app')
     $scope.totalItems = EventoService.totalItems;
     $scope.currentPage = 1;
 
+    $scope.ToExcel = function () {
+        EventoService.toExcel( $scope.valorPesquisa)
+        /*.then(function () {            
+        }, function (erros) {
+            
+        });*/
+    };
+
+
     $scope.pageChanged = function () {
         EventoService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa)//id,skip,take,filtro
         .then(function (eventos) {

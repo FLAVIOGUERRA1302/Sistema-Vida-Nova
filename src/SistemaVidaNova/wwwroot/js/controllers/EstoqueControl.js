@@ -10,6 +10,14 @@
     $scope.totalItems = EstoqueService.totalItems;
     $scope.currentPage = 1;
 
+    $scope.ToExcel = function () {
+        EstoqueService.toExcel($scope.tipo, $scope.valorPesquisa, $scope.negativos)
+        /*.then(function () {            
+        }, function (erros) {
+            
+        });*/
+    };
+
     $scope.pageChanged = function () {
         EstoqueService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa, $scope.negativos)//id,skip,take,filtro
         .then(function (itens) {

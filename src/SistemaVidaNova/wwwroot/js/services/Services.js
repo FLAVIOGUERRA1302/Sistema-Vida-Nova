@@ -397,6 +397,15 @@ app.factory('EventoService', ["$http", "$q","$window", function ($http, $q,$wind
         return deferred.promise;
     }
 
+    s.toExcel = function (filtro) {
+        var turl = '/api/Evento/excel';
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '?filtro=' + filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
+    }
+
     return s;
 
 
@@ -609,6 +618,16 @@ app.factory('FavorecidoService', ["$http", "$q","$window", function ($http, $q,$
         });
 
         return deferred.promise;
+    }
+
+    s.toExcel = function (tipo, filtro) {
+        var turl = '/api/Favorecido/excel';
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '?filtro=' + filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
+
     }
 
     return s;
@@ -1073,6 +1092,16 @@ app.factory('ItemService', ["$http", "$q","$window", function ($http, $q,$window
         return deferred.promise;
     }
 
+    s.toExcel = function (filtro) {
+        var turl = '/api/Item/excel';
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '?filtro=' + filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
+
+    }
+
     return s;
 
 
@@ -1172,6 +1201,16 @@ app.factory('DoacaoDinheiroService', ["$http", "$q", "$window", function ($http,
         });
 
         return deferred.promise;
+    }
+
+
+    s.toExcel = function (filtro) {
+        var turl = '/api/DoacaoDinheiro/excel';
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '?filtro=' + filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
     }
 
     return s;
@@ -1275,6 +1314,15 @@ app.factory('DoacaoSopaService', ["$http", "$q","$window", function ($http, $q,$
         return deferred.promise;
     }
 
+    s.toExcel = function (filtro) {
+        var turl = '/api/DoacaoSopa/excel';
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '?filtro=' + filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
+    }
+
     return s;
 
 
@@ -1373,6 +1421,15 @@ app.factory('DoacaoObjetoService', ["$http", "$q","$window", function ($http, $q
         });
 
         return deferred.promise;
+    }
+
+    s.toExcel = function (filtro) {
+        var turl = '/api/DoacaoObjeto/excel';
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '?filtro=' + filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
     }
 
     return s;
@@ -1639,7 +1696,21 @@ app.factory('EstoqueService', ["$http", "$q","$window", function ($http, $q,$win
         return deferred.promise;
     }
 
-   
+    s.toExcel = function (filtro, somenteNegativos) {
+        var turl = '/api/Estoque/excel';
+        var qp = "?"
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            qp += 'filtro=' + filtro;
+        }
+
+        if (somenteNegativos !== null && somenteNegativos !== undefined && somenteNegativos !== "") {
+            qp +=(qp=="?"?"":"&")+ 'somenteNegativos=' + somenteNegativos;
+        }
+
+        var url = encodeURI(turl + qp);
+        $window.open(url);
+
+    }
 
     return s;
 

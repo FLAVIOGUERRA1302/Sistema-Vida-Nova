@@ -16,6 +16,14 @@ angular.module('app')
     $scope.totalItems = FavorecidoService.totalItems;
     $scope.currentPage = 1;
 
+     $scope.ToExcel = function () {
+         FavorecidoService.toExcel( $scope.valorPesquisa)
+        /*.then(function () {            
+        }, function (erros) {
+            
+        });*/
+    };
+
     $scope.pageChanged = function () {
         FavorecidoService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa)//id,skip,take,filtro
         .then(function (favorecidos) {

@@ -9,6 +9,14 @@
     $scope.totalItems = ItemService.totalItems;
     $scope.currentPage = 1;
 
+    $scope.ToExcel = function () {
+        ItemService.toExcel($scope.tipo, $scope.valorPesquisa)
+        /*.then(function () {            
+        }, function (erros) {
+            
+        });*/
+    };
+
     $scope.pageChanged = function () {
         ItemService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa)//id,skip,take,filtro
         .then(function (itens) {
