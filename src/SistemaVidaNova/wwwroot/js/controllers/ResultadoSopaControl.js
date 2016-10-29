@@ -11,6 +11,13 @@
         $scope.totalItems = ResultadoSopaService.totalItems;
         $scope.currentPage = 1;
 
+        $scope.ToExcel = function () {
+            ResultadoSopaService.toExcel($scope.valorPesquisa)
+            /*.then(function () {            
+            }, function (erros) {
+            
+            });*/
+        };
 
         $scope.pageChanged = function () {
             var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });

@@ -121,11 +121,11 @@ namespace SistemaVidaNova.Api
                     Nome = eve.Usuario.Nome
                 },
 
-                voluntarios = eve.Voluntarios.Select(q=>new VoluntarioDTO{
+                voluntarios = eve.Voluntarios.Select(q=>new VoluntarioDTOR{
                  Id = q.IdVoluntario,
                  Nome = q.Voluntario.Nome,
                  Cpf = q.Voluntario.Cpf}).ToList(),
-                interessados = eve.Interessados.Select(q => new InteressadoDTO
+                interessados = eve.Interessados.Select(q => new InteressadoDTOR
                 {
                     Id = q.Interessado.CodInteressado,
                     Nome = q.Interessado.Nome

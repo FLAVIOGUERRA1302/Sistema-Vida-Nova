@@ -32,8 +32,8 @@ namespace SistemaVidaNova.Models.DTOs
         [StringLength(5000, ErrorMessage = "O {0} tem que ter no máximo {1} caracteres")]
         public string relato { get; set; }
 
-        public List<VoluntarioDTO> voluntarios { get; set; }
-        public List<InteressadoDTO> interessados { get; set; }
+        public List<VoluntarioDTOR> voluntarios { get; set; }
+        public List<InteressadoDTOR> interessados { get; set; }
         public UsuarioDTO Usuario { get; set; }
 
     }

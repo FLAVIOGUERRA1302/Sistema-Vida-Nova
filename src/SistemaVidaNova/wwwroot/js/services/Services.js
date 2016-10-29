@@ -1437,7 +1437,7 @@ app.factory('DoacaoObjetoService', ["$http", "$q","$window", function ($http, $q
 
 }]);
 
-app.factory('ModeloDeReceitaService', ["$http", "$q", function ($http, $q) {
+app.factory('ModeloDeReceitaService', ["$http", "$q", "$window", function ($http, $q,$window) {
     var s = {};
 
     s.Create = function (modelo) {
@@ -1530,6 +1530,15 @@ app.factory('ModeloDeReceitaService', ["$http", "$q", function ($http, $q) {
         });
 
         return deferred.promise;
+    }
+
+    s.toExcel = function (filtro) {
+        var turl = '/api/ModeloDeReceita/excel';
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '?filtro=' + filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
     }
 
     return s;
@@ -1631,6 +1640,17 @@ app.factory('ResultadoSopaService', ["$http", "$q","$window", function ($http, $
 
         return deferred.promise;
     }
+
+    s.toExcel = function (filtro) {
+        var turl = '/api/ResultadoSopa/excel';
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            turl += '?filtro=' + filtro;
+        }
+        var url = encodeURI(turl)
+        $window.open(url);
+    }
+
+    
 
     return s;
 

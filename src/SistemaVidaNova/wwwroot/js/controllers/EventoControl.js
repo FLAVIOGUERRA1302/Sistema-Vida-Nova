@@ -6,10 +6,10 @@ angular.module('app')
     $scope.eventos = eventos;
     for (var i = 0; i < $scope.eventos.length; i++) {
         if (!($scope.eventos[i].start instanceof Date))
-            $scope.eventos[i].start = new Date($scope.eventos[i].start);
+            $scope.eventos[i].start = Date.parse($scope.eventos[i].start);
 
         if (!($scope.eventos[i].end instanceof Date))
-            $scope.eventos[i].end = new Date($scope.eventos[i].end);
+            $scope.eventos[i].end = Date.parse($scope.eventos[i].end);
     }
     loadingDialod.close();
 
@@ -31,10 +31,10 @@ angular.module('app')
             $scope.eventos = eventos;
             for (var i = 0; i < $scope.eventos.length; i++) {
                 if (!($scope.eventos[i].start instanceof Date))
-                    $scope.eventos[i].start = new Date($scope.eventos[i].start);
+                    $scope.eventos[i].start =  Date.parse($scope.eventos[i].start);
 
                 if (!($scope.eventos[i].end instanceof Date))
-                    $scope.eventos[i].end = new Date($scope.eventos[i].end);
+                    $scope.eventos[i].end =  Date.parse($scope.eventos[i].end);
             }
             $scope.totalItems = EventoService.totalItems;
         }, function (erros) {
@@ -99,10 +99,10 @@ angular.module('app')
 
 
     if(!($scope.evento.start instanceof Date))
-        $scope.evento.start = new Date($scope.evento.start);
+        $scope.evento.start = Date.parse($scope.evento.start);
 
     if(!($scope.evento.end instanceof Date))
-        $scope.evento.end = new Date($scope.evento.end);
+        $scope.evento.end = Date.parse($scope.evento.end);
 
 
     $scope.options = {

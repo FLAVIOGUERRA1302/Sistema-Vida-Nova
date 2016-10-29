@@ -874,3 +874,6 @@ var destinos = {
 };
 
 
+Date.prototype.toISOString = function () {
+    return this.toString('yyyy-MM-ddTHH:mm:ss')
+};
