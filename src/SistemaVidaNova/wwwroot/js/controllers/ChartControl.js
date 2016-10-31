@@ -1,8 +1,11 @@
 ﻿angular.module('app')
-.controller('ChartVoluntarioDiaDaSemanaControl', ['$scope', 'ChartService', 'ngDialog', function ($scope, ChartService, ngDialog) {
+.controller('ChartVoluntarioDiaDaSemanaControl', ['$scope', 'ChartService', 'ngDialog', '$location', "$timeout", function ($scope, ChartService, ngDialog, $location, $timeout) {
     
     var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
     //$scope.chartData = {};
+
+    /*
+
     $scope.chartConfig = {        
         title : {
             text: 'Disponibilidade de voluntários', x: 'center'
@@ -22,14 +25,73 @@
             orient : 'verticle',
             x : 'left',
             y : 'top'
-        }
+        },
+        event :{
+            echarts.config.EVENT.CLICK
+    }
+       
     };
 
-   
+   */
+
+    var getOptions = function (labels, valores) {
+        return {
+            title: {
+                text: 'Disponibilidade de voluntários',                
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: labels
+            },
+            
+            calculable: true,
+            series: [
+                {
+                    name: 'Disponibilidade',
+                    type: 'pie',
+                    radius: '80%',
+                    center: ['50%', '50%'],
+                    data: valores
+                }
+            ]
+        };
+
+    };
+
+    var labels = [];
+    var valores = [];
+
+    $scope.eventos = [{
+        type: echarts.config.EVENT.CLICK,
+        fn: function (param) {
+
+            //
+            $timeout(
+            $location.path('/Voluntario/Disponivel/' + labels[param.dataIndex]));
+        }
+    }];
+    
 
     ChartService.Read('VoluntarioDiaDaSemana')
-    .then(function (result) {        
-        $scope.chartData = result.data;
+    .then(function (result) {
+        labels = [];
+        valores = [];
+        for (var i = 0; i < result.data[0].datapoints.length; i++) {
+            labels.push(result.data[0].datapoints[i].x);
+            valores.push({
+                value: result.data[0].datapoints[i].y,
+                name: result.data[0].datapoints[i].x
+            });
+        }
+
+
+        $scope.options = getOptions(labels, valores);
 
         dialog.close();
 

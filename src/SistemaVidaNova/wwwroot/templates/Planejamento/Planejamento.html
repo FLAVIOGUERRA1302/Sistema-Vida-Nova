@@ -37,24 +37,11 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row" ng-repeat="m in modelos">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-11">
                             <input type="text"
                                    ng-model="m.modelo.nome" class="form-control" disabled />
                         </div>
-                        <div class="form-group col-md-5">
-
-
-                                <input type="text"
-                                       ng-model="m.quantidade"
-                                       placeholder="Quantidade"
-                                       class="form-control"
-                                       ui-number-mask="2"
-                                       required>
-                                
-
-
-
-                        </div>
+                        
                         <div class="col-md-1">
                             <a class="btn btn-danger btn-flat" href="" uib-popover="Remover Modelo" popover-trigger="'mouseenter'" ng-click="removerModelo(m)"><i class="fa fa-times"></i></a>
                         </div>

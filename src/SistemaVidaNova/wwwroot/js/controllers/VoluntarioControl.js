@@ -65,7 +65,7 @@
         $scope.voluntario.dataNascimento = new Date.parse($scope.voluntario.dataNascimento);
     if (!($scope.voluntario.dataCurso instanceof Date))
         $scope.voluntario.dataCurso = new Date.parse($scope.voluntario.dataCurso);
-    if (!($scope.voluntario.dataAgendamentoCurso instanceof Date))
+    if (!($scope.voluntario.dataAgendamentoCurso instanceof Date) && $scope.voluntario.dataAgendamentoCurso!= null)
         $scope.voluntario.dataAgendamentoCurso = new Date.parse($scope.voluntario.dataAgendamentoCurso);
     $scope.salvar = function () {
         VoluntarioService.Update($scope.voluntario)
@@ -198,5 +198,63 @@
     });
 
     read();
+
+}])
+
+.controller('VoluntarioDisponivelControl', ['$scope', 'VoluntarioService', '$uibModal', 'voluntarios', 'loadingDialod', 'ngDialog', 'diaDaSemana', function ($scope, VoluntarioService, $uibModal, voluntarios, loadingDialod, ngDialog, diaDaSemana) {
+    loadingDialod.close();
+    var itensPorPagina = 10;
+    $scope.voluntarios = voluntarios;
+    $scope.valorPesquisa = "";
+    $scope.diaDaSemana = diaDaSemana;
+    $scope.totalItems = VoluntarioService.totalItems;
+    $scope.currentPage = 1;
+
+
+
+    $scope.ToExcel = function () {
+        VoluntarioService.toExcel($scope.valorPesquisa)
+        /*.then(function () {            
+        }, function (erros) {
+            
+        });*/
+    };
+
+    $scope.pageChanged = function () {
+        VoluntarioService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa, $scope.diaDaSemana)//id,skip,take,filtro
+        .then(function (voluntarios) {
+            $scope.voluntarios = voluntarios;
+            $scope.totalItems = VoluntarioService.totalItems;
+        }, function (erros) {
+
+        });
+    };
+
+    $scope.pesquisar = function () {
+        $scope.pageChanged();
+    }
+
+    $scope.delete = function (voluntario) {
+        ngDialog.openConfirm({
+            template: '\
+                <p>Tem certeza que quer apagar este Voluntário?</p>\
+                <div class="ngdialog-buttons">\
+                    <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">Não</button>\
+                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Sim</button>\
+                </div>',
+            plain: true
+        }).then(function () {
+            VoluntarioService.Delete(voluntario)
+            .then(function () {
+                //remove da lista
+                var index = $scope.voluntarios.indexOf(voluntario);
+                $scope.voluntarios.splice(index, 1);
+            }, function () {
+
+            });
+        }, function () {
+            //não faz nada
+        });
+    }
 
 }]);

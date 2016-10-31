@@ -58,7 +58,7 @@ namespace SistemaVidaNova.Api
             if (String.IsNullOrEmpty(tipo))
                 tipo = "ASSOCIACAO"; // pessoa fisica
 
-            List<DespesaDTO> despesas = new List<DespesaDTO>();
+            List<DespesaDTO> despesasDTO = new List<DespesaDTO>();
             switch (tipo)
             {
                 case "ASSOCIACAO":
@@ -70,10 +70,11 @@ namespace SistemaVidaNova.Api
                     if (!String.IsNullOrEmpty(filtro))
                         query = query.Where(q => q.Descricao.Contains(filtro) || q.Item.Nome.Contains(filtro));
                     this.Response.Headers.Add("totalItems", query.Count().ToString());
-
-                    despesas = query
+                    var despA = query
                    .Skip(skip.Value)
-                   .Take(take.Value).Select(q => new DespesaDTO
+                   .Take(take.Value).ToList();
+
+                    despesasDTO = despA.Select(q => new DespesaDTO
                    {
                        Id = q.Id,
                        Descricao = q.Descricao,
@@ -97,15 +98,20 @@ namespace SistemaVidaNova.Api
 
                     break;
                 case "FAVORECIDO":
-                    IQueryable<DespesaFavorecido> queryF = _context.DespesaFavorecido.Include(q => q.Item).Include(q=>q.Favorecido)
+                    IQueryable<DespesaFavorecido> queryF = _context.DespesaFavorecido
+                        .Include(q => q.Item)
+                        .Include(q=>q.Favorecido)
+                        .Include(q => q.Usuario)
                 .OrderByDescending(q => q.DataDaCompra);
                     if (!String.IsNullOrEmpty(filtro))
                         queryF = queryF.Where(q => q.Descricao.Contains(filtro) || q.Item.Nome.Contains(filtro) || q.Favorecido.Nome.Contains(filtro));
                     this.Response.Headers.Add("totalItems", queryF.Count().ToString());
 
-                    despesas = queryF
+                    var despF = queryF
                    .Skip(skip.Value)
-                   .Take(take.Value).Select(q => new DespesaDTO
+                   .Take(take.Value).ToList();
+
+                    despesasDTO = despF.Select(q => new DespesaDTO
                    {
                        Id = q.Id,
                        Descricao = q.Descricao,
@@ -135,15 +141,19 @@ namespace SistemaVidaNova.Api
                    }).ToList();
                     break;
                 case "SOPA":
-                    IQueryable<DespesaSopa> queryS = _context.DespesaSopa.Include(q => q.Item)
+                    IQueryable<DespesaSopa> queryS = _context.DespesaSopa
+                        .Include(q => q.Item)
+                        .Include(q => q.Usuario)
                .OrderByDescending(q => q.DataDaCompra);
                     if (!String.IsNullOrEmpty(filtro))
                         queryS = queryS.Where(q => q.Descricao.Contains(filtro) || q.Item.Nome.Contains(filtro));
                     this.Response.Headers.Add("totalItems", queryS.Count().ToString());
 
-                    despesas = queryS
+                    var despS = queryS
                    .Skip(skip.Value)
-                   .Take(take.Value).Select(q => new DespesaDTO
+                   .Take(take.Value).ToList();
+
+                    despesasDTO = despS.Select(q => new DespesaDTO
                    {
                        Id = q.Id,
                        Descricao = q.Descricao,
@@ -173,7 +183,7 @@ namespace SistemaVidaNova.Api
 
 
 
-            return despesas;
+            return despesasDTO;
         }
 
         // GET api/values/5
@@ -476,7 +486,7 @@ namespace SistemaVidaNova.Api
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            Despesa d = _context.Despesa.Single(q => q.Id == id);
+            Despesa d = _context.Despesa.Include(q=>q.Item).Single(q => q.Id == id);
             Item item = d.Item;
             double quantidade = d.Quantidade;
             _context.Despesa.Remove(d);

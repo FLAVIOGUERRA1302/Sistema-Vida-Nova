@@ -82,12 +82,17 @@
                             </div>
                             <div class="col-md-3">
                                 <label>Quantidade</label>
-                                <input type="text"
-                                       ng-model="despesa.quantidade"
-                                       placeholder="Quantidade da despesa"
-                                       class="form-control "
-                                       required
-                                       ui-number-mask="2">
+                                <div class="input-group">
+                                    <input type="text"
+                                           ng-model="despesa.quantidade"
+                                           placeholder="Quantidade da despesa"
+                                           class="form-control "
+                                           required
+                                           ui-number-mask="2">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default btn-flat" href="">{{despesa.item.unidadeDeMedida}}&nbsp;	</a>
+                                    </span>
+                                </div>
                                 <lista-erro lista="erros.Quantidade"></lista-erro>
                             </div>
                             <div class="col-md-3">

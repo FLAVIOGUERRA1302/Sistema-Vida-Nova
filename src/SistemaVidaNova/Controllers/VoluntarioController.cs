@@ -43,6 +43,12 @@ namespace SistemaVidaNova.Controllers
             return View();
         }
 
+        public IActionResult Disponivel(string id)
+        {
 
+            return View();
+        }
+
+        
     }
 }

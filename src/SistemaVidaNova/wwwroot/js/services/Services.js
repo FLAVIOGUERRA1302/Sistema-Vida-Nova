@@ -23,7 +23,7 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", "$window", function (
         return deferred.promise;
     }
 
-    s.Read = function (id,skip,take,filtro) {
+    s.Read = function (id,skip,take,filtro,diaDaSemana) {
         var deferred = $q.defer();
         if (id === undefined || id === null) id = "";
         var req = {
@@ -41,6 +41,10 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", "$window", function (
         }
         if (filtro !== null && filtro !== undefined && filtro !== "") {
             req.params.filtro = filtro;
+        }
+
+        if (diaDaSemana !== null && diaDaSemana !== undefined && diaDaSemana !== "") {
+            req.params.diaDaSemana = diaDaSemana;
         }
         $http(req).then(function successCallback(response) {
             s.totalItems = parseInt(response.headers('totalItems'));

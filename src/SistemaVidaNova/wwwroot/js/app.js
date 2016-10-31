@@ -75,7 +75,25 @@
             }
         }
     })
+.when('/Voluntario/Disponivel/:diaDaSemana', {
+    templateUrl: '/templates/Voluntario/Disponivel.html',
+    controller: 'VoluntarioDisponivelControl',
+    resolve: {
+        voluntarios: function (VoluntarioService, $route) {
+            
+            return VoluntarioService.Read(null, 0, 10, null, $route.current.params.diaDaSemana);//id,skip,take,filtro,diaDaSemana
+        },
+        loadingDialod: function (ngDialog) {
+            return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+        },
+        diaDaSemana: function ($route) {
+            return $route.current.params.diaDaSemana;
+        }
+    }
+})
 
+
+    
 
         //------------Interessado----------
     .when('/Interessado', {
@@ -776,7 +794,7 @@ angular.module("ngLocale", [], ["$provide", function ($provide) {
         },
         "id": "pt-br",
         "localeID": "pt_BR",
-        "pluralCat": function (n, opt_precision) { if (n >= 0 && n <= 2 && n != 2) { return PLURAL_CATEGORY.ONE; } return PLURAL_CATEGORY.OTHER; }
+        "pluralCat": function (n, opt_precision) { if (n >= 0 && n <= 2 && n !== 2) { return PLURAL_CATEGORY.ONE; } return PLURAL_CATEGORY.OTHER; }
     });
 }]);
   

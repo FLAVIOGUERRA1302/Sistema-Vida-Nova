@@ -11,7 +11,7 @@
     $scope.currentPage = 1;
 
     $scope.ToExcel = function () {
-        EstoqueService.toExcel($scope.tipo, $scope.valorPesquisa, $scope.negativos)
+        EstoqueService.toExcel( $scope.valorPesquisa, $scope.negativos)
         /*.then(function () {            
         }, function (erros) {
             

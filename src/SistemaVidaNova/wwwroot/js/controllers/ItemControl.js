@@ -10,7 +10,7 @@
     $scope.currentPage = 1;
 
     $scope.ToExcel = function () {
-        ItemService.toExcel($scope.tipo, $scope.valorPesquisa)
+        ItemService.toExcel( $scope.valorPesquisa)
         /*.then(function () {            
         }, function (erros) {
             

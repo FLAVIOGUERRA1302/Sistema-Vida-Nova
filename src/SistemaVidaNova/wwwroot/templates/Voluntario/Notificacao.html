@@ -5,12 +5,12 @@
         <span class="label label-warning" ng-show="semAgendamento">{{semAgendamento}} </span>
     </a>
     <ul class="dropdown-menu">
-        <li class="header">{{semAgendamento}} voluntário(s) sem sem agendamento e com o curso atrasado</li>
+        <li class="header">{{semAgendamento}} voluntário(s) com o curso atrasado</li>
         <li>
             <!-- inner menu: contains the actual data -->
             <ul class="menu">
                 <li ng-repeat="v in voluntarios">
-                    <a href="/Voluntario/Curso/{{v.id}}">
+                    <a href="/Voluntario/Editar/{{v.id}}">
                         <i class="fa fa-users text-aqua"></i> {{v.nome}} - {{v.diasEmAtraso}} dias em atrasado
                     </a>
                 </li>

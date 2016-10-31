@@ -53,9 +53,9 @@ namespace SistemaVidaNova.Api
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
                         
-            query = query.Skip(skip.Value).Take(take.Value);
+            var list = query.Skip(skip.Value).Take(take.Value).ToList();
 
-            List<ResultadoSopaDTO> modelos = query.Select(q => new ResultadoSopaDTO()
+            List<ResultadoSopaDTO> modelos = list.Select(q => new ResultadoSopaDTO()
             {
                  Id = q.Id,
                      ModeloDeReceita = new ModeloDeReceitaDTOR()

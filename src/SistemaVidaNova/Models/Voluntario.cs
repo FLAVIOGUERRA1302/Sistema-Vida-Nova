@@ -59,7 +59,7 @@ namespace SistemaVidaNova.Models
 
         [Required]
         public DateTime DataCurso { get; set; }
-        public DateTime? DataAgendamentoCurso { get; set; }
+        
 
     }
 }

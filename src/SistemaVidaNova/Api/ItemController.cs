@@ -35,11 +35,13 @@ namespace SistemaVidaNova.Api
             if (take == null)
                 take = 1000;
 
-            IQueryable<Item> query = _context.Item                
-                .OrderBy(q => q.Nome);
+            IQueryable<Item> query = from q in _context.Item
+                                     orderby q.Destino, q.Nome
+                                     select q;
+                
 
             if (!String.IsNullOrEmpty(filtro))
-                query = query.Where(q => q.Nome.Contains(filtro));
+                query = query.Where(q => q.Nome.Contains(filtro) || q.Destino.Contains(filtro));
 
             if (!String.IsNullOrEmpty(destino))
             {
@@ -52,19 +54,21 @@ namespace SistemaVidaNova.Api
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
 
-            List<ItemDTO> itens = query
-                .Skip(skip.Value)
-                .Take(take.Value).Select(v => new ItemDTO
-                {
-                    Id = v.Id,                    
-                    Nome = v.Nome,
-                     Destino = v.Destino,
-                      UnidadeDeMedida = v.UnidadeDeMedida
-                      
-                    
-                }).ToList();
+            var itens = query
+               .Skip(skip.Value)
+               .Take(take.Value).ToList();
 
-              return itens;
+            List<ItemDTO> itensDto = itens.Select(v => new ItemDTO
+            {
+                Id = v.Id,
+                Nome = v.Nome,
+                Destino = v.Destino,
+                UnidadeDeMedida = v.UnidadeDeMedida
+
+
+
+            }).ToList();
+              return itensDto;
         }
 
         // GET api/values/5

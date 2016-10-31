@@ -25,6 +25,8 @@
     };
 
     $scope.pageChanged = function () {
+        var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+        $scope.despesas = [];
         DespesaService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.tipo, $scope.valorPesquisa)//id,skip,take,tiopo,filtro
         .then(function (despesas) {
             $scope.despesas = despesas;
@@ -33,6 +35,7 @@
                 if (!($scope.despesas[i].dataDaCompra instanceof Date))
                     $scope.despesas[i].dataDaCompra = Date.parse($scope.despesas[i].dataDaCompra);
             }
+            dialog.close();
         }, function (erros) {
 
         });

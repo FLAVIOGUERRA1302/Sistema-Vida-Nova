@@ -20,7 +20,7 @@ namespace SistemaVidaNova.Services
 
             item.QuantidadeEmEstoque += quantidade;
 
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
 
         }
         public void DarSaida(Usuario user, Item item, double quantidade)
@@ -28,20 +28,21 @@ namespace SistemaVidaNova.Services
 
             item.QuantidadeEmEstoque -= quantidade;
 
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
   
         }
 
         public void Ajustar(Usuario user, Item item, double quantidade)
         {
             item.QuantidadeEmEstoque = quantidade;
-             _context.SaveChangesAsync();
+             _context.SaveChanges();
         }
 
         public void Ajustar(Usuario user, Dictionary<Item, double> list)
         {
             foreach (Item item in list.Keys)
                 item.QuantidadeEmEstoque = list[item];
+            _context.SaveChanges();
         }
 
         public void DarEntrada(Usuario user, Dictionary<Item, double> list)
@@ -49,13 +50,14 @@ namespace SistemaVidaNova.Services
             foreach(Item item in list.Keys)
                 item.QuantidadeEmEstoque += list[item];
 
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         public void DarSaida(Usuario user, Dictionary<Item, double> list)
         {
             foreach (Item item in list.Keys)
                 item.QuantidadeEmEstoque -= list[item];
+            _context.SaveChanges();
         }
     }
 }

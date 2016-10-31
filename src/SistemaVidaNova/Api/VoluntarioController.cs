@@ -46,7 +46,7 @@ namespace SistemaVidaNova.Api
 
         // GET: api/values
         [HttpGet]
-        public IEnumerable<VoluntarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro, [FromQuery]bool? semCurso)
+        public IEnumerable<VoluntarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro, [FromQuery]bool? semCurso, [FromQuery]string diaDaSemana)
         {
 
             if (skip == null)
@@ -63,10 +63,40 @@ namespace SistemaVidaNova.Api
 
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(q => q.Nome.Contains(filtro));
+            if (!String.IsNullOrEmpty(diaDaSemana))
+            {
+                switch (diaDaSemana.ToUpper())
+                {
+                    case "DOMINGO":
+                        query = query.Where(q => q.Domingo == true);
+                        break;
+                    case "SEGUNDA-FEIRA":
+                        query = query.Where(q => q.SegundaFeira == true);
+                        break;
+                    case "TERÇA-FEIRA":
+                        query = query.Where(q => q.TercaFeira == true);
+                        break;
+                    case "QUARTA-FEIRA":
+                        query = query.Where(q => q.QuartaFeira == true);
+                        break;
+                    case "QUINTA-FEIRA":
+                        query = query.Where(q => q.QuintaFeira == true);
+                        break;
+                    case "SEXTA-FEIRA":
+                        query = query.Where(q => q.SextaFeira == true);
+                        break;
+                    case "SÁBADO":
+                        query = query.Where(q => q.Sabado == true);
+                        break;
+                    
+                }
+            }
+
+                
 
             DateTime umAnoAtras = DateTime.Today.AddYears(-1);
             if (semCurso.Value)
-                query = query.Where(q => q.DataCurso <= umAnoAtras && (q.DataAgendamentoCurso == null || q.DataAgendamentoCurso<=DateTime.Today));
+                query = query.Where(q => q.DataCurso <= umAnoAtras );
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
 
@@ -92,8 +122,7 @@ namespace SistemaVidaNova.Api
                     Sabado = v.Sabado,
                     Domingo = v.Domingo,
                     DataDeCadastro = v.DataDeCadastro,
-                    DataCurso = v.DataCurso,
-                    DataAgendamentoCurso = v.DataAgendamentoCurso
+                    DataCurso = v.DataCurso
                 }).ToList();
             
             foreach (var dto in voluntarios)
@@ -146,7 +175,6 @@ namespace SistemaVidaNova.Api
 
                 },
                 DataCurso = v.DataCurso,
-                DataAgendamentoCurso = v.DataAgendamentoCurso,                
                 DiasEmAtraso = ((TimeSpan)(DateTime.Today - v.DataCurso)).Days
 
             };
@@ -308,7 +336,7 @@ namespace SistemaVidaNova.Api
                 if (dto.DataCurso != null)
                     v.DataCurso = dto.DataCurso;
                 
-                v.DataAgendamentoCurso = dto.DataAgendamentoCurso;
+                
 
                 try
                 {
@@ -433,9 +461,9 @@ namespace SistemaVidaNova.Api
             sheet.Range[1, 17].ColumnWidth = 15;
             sheet.Range[1, 18].ColumnWidth = 15;
             sheet.Range[1, 19].ColumnWidth = 15;
-            sheet.Range[1, 20].ColumnWidth = 15;
+            
 
-            sheet.Range[1,1,1,20].Merge(true);
+            sheet.Range[1,1,1,19].Merge(true);
 
             //Inserting sample text into the first cell of the first sheet.
             sheet.Range["A1"].Text = "Voluntários";
@@ -464,9 +492,9 @@ namespace SistemaVidaNova.Api
             sheet.Range[3, 17].Text = "Domingo";
             sheet.Range[3, 18].Text = "Dt. cadastro";
             sheet.Range[3, 19].Text = "Dt. curso";            
-            sheet.Range[3, 20].Text = "Dt. agendamento curso";
+            
 
-            IStyle style = sheet[3,1,3,20].CellStyle;
+            IStyle style = sheet[3,1,3,19].CellStyle;
             style.VerticalAlignment = ExcelVAlign.VAlignCenter;
             style.HorizontalAlignment = ExcelHAlign.HAlignCenter;
             style.Color = Color.FromArgb(0, 0, 112, 192);
@@ -500,8 +528,7 @@ namespace SistemaVidaNova.Api
                 sheet.Range[linha, 19].NumberFormat = "dd/mm/yyyy";
                 sheet.Range[linha, 19].DateTime = v.DataCurso ;
                 sheet.Range[linha, 20].NumberFormat = "dd/mm/yyyy";
-                if ( v.DataAgendamentoCurso!=null)
-                    sheet.Range[linha, 20].DateTime = v.DataAgendamentoCurso.Value;
+                
                 linha++;
             }
             

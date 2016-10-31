@@ -4,7 +4,7 @@
 
 <div id="top" class="content-header">
     <div class="col-sm-3">
-        <h3 class="box-title">Lista de Voluntários</h3>
+        <h3 class="box-title">Lista de Voluntários - {{diaDaSemana}}</h3>
     </div>
 
     <div class="col-sm-6">
@@ -50,7 +50,7 @@
                                 <th>Celular</th>
                                 <th>Função</th>
                                 <th>Data do Curso</th>
-                                
+                                <th>Data agendamento Curso</th>
 
                                 <th class="actions">Ações</th>
                             </tr>
@@ -65,14 +65,14 @@
                                 <td>{{v.celular | brPhoneNumber}}</td>
                                 <td>{{v.funcao}}</td>
                                 <td>{{v.dataCurso | date :'dd/MM/yyyy'}}</td>
-                                
+                                <td>{{v.dataAgendamentoCurso | date :'dd/MM/yyyy'}}</td>
                                 
                                 
                                 <td class='actions'>
 
                                     <a class='btn btn-success btn-xs' href='/Voluntario/Visualizar/{{v.id}}'>Visualizar</a>
                                     <a class='btn btn-warning btn-xs' href='/Voluntario/Editar/{{v.id}}'>Editar</a>
-                                    
+                                    <a class='btn btn-primary btn-xs' href='/Voluntario/Curso/{{v.id}}'>Curso</a>
                                     <a class='btn btn-danger btn-xs' href='' ng-click="delete(v)">Excluir</a>
                                 </td>
                             </tr>
@@ -81,11 +81,7 @@
                     </table>
 
 
-                    <div class="col-lg-12">
-                        
-                            <button type="button" class="btn btn-success pull-right h2" ng-click="ToExcel()">Importar para Excel</button>
-                        
-                    </div>
+                    
 
 
                     <nav class="text-center">
@@ -93,6 +89,13 @@
                         <ul uib-pagination boundary-links="true"  ng-change="pageChanged()" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
 
                     </nav>
+
+                    <div class="col-lg-12">
+                        <a href="" go-back class="btn btn-primary h2">Voltar</a>
+
+                        <button type="button" class="btn btn-success pull-right h2" ng-click="ToExcel()">Importar para Excel</button>
+
+                    </div>
 
                     
 
@@ -105,10 +108,3 @@
 
 </div>
 
-<div class="row">
-    <div class="col-md-12" ng-include="'/templates/Charts/VoluntarioDiaDaSemana.html'" >        
-        
-    </div>
-</div>
-
-<hr />

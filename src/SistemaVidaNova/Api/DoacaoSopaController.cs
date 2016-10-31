@@ -236,7 +236,9 @@ namespace SistemaVidaNova.Api
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            DoacaoSopa ds = _context.DoacaoSopa.Single(q => q.Id == id);
+            DoacaoSopa ds = _context.DoacaoSopa
+                .Include(q=>q.Item)
+                .Single(q => q.Id == id);
             double quantidade = ds.Quantidade;
             Item item = ds.Item;
             _context.DoacaoSopa.Remove(ds);

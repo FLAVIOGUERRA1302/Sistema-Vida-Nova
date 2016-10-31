@@ -61,7 +61,8 @@ app.directive('echart', ['theme',  function (theme) {
         scope: {
             
             options: '=?',
-            tema: '=?'
+            tema: '=?',
+            events: '=?'
         },
         link: function (scope, element, attrs) {
             var ndWrapper = element.find('div')[0],
@@ -85,6 +86,11 @@ app.directive('echart', ['theme',  function (theme) {
                         chart = echarts.init(ndWrapper, theme.get(scope.tema || 'macarons'));
                     }
                     chart.clear();
+                    if (scope.events) {
+                        for (var i = 0; i < scope.events.length; i++) {
+                            chart.on(scope.events[i].type, scope.events[i].fn);
+                        }
+                    }
                     chart.setOption(scope.options);
                     chart.resize();
                 }
