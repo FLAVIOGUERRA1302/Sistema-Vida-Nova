@@ -5,7 +5,7 @@
 <div id="top" class="content-header">
     <div class="row">
         <div class="col-md-2">
-            <h3 class="box-title">Lista de Doadores</h3>
+            <h3 class="box-title">Lista de Doadores </h3>
         </div>
 
         <div class="col-md-6">
@@ -75,6 +75,7 @@
 
                                             <a class='btn btn-success btn-xs' href='/Doador/Visualizar/{{d.id}}'>Visualizar</a>
                                             <a class='btn btn-warning btn-xs' href='/Doador/Editar/{{d.id}}'>Editar</a>
+                                            <a class='btn btn-default btn-xs' href='/Doador/RelatorioPorEmail/{{d.id}}'>Relatório por email</a>
                                             <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
                                         </td>
                                     </tr>
@@ -106,10 +107,10 @@
                                         <td>{{d.email}}</td>
                                         <td>{{d.telefone  | brPhoneNumber}}</td>
                                         <td>{{d.celular  | brPhoneNumber}}</td>
-                                        <td class='actions'>
-
+                                        <td class='actions'>                                            
                                             <a class='btn btn-success btn-xs' href='/Doador/Visualizar/{{d.id}}'>Visualizar</a>
                                             <a class='btn btn-warning btn-xs' href='/Doador/Editar/{{d.id}}'>Editar</a>
+                                            <a class='btn btn-default btn-xs' href='/Doador/RelatorioPorEmail/{{d.id}}'>Relatório por email</a>
                                             <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
                                         </td>
                                     </tr>

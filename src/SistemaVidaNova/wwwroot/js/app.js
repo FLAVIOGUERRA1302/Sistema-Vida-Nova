@@ -10,12 +10,61 @@
     'ngTagsInput',    
     'textAngular',
     'angular-echarts',
-    'angular-echarts.theme'
+    'angular-echarts.theme',
+    'validation.match'
     
 
 ]).config(function ($routeProvider, $locationProvider) {
 
     $routeProvider
+
+
+
+        //------------Usuario----------
+    .when('/Usuario', {
+        templateUrl: '/templates/Usuario/List.html',
+        controller: 'UsuarioControl',
+        resolve: {
+
+            usuarios: function (AccountService) {
+                return AccountService.Read(null, 0, 10);//id,skip,take
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            }
+        }
+    })
+        .when('/Usuario/Criar', {
+            templateUrl: '/templates/Usuario/Create.html',
+            controller: 'UsuarioCreateControl'
+
+        })
+            .when('/Usuario/Editar/:id', {
+                templateUrl: '/templates/Usuario/Update.html',
+                controller: 'UsuarioUpdateControl',
+                resolve: {
+                    usuario: function (AccountService, $route) {
+                        return AccountService.Read($route.current.params.id);
+                    },
+                    loadingDialod: function (ngDialog) {
+                        return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                    }
+                }
+            })
+        .when('/Usuario/Visualizar/:id', {
+            templateUrl: '/templates/Usuario/Detalhe.html',
+            controller: 'UsuarioUpdateControl',
+            resolve: {
+                usuario: function (AccountService, $route) {
+                    return AccountService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+
+
 
       //------------Voluntario----------
     .when('/Voluntario', {
@@ -247,6 +296,21 @@
                 }
             }
         })
+     .when('/Doador/RelatorioPorEmail/:id', {
+         templateUrl: '/templates/Doador/RelatorioDoacoesEmail.html',
+         controller: 'DoadorRelatorioControl',
+         resolve: {
+             doador: function (DoadorService, $route) {
+                 return DoadorService.Read($route.current.params.id);
+             },
+             loadingDialod: function (ngDialog) {
+                 return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+             }
+         }
+     })
+
+
+    
 
      //------------Favorecido----------
     .when('/Favorecido', {
@@ -668,6 +732,15 @@
 
      })
 
+    //ResultadosGerais
+     .when('/ResultadosGerais', {
+         templateUrl: '/templates/ResultadosGerais/Relatorio.html',
+         controller: 'ResultadosGeraisControl'
+
+     })
+
+
+    
     ;
     $locationProvider.html5Mode(true);
 });

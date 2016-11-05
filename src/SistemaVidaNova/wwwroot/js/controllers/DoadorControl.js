@@ -3,14 +3,14 @@
     loadingDialod.close();
     var itensPorPagina = 10;
     $scope.doadores = doadores;
-    
+
     $scope.tipo = 'PF';
 
     $scope.totalItems = DoadorService.totalItems;
     $scope.currentPage = 1;
-    
+
     $scope.ToExcel = function () {
-        DoadorService.toExcel($scope.tipo,$scope.valorPesquisa)
+        DoadorService.toExcel($scope.tipo, $scope.valorPesquisa)
         /*.then(function () {            
         }, function (erros) {
             
@@ -31,7 +31,7 @@
         $scope.pageChanged();
     }
 
-    $scope.Select=function(tipo){
+    $scope.Select = function (tipo) {
         $scope.tipo = tipo;
         $scope.currentPage = 1;
         $scope.pageChanged();
@@ -83,7 +83,7 @@
     loadingDialod.close();
     $scope.doador = doador;//angular.copy(doador);
     $scope.random = new Date().getTime();
-    
+
     $scope.ufs = ufs;
 
     $scope.buscaCep = function () {
@@ -164,7 +164,54 @@
             });
         }
     }
+
+
+
+}])
+
+.controller('DoadorRelatorioControl', ['$scope', 'DoadorService', 'doador', 'loadingDialod', 'DoacaoDinheiroService','ngDialog',
+    function ($scope, DoadorService, doador, loadingDialod, DoacaoDinheiroService, ngDialog) {
+    loadingDialod.close();
+    $scope.doador = doador;
+    $scope.doacoes = [];
+    $scope.consultar = function () {
+        DoacaoDinheiroService.ReadPeriodo($scope.start, $scope.end, $scope.doador.id)//,start,end,idDoador
+        .then(function (doacoes) {
+            $scope.doacoes = doacoes;
+            $scope.totalItems = DoadorService.totalItems;
+        }, function (erros) {
+
+        });
+    }
+
+    $scope.enviar = function () {
+        DoadorService.EnviarRelatorioEmail( $scope.doador.id,$scope.start, $scope.end)//,start,end,idDoador
+        .then(function () {
+            ngDialog.openConfirm({
+                template: '\
+                <p>Email enviado</p>\
+                <div class="ngdialog-buttons">\
+                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(0)">OK</button>\
+                </div>',
+                plain: true
+            });
+        }, function (erros) {
+            ngDialog.openConfirm({
+                template: '\
+                <p>Erro ao enviar</p>\
+                <div class="ngdialog-buttons">\
+                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog(0)">OK</button>\
+                </div>',
+                plain: true
+            });
+        });
+    }
+
+
+
     
 
 
+
 }]);
+

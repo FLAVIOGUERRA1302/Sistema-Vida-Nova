@@ -30,8 +30,8 @@
     "System.Linq.Dynamic.Core": "1.0.6.1",
     "Microsoft.EntityFrameworkCore.Relational": "1.0.1",
     "Google.Apis.Auth": "1.16.0",
-    "Syncfusion.Compression.AspNet.Core": "14.3600.0.49-preview2-final",    
-    "Syncfusion.Pdf.AspNet.Core": "14.3600.0.49-preview2-final",    
+    "Syncfusion.Compression.AspNet.Core": "14.3600.0.49-preview2-final",
+    "Syncfusion.Pdf.AspNet.Core": "14.3600.0.49-preview2-final",
     "Syncfusion.XlsIO.AspNet.Core": "14.3600.0.49-preview2-final"
   },
 

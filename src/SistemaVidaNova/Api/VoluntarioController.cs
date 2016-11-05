@@ -46,7 +46,7 @@ namespace SistemaVidaNova.Api
 
         // GET: api/values
         [HttpGet]
-        public IEnumerable<VoluntarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro, [FromQuery]bool? semCurso, [FromQuery]string diaDaSemana)
+        public IEnumerable<VoluntarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro, [FromQuery]bool? semCurso, [FromQuery]string diaDaSemana, [FromQuery]string funcao)
         {
 
             if (skip == null)
@@ -63,6 +63,11 @@ namespace SistemaVidaNova.Api
 
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(q => q.Nome.Contains(filtro));
+
+            if (!String.IsNullOrEmpty(funcao))
+                query = query.Where(q => q.Funcao.Contains(funcao));
+
+
             if (!String.IsNullOrEmpty(diaDaSemana))
             {
                 switch (diaDaSemana.ToUpper())
@@ -412,7 +417,7 @@ namespace SistemaVidaNova.Api
 
 
         [HttpGet("excel")]
-        public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro)
+        public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro, [FromQuery]string diaDaSemana)
         {
 
             IQueryable<Voluntario> query = _context.Voluntario
@@ -421,6 +426,35 @@ namespace SistemaVidaNova.Api
 
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(q => q.Nome.Contains(filtro));
+
+            if (!String.IsNullOrEmpty(diaDaSemana))
+            {
+                switch (diaDaSemana.ToUpper())
+                {
+                    case "DOMINGO":
+                        query = query.Where(q => q.Domingo == true);
+                        break;
+                    case "SEGUNDA-FEIRA":
+                        query = query.Where(q => q.SegundaFeira == true);
+                        break;
+                    case "TERÇA-FEIRA":
+                        query = query.Where(q => q.TercaFeira == true);
+                        break;
+                    case "QUARTA-FEIRA":
+                        query = query.Where(q => q.QuartaFeira == true);
+                        break;
+                    case "QUINTA-FEIRA":
+                        query = query.Where(q => q.QuintaFeira == true);
+                        break;
+                    case "SEXTA-FEIRA":
+                        query = query.Where(q => q.SextaFeira == true);
+                        break;
+                    case "SÁBADO":
+                        query = query.Where(q => q.Sabado == true);
+                        break;
+
+                }
+            }
 
             if (SaveOption == null)
                 SaveOption = "ExcelXlsx";

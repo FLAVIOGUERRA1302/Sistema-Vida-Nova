@@ -307,3 +307,10 @@ input.ng-valid.ng-valid-required {
 	max-width: 420px;
 	margin: 10px auto
 }
+
+.fix-footer {
+    background-color: #ecf0f5;
+    height:100px;    
+    bottom:0px;
+    width:100%;
+}

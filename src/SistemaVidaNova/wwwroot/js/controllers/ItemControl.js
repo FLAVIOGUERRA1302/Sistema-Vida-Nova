@@ -5,12 +5,12 @@
     $scope.itens = itens;
     $scope.destinos = destinos;
     $scope.unidadesDeMedida = unidadesDeMedida;
-
+        
     $scope.totalItems = ItemService.totalItems;
     $scope.currentPage = 1;
 
     $scope.ToExcel = function () {
-        ItemService.toExcel( $scope.valorPesquisa)
+        ItemService.toExcel( $scope.valorPesquisa,$scope.destinoPesquisa)
         /*.then(function () {            
         }, function (erros) {
             
@@ -18,7 +18,7 @@
     };
 
     $scope.pageChanged = function () {
-        ItemService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa)//id,skip,take,filtro
+        ItemService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa,$scope.destinoPesquisa)//id,skip,take,filtro
         .then(function (itens) {
             $scope.itens = itens;
             $scope.totalItems = ItemService.totalItems;

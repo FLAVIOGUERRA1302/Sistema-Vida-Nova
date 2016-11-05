@@ -1,0 +1,88 @@
+﻿<section class="content-header">
+    <h1>
+        Doações em dinheiro do Doador {{doador.nomeRazaoSocial}}
+    </h1>
+
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+                
+                <div class="box-body">
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>Início da consulta</label>
+                            <input type="date" ng-model="start" class="form-control " />
+                        </div>
+                        <div class="col-md-2">
+                            <label>Fim da consulta</label>
+                            <input type="date" ng-model="end" class="form-control " />
+                        </div>
+
+                        <div class="col-md-2">
+
+                        </div>
+
+                    </div>
+                </div>
+
+                   
+                <div class="box-footer">
+                    <button type="button" ng-click="consultar()" ng-disabled="end==null || start == null" class="btn btn-primary">Visualizar</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">
+
+                <!-- formulario -->
+                <div class="box-body">
+
+                    <table class="table table-striped" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Data</th>
+                                <th>Valor</th>
+
+
+                                
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr ng-repeat="d in doacoes">
+                                <th>{{d.descricao }}</th>
+                                <th>{{d.dataDaDoacao| date :'dd/MM/yyyy' }}</th>
+                                <td>{{d.valor | finance:true:2}}</td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    </div>
+                    <div class="box-footer">
+                        <a href="" go-back class="btn btn-primary">Voltar</a>
+                        <button ng-click="enviar()" ng-disabled="end==null || start == null || doacoes.length ==0" class="btn btn-primary pull-right"><i class="fa fa-envelope" aria-hidden="true"></i>Enviar Email para o doador</button>
+                    </div>
+
+
+
+
+
+
+                </div>
+        </div>
+    </div>
+</section>

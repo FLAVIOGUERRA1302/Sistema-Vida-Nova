@@ -1,0 +1,80 @@
+﻿<section class="content-header">
+    <h1>
+        Editar Usuário
+    </h1>
+
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main" class="box box-warning">
+
+                <form method='post' ng-submit="salvar()" name="form">
+
+
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Nome</label>
+                                <input type="text" ng-model="usuario.nome" class="form-control" placeholder="Nome" required ng-maxlength="200" />
+                                <lista-erro lista="erros.Nome"></lista-erro>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Email</label>
+                                <input type="email" ng-model="usuario.email" class="form-control" placeholder="Email" disabled />
+                                <lista-erro lista="erros.Email"></lista-erro>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>CPF</label>
+
+                                <input type="text" class="form-control" placeholder="Cpf" ng-model="usuario.cpf" ui-br-cpf-mask required />
+                                <lista-erro lista="erros.Cpf"></lista-erro>
+
+
+                            </div>
+                            <div class="col-md-3">
+                                <label>Administrador</label>
+                                <div><input type="checkbox" ng-model="usuario.isAdmin" /></div>
+
+                            </div>
+                            <div class="col-md-3">
+                                <label>Ativo</label>
+                                <div><input type="checkbox" ng-model="usuario.isAtivo" /></div>
+
+                            </div>
+
+
+
+
+                        </div>
+
+                                               
+
+
+
+                        <div class="box-footer">
+                            <a go-back class="btn btn-primary">voltar</a>
+                            
+                            <button type="submit" class="btn btn-primary pull-right" ng-disabled="!form.$valid">Salvar</button>
+                        </div>
+
+                    </div>
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+

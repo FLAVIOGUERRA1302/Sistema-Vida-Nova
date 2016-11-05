@@ -3,31 +3,47 @@
 
 
 <div id="top" class="content-header">
-    <div class="col-sm-3">
+    <div class="col-md-3">
         <h3 class="box-title">Lista de Itens</h3>
     </div>
-
-    <div class="col-sm-6">
-
-        <form ng-submit="pesquisar()">
+    <form ng-submit="pesquisar()">
+        <div class="col-md-3">
             <div class="input-group h2">
-                <input type="text" ng-model="valorPesquisa" name="pesquisar" class="form-control" id="exampleInputName2" placeholder="Pesquisar Item">
+                
+                <select class="form-control"  placeholder="Pesquisar destino" ng-model="destinoPesquisa">
+                    <option value="" disabled selected>Pesquisar Destino</option>
+                    <option value=""  ></option>
+                    <option ng-repeat="(key, value) in destinos" value="{{key}}">{{value}}</option>
+                </select>
 
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit" >
+                    <button class="btn btn-primary" type="submit">
                         <span class="glyphicon glyphicon-search"></span>
                     </button>
 
                 </span>
             </div>
-        </form>
-    </div>
 
-    <div class="row">
+        </div>
+        <div class="col-md-4">
+            <div class="input-group h2">
+                <input type="text" ng-model="valorPesquisa" name="pesquisar" class="form-control" id="exampleInputName2" placeholder="Pesquisar Item">
+
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+
+                </span>
+            </div>
+
+        </div>
+    </form>
+    
         <div class="col-lg-2">
             <a href="/Item/Criar" class="btn btn-primary pull-right h2">Novo Item</a>
         </div>
-    </div>
+    
 </div>
 
 <div id="list" class="row">

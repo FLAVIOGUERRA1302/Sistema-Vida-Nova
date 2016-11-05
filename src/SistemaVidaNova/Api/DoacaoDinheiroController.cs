@@ -29,7 +29,7 @@ namespace SistemaVidaNova.Api
         }
 
         [HttpGet]
-        public IEnumerable<DoacaoDinheiroDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
+        public IEnumerable<DoacaoDinheiroDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro, [FromQuery]DateTime? start, [FromQuery]DateTime? end, [FromQuery]int? idDoador)
         {
 
             if (skip == null)
@@ -47,6 +47,11 @@ namespace SistemaVidaNova.Api
                 query = from q in query                        
                         where q.Descricao.Contains(filtro) || doadores.Contains(q.Doador)
                         select q;
+            }
+
+            if(start!=null && end != null && idDoador!=null)
+            {
+                query = query.Where(q => q.Data >= start.Value && q.Data <= end.Value && q.CodDoador == idDoador.Value);
             }
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());

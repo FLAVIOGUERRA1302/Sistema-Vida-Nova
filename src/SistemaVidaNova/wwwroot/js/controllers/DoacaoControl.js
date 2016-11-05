@@ -273,8 +273,8 @@
         }])
 
 
-.controller('DoacaoCreateObjetoControl', ['$scope', 'DoacaoObjetoService', 'DoadorService', '$location','CepService','ngDialog',
-        function ($scope, DoacaoObjetoService, DoadorService, $location, CepService, ngDialog) {
+.controller('DoacaoCreateObjetoControl', ['$scope', 'DoacaoObjetoService', 'DoadorService', '$location','CepService','ngDialog','VoluntarioService',
+        function ($scope, DoacaoObjetoService, DoadorService, $location, CepService, ngDialog,VoluntarioService) {
             $scope.doacao = { endereco:{}};
             $scope.tipo = 'PF'; //o doador começa como pessoa fisica
             $scope.ufs = ufs;
@@ -295,6 +295,11 @@
 
             $scope.getDoadores = function (val) {
                 return DoadorService.Read(null, 0, 10, $scope.tipo, val);//id,skip, take, filtro
+
+            };
+
+            $scope.getMotoristas = function (val) {
+                return VoluntarioService.ReadMotorista(0, 10, val);//id,skip, take, filtro
 
             };
 
@@ -345,11 +350,11 @@
             }
 
         }])
-.controller('DoacaoUpdateObjetoControl', ['$scope', 'DoacaoObjetoService', 'DoadorService', '$location', 'loadingDialod', 'ngDialog', 'doacao',
-        function ($scope, DoacaoObjetoService, DoadorService, $location, loadingDialod, ngDialog, doacao) {
+.controller('DoacaoUpdateObjetoControl', ['$scope', 'DoacaoObjetoService', 'DoadorService', '$location', 'loadingDialod', 'ngDialog', 'doacao','VoluntarioService',
+        function ($scope, DoacaoObjetoService, DoadorService, $location, loadingDialod, ngDialog, doacao, VoluntarioService) {
             loadingDialod.close();
             doacao.dataDaDoacao = Date.parse(doacao.dataDaDoacao);
-            doacao.dataDeRetirada =new Date(doacao.dataDeRetirada);
+            doacao.dataDeRetirada = Date.parse(doacao.dataDeRetirada);
             $scope.doacao = doacao;
             $scope.ufs = ufs;
             $scope.tipo = doacao.doador.tipo;
@@ -374,6 +379,12 @@
                 return DoadorService.Read(null, 0, 10, $scope.tipo, val);//id,skip, take, filtro
 
             };
+
+            $scope.getMotoristas = function (val) {
+                return VoluntarioService.ReadMotorista(0, 10, val);//id,skip, take, filtro
+
+            };
+
             //quando alterar o doador busca o doador novamente com o endereço
             $scope.$watch('doacao.doador', function (newValue, oldValue) {
                 if (newValue != oldValue && $scope.doacao.doador) {

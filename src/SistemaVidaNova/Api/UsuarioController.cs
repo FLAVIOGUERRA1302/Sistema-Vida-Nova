@@ -24,7 +24,7 @@ namespace SistemaVidaNova.Api
         }
 
         [HttpGet]
-        public IEnumerable<UsuarioDTO> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
+        public IEnumerable<UsuarioDTOR> Get([FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
         {
 
             if (skip == null)
@@ -40,9 +40,9 @@ namespace SistemaVidaNova.Api
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
 
-            List<UsuarioDTO> interessados = query
+            List<UsuarioDTOR> interessados = query
                 .Skip(skip.Value)
-                .Take(take.Value).Select(v => new UsuarioDTO
+                .Take(take.Value).Select(v => new UsuarioDTOR
                 {
                     Id = v.Id,
                     Email = v.Email,
@@ -61,7 +61,7 @@ namespace SistemaVidaNova.Api
             if (q == null)
                 return new NotFoundResult();
 
-            UsuarioDTO dto = new UsuarioDTO
+            UsuarioDTOR dto = new UsuarioDTOR
             {
                 Id = q.Id,
                 

@@ -109,9 +109,13 @@
                             </div>
                             <div class="col-md-3">
                                 <label>Valor Total</label>
-                                <div>
-                                    <b>{{despesa.valorUnitario*despesa.quantidade | finance:true:2}}</b>
-                                </div>
+                                <input type="text"
+                                       ng-model="despesa.valorTotal"
+                                       placeholder="Valor Total"
+                                       class="form-control "
+                                       
+                                       ui-money-mask="2">
+                                <lista-erro lista="erros.ValorTotal"></lista-erro>
                             </div>
                         </div>
 

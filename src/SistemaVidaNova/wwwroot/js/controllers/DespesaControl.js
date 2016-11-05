@@ -105,6 +105,8 @@
     $scope.despesa = despesa;//angular.copy(despesa);
     $scope.random = new Date().getTime();
     
+    $scope.despesa.valorTotal = $scope.despesa.valorUnitario * $scope.despesa.quantidade;
+
     $scope.destinos = destinos;
     $scope.unidadesDeMedida = unidadesDeMedida;
 
@@ -129,6 +131,22 @@
         return FavorecidoService.Read(null, 0, 10, val);//id,skip, take, filtro
 
     };
+
+    $scope.$watch('despesa.quantidade', function (newValue, oldValue) {
+        $scope.despesa.valorTotal = $scope.despesa.valorUnitario * $scope.despesa.quantidade;
+    });
+
+    $scope.$watch('despesa.valorUnitario', function (newValue, oldValue) {
+        $scope.despesa.valorTotal = $scope.despesa.valorUnitario * $scope.despesa.quantidade;
+    });
+    $scope.$watch('despesa.valorTotal', function (newValue, oldValue) {
+        if ($scope.despesa.quantidade > 0 && $scope.despesa.valorTotal > 0) {
+            $scope.despesa.valorUnitario = $scope.despesa.valorTotal / $scope.despesa.quantidade;
+        }
+        else {
+            $scope.despesa.valorUnitario = 0;
+        }
+    });
 
 
 
@@ -157,5 +175,21 @@
         return FavorecidoService.Read(null, 0, 10, val);//id,skip, take, filtro
 
     };
+
+    $scope.$watch('despesa.quantidade', function (newValue, oldValue) {
+        $scope.despesa.valorTotal = $scope.despesa.valorUnitario * $scope.despesa.quantidade;
+    });
+
+    $scope.$watch('despesa.valorUnitario', function (newValue, oldValue) {
+        $scope.despesa.valorTotal = $scope.despesa.valorUnitario * $scope.despesa.quantidade;
+    });
+    $scope.$watch('despesa.valorTotal', function (newValue, oldValue) {
+        if($scope.despesa.quantidade>0 && $scope.despesa.valorTotal>0  ){
+            $scope.despesa.valorUnitario = $scope.despesa.valorTotal / $scope.despesa.quantidade;
+        }
+        else{
+            $scope.despesa.valorUnitario = 0;
+        }
+    });
 
 }]);

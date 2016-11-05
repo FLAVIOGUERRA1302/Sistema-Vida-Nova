@@ -32,5 +32,12 @@ namespace SistemaVidaNova.Models
         [Required]
         [ForeignKey("IdEndereco")]
         public Endereco Endereco { get; set; }
+
+        [Required]
+        public int IdVoluntario { get; set; }
+
+        [Required]
+        [ForeignKey("IdVoluntario")]
+        public Voluntario Voluntario { get; set; }
     }
 }

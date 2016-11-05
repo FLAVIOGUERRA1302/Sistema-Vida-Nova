@@ -1,199 +1,200 @@
 ﻿
 
+  
 
-
-<div id="top" class="content-header">
-    <div class="row">
-        <div class="col-md-2">
-            <h3 class="box-title">Lista de Despesas</h3>
-        </div>
-
-        <div class="col-md-8">
-
-            <form ng-submit="pesquisar()">
-                <div class="input-group h2">
-                    <input type="text" ng-model="valorPesquisa" name="pesquisar" class="form-control" id="exampleInputName2" placeholder="Pesquisar Despesa">
-
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-
-                    </span>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-2">
-            <div class="dropdown h2">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Criar Despesa
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a href="/Despesa/Associacao/Criar">Associação</a></li>
-                    <li><a href="/Despesa/Favorecido/Criar">Favorecido</a></li>
-                    <li><a href="/Despesa/Sopa/Criar">Sopa</a></li>
-
-                </ul>
+    <div id="top" class="content-header" >
+        <div class="row">
+            <div class="col-md-2">
+                <h3 class="box-title">Lista de Despesas</h3>
             </div>
+
+            <div class="col-md-8">
+
+                <form ng-submit="pesquisar()">
+                    <div class="input-group h2">
+                        <input type="text" ng-model="valorPesquisa" name="pesquisar" class="form-control" id="exampleInputName2" placeholder="Pesquisar Despesa">
+
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-2">
+                <div class="dropdown h2">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Criar Despesa
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="/Despesa/Associacao/Criar">Associação</a></li>
+                        <li><a href="/Despesa/Favorecido/Criar">Favorecido</a></li>
+                        <li><a href="/Despesa/Sopa/Criar">Sopa</a></li>
+
+                    </ul>
+                </div>
+            </div>
+
+
         </div>
 
-       
     </div>
     
-</div>
-
-<div id="list" class="row">
+    <div id="list" class="row">
 
 
-    <section class="content body">
+        <section class="content body">
 
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="box-body">
-
-                    
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="box-body">
 
 
-                    <uib-tabset >
-                        <uib-tab index="0" heading="Associação" select="Select('ASSOCIACAO')">
-                            <table class="table table-striped" cellspacing="0" cellpadding="0">
-                                <thead>
-                                    <tr>
 
-                                        <th>Item</th>
-                                        <th>Data da compra</th>
-                                        <th>Quantidade</th>
-                                        <th>Valor total</th>
-                                        <th>Usúario</th>
 
-                                        <th class="actions">Ações</th>
-                                    </tr>
-                                </thead>
+                        <uib-tabset>
+                            <uib-tab index="0" heading="Associação" select="Select('ASSOCIACAO')">
+                                <table class="table table-striped" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
 
-                                <tbody>
+                                            <th>Item</th>
+                                            <th>Data da compra</th>
+                                            <th>Quantidade</th>
+                                            <th>Valor total</th>
+                                            <th>Usúario</th>
 
-                                    <tr ng-repeat="d in despesas">
-                                        <td>{{d.item.nome}}</td>
-                                        <th>{{d.dataDaCompra| date :'dd/MM/yyyy' }}</th>
-                                        <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
-                                        <td>{{d.quantidade *d.valorUnitario   | finance:true:2}}</td>
-                                        <td>{{d.usuario.nome}}</td>
-                                        <td class='actions'>
+                                            <th class="actions">Ações</th>
+                                        </tr>
+                                    </thead>
 
-                                            <a class='btn btn-success btn-xs' href='/Despesa/Visualizar/{{d.id}}'>Visualizar</a>
-                                            <a class='btn btn-warning btn-xs' href='/Despesa/Editar/{{d.id}}'>Editar</a>
-                                            <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
-                                        </td>
-                                    </tr>
+                                    <tbody>
 
-                                </tbody>
-                            </table>
-                        </uib-tab>
-                        <uib-tab index="1" heading="Favorecido" select="Select('FAVORECIDO')">
-                            <table class="table table-striped" cellspacing="0" cellpadding="0">
-                                <thead>
-                                    <tr>
-                                        <th>Favorecido</th>
-                                        <th>Item</th>
-                                        <th>Data da compra</th>
-                                        <th>Quantidade</th>
-                                        <th>Valor total</th>
-                                        <th>Usúario</th>
+                                        <tr ng-repeat="d in despesas">
+                                            <td>{{d.item.nome}}</td>
+                                            <th>{{d.dataDaCompra| date :'dd/MM/yyyy' }}</th>
+                                            <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
+                                            <td>{{d.quantidade *d.valorUnitario   | finance:true:2}}</td>
+                                            <td>{{d.usuario.nome}}</td>
+                                            <td class='actions'>
 
-                                        <th class="actions">Ações</th>
-                                    </tr>
-                                </thead>
+                                                <a class='btn btn-success btn-xs' href='/Despesa/Visualizar/{{d.id}}'>Visualizar</a>
+                                                <a class='btn btn-warning btn-xs' href='/Despesa/Editar/{{d.id}}'>Editar</a>
+                                                <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
+                                            </td>
+                                        </tr>
 
-                                <tbody>
+                                    </tbody>
+                                </table>
+                            </uib-tab>
+                            <uib-tab index="1" heading="Favorecido" select="Select('FAVORECIDO')">
+                                <table class="table table-striped" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Favorecido</th>
+                                            <th>Item</th>
+                                            <th>Data da compra</th>
+                                            <th>Quantidade</th>
+                                            <th>Valor total</th>
+                                            <th>Usúario</th>
 
-                                    <tr ng-repeat="d in despesas">
-                                        <td>{{d.favorecido.nome}}</td>
-                                        <td>{{d.item.nome}}</td>
-                                        <th>{{d.dataDaCompra| date :'dd/MM/yyyy' }}</th>
-                                        <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
-                                        <td>{{d.quantidade *d.valorUnitario   | finance:true:2}}</td>
-                                        <td>{{d.usuario.nome}}</td>
-                                        <td class='actions'>
+                                            <th class="actions">Ações</th>
+                                        </tr>
+                                    </thead>
 
-                                            <a class='btn btn-success btn-xs' href='/Despesa/Visualizar/{{d.id}}'>Visualizar</a>
-                                            <a class='btn btn-warning btn-xs' href='/Despesa/Editar/{{d.id}}'>Editar</a>
-                                            <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
-                                        </td>
-                                    </tr>
+                                    <tbody>
 
-                                </tbody>
-                            </table>
-                        </uib-tab>
+                                        <tr ng-repeat="d in despesas">
+                                            <td>{{d.favorecido.nome}}</td>
+                                            <td>{{d.item.nome}}</td>
+                                            <th>{{d.dataDaCompra| date :'dd/MM/yyyy' }}</th>
+                                            <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
+                                            <td>{{d.quantidade *d.valorUnitario   | finance:true:2}}</td>
+                                            <td>{{d.usuario.nome}}</td>
+                                            <td class='actions'>
 
-                        <uib-tab index="2" heading="Sopa" select="Select('SOPA')">
-                            <table class="table table-striped" cellspacing="0" cellpadding="0">
-                                <thead>
-                                    <tr>
+                                                <a class='btn btn-success btn-xs' href='/Despesa/Visualizar/{{d.id}}'>Visualizar</a>
+                                                <a class='btn btn-warning btn-xs' href='/Despesa/Editar/{{d.id}}'>Editar</a>
+                                                <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
+                                            </td>
+                                        </tr>
 
-                                        <th>Item</th>
-                                        <th>Data da compra</th>
-                                        <th>Quantidade</th>
-                                        <th>Valor total</th>
-                                        <th>Usúario</th>
+                                    </tbody>
+                                </table>
+                            </uib-tab>
 
-                                        <th class="actions">Ações</th>
-                                    </tr>
-                                </thead>
+                            <uib-tab index="2" heading="Sopa" select="Select('SOPA')">
+                                <table class="table table-striped" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
 
-                                <tbody>
+                                            <th>Item</th>
+                                            <th>Data da compra</th>
+                                            <th>Quantidade</th>
+                                            <th>Valor total</th>
+                                            <th>Usúario</th>
 
-                                    <tr ng-repeat="d in despesas">
-                                        <td>{{d.item.nome}}</td>
-                                        <th>{{d.dataDaCompra| date :'dd/MM/yyyy' }}</th>
-                                        <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
-                                        <td>{{d.quantidade *d.valorUnitario   | finance:true:2}}</td>
-                                        <td>{{d.usuario.nome}}</td>
-                                        <td class='actions'>
+                                            <th class="actions">Ações</th>
+                                        </tr>
+                                    </thead>
 
-                                            <a class='btn btn-success btn-xs' href='/Despesa/Visualizar/{{d.id}}'>Visualizar</a>
-                                            <a class='btn btn-warning btn-xs' href='/Despesa/Editar/{{d.id}}'>Editar</a>
-                                            <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
-                                        </td>
-                                    </tr>
+                                    <tbody>
 
-                                </tbody>
-                            </table>
-                        </uib-tab>
+                                        <tr ng-repeat="d in despesas">
+                                            <td>{{d.item.nome}}</td>
+                                            <th>{{d.dataDaCompra| date :'dd/MM/yyyy' }}</th>
+                                            <td>{{d.quantidade | number : 2}} ({{unidadesDeMedida[d.item.unidadeDeMedida]}})</td>
+                                            <td>{{d.quantidade *d.valorUnitario   | finance:true:2}}</td>
+                                            <td>{{d.usuario.nome}}</td>
+                                            <td class='actions'>
 
-                     
-                        
-                    </uib-tabset>
+                                                <a class='btn btn-success btn-xs' href='/Despesa/Visualizar/{{d.id}}'>Visualizar</a>
+                                                <a class='btn btn-warning btn-xs' href='/Despesa/Editar/{{d.id}}'>Editar</a>
+                                                <a class='btn btn-danger btn-xs' href='' ng-click="delete(d)">Excluir</a>
+                                            </td>
+                                        </tr>
 
-                    <div class="col-lg-12">
+                                    </tbody>
+                                </table>
+                            </uib-tab>
 
-                        <button type="button" class="btn btn-success pull-right h2" ng-click="ToExcel()">Importar para Excel</button>
+
+
+                        </uib-tabset>
+
+                        <div class="col-lg-12">
+
+                            <button type="button" class="btn btn-success pull-right h2" ng-click="ToExcel()">Importar para Excel</button>
+
+                        </div>
+
+
+                        <nav class="text-center">
+
+                            <ul uib-pagination boundary-links="true" ng-change="pageChanged()" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+
+                        </nav>
+
+
 
                     </div>
-
-
-                    <nav class="text-center">
-
-                        <ul uib-pagination boundary-links="true" ng-change="pageChanged()" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
-
-                    </nav>
-
-
-
                 </div>
+
+
             </div>
-
-
-        </div>
-    </section>
-
-</div>
-
-
-<div class="row">
-    <div class="col-md-12" ng-include="'/templates/Charts/DespesaNoPeriodo.html'">
+        </section>
 
     </div>
-</div>
 
-<hr />
+
+    <div class="row">
+        <div class="col-md-12" ng-include="'/templates/Charts/DespesaNoPeriodo.html'">
+
+        </div>
+        
+
+    </div>
+

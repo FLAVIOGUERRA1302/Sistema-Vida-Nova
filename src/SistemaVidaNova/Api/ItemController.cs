@@ -41,11 +41,11 @@ namespace SistemaVidaNova.Api
                 
 
             if (!String.IsNullOrEmpty(filtro))
-                query = query.Where(q => q.Nome.Contains(filtro) || q.Destino.Contains(filtro));
+                query = query.Where(q => q.Nome.Contains(filtro) );
 
             if (!String.IsNullOrEmpty(destino))
             {
-                destino = destino.ToUpper();
+                destino = destino.ToUpper();                
                 query = query.Where(q => q.Destino == destino);
 
             }
@@ -209,7 +209,7 @@ namespace SistemaVidaNova.Api
         }
 
         [HttpGet("excel")]
-        public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro)
+        public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro, [FromQuery]string destino)
         {
 
             IQueryable<Item> query = _context.Item
@@ -217,6 +217,13 @@ namespace SistemaVidaNova.Api
 
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(q => q.Nome.Contains(filtro));
+
+            if (!String.IsNullOrEmpty(destino))
+            {
+                destino = destino.ToUpper();
+                query = query.Where(q => q.Destino == destino);
+
+            }
 
             if (SaveOption == null)
                 SaveOption = "ExcelXlsx";

@@ -19,6 +19,9 @@ using System.Net.Http;
 
 using SistemaVidaNova.Services;
 using MimeKit;
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Graphics;
+using Syncfusion.Drawing;
 
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -61,7 +64,109 @@ namespace SistemaVidaNova.Api
 
             return new NoContentResult();
         }
+        /*
+        // GET: api/values
+        [HttpGet("pdf/{grafico}")]
+        
+        public IActionResult pdf(string grafico, [FromQuery]DateTime? start, [FromQuery]DateTime? end, string filtro, int? id)
+        {
+            PdfDocument document = null;
+            string nome = "";
+            switch (grafico.ToUpper())
+            {
+                case "VOLUNTARIODIADASEMANA":
+                    document = PfdVoluntarioDiaDaSemana();
+                        break;
+                case "DESPESAPORITEMNOPERIODO":
+                    document = PfdDespesaPorItemNoPeriodo(start.Value, end.Value, filtro);
+                    break;
+                case "DOACOESMENSAISNOPERIODO":
+                    document = PfdDoacoesMensaisNoPeriodo(start.Value, end.Value);
+                    break;
+                case "DOACOESMENSAISPORDOADORNOPERIODO":
+                    document = PfdDoacoesMensaisPorDoadorNoPeriodo(start.Value, end.Value, id.Value);
+                    break;
 
+            }
+
+            if (document != null) {
+                MemoryStream ms = new MemoryStream();
+                document.Save(ms);
+                //If the position is not set to '0' then the PDF will be empty.
+                ms.Position = 0;
+
+                //Download the PDF document in the browser.
+                FileStreamResult fileStreamResult = new FileStreamResult(ms, "application/pdf");
+                fileStreamResult.FileDownloadName = nome;
+                return fileStreamResult;
+            }
+            return new NoContentResult();
+
+            
+        }
+
+        private PdfDocument PfdDoacoesMensaisPorDoadorNoPeriodo(DateTime value1, DateTime value2, int value3)
+        {
+            throw new NotImplementedException();
+        }
+
+        private PdfDocument PfdDoacoesMensaisNoPeriodo(DateTime value1, DateTime value2)
+        {
+            throw new NotImplementedException();
+        }
+
+        private PdfDocument PfdDespesaPorItemNoPeriodo(DateTime start, DateTime end, string filtro)
+        {
+            PdfDocument document;
+            PdfPage page;
+            Color gray = Color.FromArgb(255, 77, 77, 77);
+            Color black = Color.FromArgb(255, 0, 0, 0);
+            Color white = Color.FromArgb(255, 255, 255, 255);
+            Color violet = Color.FromArgb(255, 151, 108, 174);
+
+            var query = from q in _context.Despesa
+                        where q.Tipo == filtro
+                        && q.DataDaCompra >= start && q.DataDaCompra <= end
+                        group q by q.Item into g
+                        orderby g.Key.Nome
+                        select new
+                        {
+                            item = g.Key,
+                            valorTotal = g.Sum(v => v.Quantidade * v.ValorUnitario)
+                        };
+
+            document = new PdfDocument();
+            
+
+            //Setting margin
+            document.PageSettings.Margins.All = 0;
+            //Adding a new page
+            page = document.Pages.Add();
+            PdfGraphics g = page.Graphics;
+
+            //Creating font instances
+            PdfFont headerFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 35);
+            PdfFont subHeadingFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 16);
+
+
+
+
+
+
+
+
+
+
+
+            return document;
+
+        }
+
+        private PdfDocument PfdVoluntarioDiaDaSemana()
+        {
+            throw new NotImplementedException();
+        }
+        */
         private ChartDTO DespesaPorItemNoPeriodo(DateTime start, DateTime end, string filtro)
         {
             ChartDTO chart = new ChartDTO();

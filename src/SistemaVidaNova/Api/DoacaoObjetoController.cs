@@ -12,6 +12,7 @@ using Syncfusion.XlsIO;
 using CustomExtensions;
 using Syncfusion.Drawing;
 using System.IO;
+using SistemaVidaNova.Services;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,9 +24,13 @@ namespace SistemaVidaNova.Api
     {
         // GET: api/values
         private VidaNovaContext _context;
-        public DoacaoObjetoController(VidaNovaContext context)
+        private readonly IEmailSender _emailSender;
+        public DoacaoObjetoController(
+            VidaNovaContext context,
+            IEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -77,7 +82,11 @@ namespace SistemaVidaNova.Api
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            DoacaoObjeto q = _context.DoacaoObjeto.Include(d=>d.Doador).Include(d=>d.Endereco).SingleOrDefault(i => i.Id == id);
+            DoacaoObjeto q = _context.DoacaoObjeto
+                .Include(d=>d.Doador)
+                .Include(d=>d.Endereco)
+                .Include(d=>d.Voluntario)
+                .SingleOrDefault(i => i.Id == id);
             if (q == null)
                 return new NotFoundResult();
 
@@ -104,6 +113,12 @@ namespace SistemaVidaNova.Api
                      Estado = q.Endereco.Estado,
                      Logradouro = q.Endereco.Logradouro,
                      Numero = q.Endereco.Numero,
+                },
+                Voluntario = new VoluntarioDTOR()
+                {
+                     Id = q.Voluntario.Id,
+                      Nome = q.Voluntario.Nome,
+                       Email = q.Voluntario.Email
                 }
             };
             return new ObjectResult(dto);
@@ -122,6 +137,15 @@ namespace SistemaVidaNova.Api
                     ModelState.AddModelError("Doador", "Doador inválido");
                     return new BadRequestObjectResult(ModelState);
                 }
+
+                Voluntario  voluntario = _context.Voluntario.SingleOrDefault(q => q.Id == dto.Voluntario.Id);
+                if (voluntario == null)
+                {
+                    ModelState.AddModelError("Voluntario", "Voluntario inválido");
+                    return new BadRequestObjectResult(ModelState);
+                }
+
+
                 //corrige fuso horario do js
                 dto.DataDaDoacao = dto.DataDaDoacao.AddHours(-dto.DataDaDoacao.Hour);
                 DoacaoObjeto novo = new DoacaoObjeto()
@@ -139,13 +163,15 @@ namespace SistemaVidaNova.Api
                         Estado = dto.Endereco.Estado,
                         Logradouro = dto.Endereco.Logradouro,
                         Numero = dto.Endereco.Numero
-                    }
+                    },
+                    Voluntario = voluntario
                 };
                 try
                 {
                     _context.DoacaoObjeto.Add(novo);
                 
                     _context.SaveChanges();
+                    enviarEmail(novo);
                     dto.Id = novo.Id;
                     return new ObjectResult(dto);
                 }
@@ -181,6 +207,13 @@ namespace SistemaVidaNova.Api
                     return new BadRequestObjectResult(ModelState);
                 }
 
+                Voluntario voluntario = _context.Voluntario.SingleOrDefault(q => q.Id == dto.Voluntario.Id);
+                if (voluntario == null)
+                {
+                    ModelState.AddModelError("Voluntario", "Voluntario inválido");
+                    return new BadRequestObjectResult(ModelState);
+                }
+
                 dd.Doador = doador;
                 dd.DataDaDoacao = dto.DataDaDoacao;
                 dd.Descricao = dto.Descricao;
@@ -193,12 +226,13 @@ namespace SistemaVidaNova.Api
                 dd.Endereco.Estado = dto.Endereco.Estado;
                 dd.Endereco.Numero = dto.Endereco.Numero;
                 dd.Endereco.Logradouro = dto.Endereco.Logradouro;
-                
 
+                dd.Voluntario = voluntario;
 
                 try
                 {
                     _context.SaveChanges();
+                    enviarEmail(dd);
                 }
                 catch
                 {
@@ -235,7 +269,10 @@ namespace SistemaVidaNova.Api
         public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro)
         {
 
-            IQueryable<DoacaoObjeto> query = _context.DoacaoObjeto.Include(q => q.Doador).Include(q=>q.Endereco)
+            IQueryable<DoacaoObjeto> query = _context.DoacaoObjeto
+                .Include(q => q.Doador)
+                .Include(q=>q.Endereco)
+                .Include(q=>q.Voluntario)
                 .OrderByDescending(q => q.DataDaDoacao);
 
             if (!String.IsNullOrEmpty(filtro))
@@ -280,10 +317,11 @@ namespace SistemaVidaNova.Api
             sheet.Range[1, 11].ColumnWidth = 15;
             sheet.Range[1, 12].ColumnWidth = 15;
             sheet.Range[1, 13].ColumnWidth = 15;
-            
+            sheet.Range[1, 14].ColumnWidth = 15;
 
 
-            sheet.Range[1, 1, 1, 13].Merge(true);
+
+            sheet.Range[1, 1, 1, 14].Merge(true);
 
             //Inserting sample text into the first cell of the first sheet.
             sheet.Range["A1"].Text = "Doações de objeto";
@@ -306,12 +344,13 @@ namespace SistemaVidaNova.Api
             sheet.Range[3, 11].Text = "Bairro";
             sheet.Range[3, 12].Text = "Cidade";
             sheet.Range[3, 13].Text = "Estado";
+            sheet.Range[3, 14].Text = "Motorista";
 
 
 
 
 
-            IStyle style = sheet[3, 1, 3, 13].CellStyle;
+            IStyle style = sheet[3, 1, 3, 14].CellStyle;
             style.VerticalAlignment = ExcelVAlign.VAlignCenter;
             style.HorizontalAlignment = ExcelHAlign.HAlignCenter;
             style.Color = Color.FromArgb(0, 0, 112, 192);
@@ -336,6 +375,7 @@ namespace SistemaVidaNova.Api
                 sheet.Range[linha, 11].Text = q.Endereco.Bairro;
                 sheet.Range[linha, 12].Text = q.Endereco.Cidade;
                 sheet.Range[linha, 13].Text = q.Endereco.Estado;
+                sheet.Range[linha, 14].Text = q.Voluntario.Nome;
 
                 linha++;
             }
@@ -361,6 +401,62 @@ namespace SistemaVidaNova.Api
             ms.Position = 0;
 
             return File(ms, ContentType, fileName);
+
+        }
+
+
+        private void enviarEmail(DoacaoObjeto doacao)
+        {
+            string nomeRazaoSocial = doacao.Doador.GetType() == typeof(PessoaFisica) ? ((PessoaFisica)doacao.Doador).Nome : ((PessoaJuridica)doacao.Doador).RazaoSocial;
+            string subject = "Buscar doação no dia " + doacao.DataDeRetirada.ToString("dd-MM-yyyy");
+            string message = @"Olá  {0},<br/>" +
+                @"Temos uma doação para que você possa buscar para a gente, segue os dados da retirada:
+                <ul>
+                    <li> Doador: {1} </ li >
+                    <li> Descrição: {2} </ li >
+                    <li> Data de retirada: {3} </ li >
+                    <li> Hora de retirada: {4} </ li >
+                    <li> Telefone: {5} </ li >
+                    <li> Celular: {6} </ li >
+                    <li> Email: {7} </ li >
+                    <li> Endereço:  
+                        <ul>
+                            <li> CEP: {8} </ li >
+                            <li> Rua/Avenida: {9} </ li >
+                            <li> Número: {10} </ li >
+                            <li> Complemento: {11} </ li >                       
+                            <li> Bairro: {12} </ li >                       
+                            <li> Cidade: {13} </ li >                       
+                            <li> Estado: {14} </ li >                       
+                            
+              
+                        </ul>
+                    </ li >
+              
+                </ul>
+                 <br/> Muito Obrigado <br/>Associação Beneficente Benedito Pacheco (Reintegra Turma da Sopa),<br/>
+";
+
+
+            _emailSender.SendEmailAsync(doacao.Voluntario.Email, subject,
+                   String.Format(message,
+                   doacao.Voluntario.Nome,
+                   nomeRazaoSocial,
+                   doacao.Descricao,
+                   doacao.DataDeRetirada.ToString("dd-MM-yyyy"),
+                   doacao.DataDeRetirada.ToString("HH:mm"),
+                   doacao.Doador.Telefone.ToTelefone(),
+                   doacao.Doador.Celular.ToTelefone(),
+                   doacao.Doador.Email,
+                   doacao.Endereco.Cep,
+                   doacao.Endereco.Logradouro,
+                   doacao.Endereco.Numero,
+                   doacao.Endereco.Complemento,
+                   doacao.Endereco.Bairro,
+                   doacao.Endereco.Cidade,
+                   doacao.Endereco.Estado                   
+                   )
+                   );
 
         }
     }

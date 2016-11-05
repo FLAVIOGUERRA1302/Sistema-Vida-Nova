@@ -107,7 +107,8 @@ app.directive('echart', ['theme',  function (theme) {
     }
 }]);
 
-/*
+
+
 app.directive('htmlToPdf', function () {
     return {
         restrict: 'A',
@@ -125,6 +126,8 @@ app.directive('htmlToPdf', function () {
             };
             ctrl.gerar = function () {
                 
+
+
                 var pdf = new jsPDF('p', 'pt', 'letter')
 
                 // source can be HTML-formatted string, or a reference
@@ -191,7 +194,9 @@ app.directive('gerarPdf',  function () {
     }
 });
 
-*/
+
+
+
 
 
 

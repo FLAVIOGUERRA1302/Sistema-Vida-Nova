@@ -95,6 +95,11 @@
         <div class="content-wrapper" ng-view>
 
         </div>
+        <div class="fix-footer">
+            
+            
+        </div>
+        
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             
@@ -149,13 +154,16 @@
 
         <script src="~/lib/echarts/build/dist/echarts-all.js"></script>
         <script src="~/lib/angular-echarts/dist/angular-echarts.js"></script>
+                
+        <script src="~/lib/angular-validation-match/dist/angular-validation-match.min.js"></script>
 
+
+        <script src="~/lib/jsPDF-html2canvas/dist/jspdf.min.js"></script>
         
-
 
         <script src="~/js/date.js" ></script>
         <script src="~/js/app.js" asp-append-version="true"></script>
-        <script src="~/js/services/Services.js" asp-append-version="false"></script>
+        <script src="~/js/services/Services.js" asp-append-version="true"></script>
         <script src="~/js/directives/Directives.js" asp-append-version="false"></script>
         <script src="~/js/controllers/HomeControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/VoluntarioControl.js" asp-append-version="true"></script>
@@ -164,14 +172,16 @@
         <script src="~/js/controllers/DoadorControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/FavorecidoControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/InformativoControl.js" asp-append-version="true"></script>
-        <script src="~/js/controllers/ChartControl.js" asp-append-version="false"></script>
+        <script src="~/js/controllers/ChartControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/ItemControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/DespesaControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/DoacaoControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/ModeloDeReceitaControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/ResultadoSopaControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/EstoqueControl.js" asp-append-version="true"></script>
-        <script src="~/js/controllers/PlanejamentoControl.js" asp-append-version="false"></script>
+        <script src="~/js/controllers/PlanejamentoControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/UsuarioControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/ResultadosGeraisControl.js" asp-append-version="false"></script>
     </environment>
     <environment names="Staging,Production">
         

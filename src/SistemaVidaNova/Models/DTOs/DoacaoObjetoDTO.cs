@@ -26,5 +26,8 @@ namespace SistemaVidaNova.Models.DTOs
 
         [Required]       
         public EnderecoDTO Endereco { get; set; }
+
+        [Required]
+        public VoluntarioDTOR Voluntario { get; set; }
     }
 }

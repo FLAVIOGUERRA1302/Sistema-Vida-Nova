@@ -6,10 +6,10 @@ angular.module('app')
     $scope.favorecidos = favorecidos;
     for (var i = 0; i < $scope.favorecidos.length; i++) {
         if (!($scope.favorecidos[i].dataNascimento instanceof Date))
-            $scope.favorecidos[i].dataNascimento = new Date($scope.favorecidos[i].dataNascimento);
+            $scope.favorecidos[i].dataNascimento = Date.parse($scope.favorecidos[i].dataNascimento);
 
         if (!($scope.favorecidos[i].dataDeCadastro instanceof Date))
-            $scope.favorecidos[i].dataDeCadastro = new Date($scope.favorecidos[i].dataDeCadastro);
+            $scope.favorecidos[i].dataDeCadastro = Date.parse($scope.favorecidos[i].dataDeCadastro);
     }
     loadingDialod.close();
 
@@ -30,10 +30,10 @@ angular.module('app')
             $scope.favorecidos = favorecidos;
             for (var i = 0; i < $scope.favorecidos.length; i++) {
                 if (!($scope.favorecidos[i].dataNascimento instanceof Date))
-                    $scope.favorecidos[i].dataNascimento = new Date($scope.favorecidos[i].dataNascimento);
+                    $scope.favorecidos[i].dataNascimento = Date.parse($scope.favorecidos[i].dataNascimento);
 
                 if (!($scope.favorecidos[i].dataDeCadastro instanceof Date))
-                    $scope.favorecidos[i].dataDeCadastro = new Date($scope.favorecidos[i].dataDeCadastro);
+                    $scope.favorecidos[i].dataDeCadastro = Date.parse($scope.favorecidos[i].dataDeCadastro);
             }
             $scope.totalItems = FavorecidoService.totalItems;
         }, function (erros) {
@@ -95,10 +95,10 @@ angular.module('app')
     $scope.ufs = ufs;
 
     if (!($scope.favorecido.dataNascimento instanceof Date))
-        $scope.favorecido.dataNascimento = new Date($scope.favorecido.dataNascimento);
+        $scope.favorecido.dataNascimento = Date.parse($scope.favorecido.dataNascimento);
 
     if (!($scope.favorecido.dataDeCadastro instanceof Date))
-        $scope.favorecido.dataDeCadastro = new Date($scope.favorecido.dataDeCadastro);
+        $scope.favorecido.dataDeCadastro = Date.parse($scope.favorecido.dataDeCadastro);
 
 
    

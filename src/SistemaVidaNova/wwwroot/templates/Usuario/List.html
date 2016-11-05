@@ -1,0 +1,127 @@
+﻿
+
+
+
+<div id="top" class="content-header">
+    <div class="col-md-2">
+        <h3 class="box-title">Lista de Usuários</h3>
+    </div>
+
+    <div class="col-md-7">
+        <form ng-submit="pesquisar()">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Pesquisar</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" ng-model="valorPesquisa" name="pesquisar" class="form-control" id="exampleInputName2" placeholder="Usuário">
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="ativoPesquisa">
+                                <option value="" disabled selected>Ativos</option>
+                                <option value=""></option>
+                                <option value="true">Sim</option>
+                                <option value="false">Não</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="adminPesquisa">
+                                <option value="" disabled selected>Adiministrdor</option>
+                                <option value=""></option>
+                                <option value="true">Sim</option>
+                                <option value="false">Não</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="btn btn-primary pull-right" type="submit"> <span class="glyphicon glyphicon-search"></span>Pesquisar</button>
+                        </div>
+
+                    </div>
+                    
+
+                </div>                
+            </div>
+        </form> 
+                    
+    </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                <a href="/Usuario/Criar" class="btn btn-primary pull-right h2">Novo Usuario</a>
+            </div>
+        </div>
+</div>
+
+        <div id="list" class="row">
+
+
+            <section class="content body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-body">
+
+                            <table class="table table-striped" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <tr>
+
+                                        <th>Nome</th>
+                                        <th>Cpf</th>
+                                        <th>Email</th>
+                                        <th>Ativo</th>
+                                        <th>Administrador</th>
+
+                                        <th class="actions">Ações</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr ng-repeat="v in usuarios">
+                                        <td>{{v.nome}}</td>
+
+                                        <td>{{v.cpf | brCpf}}</td>
+                                        <td>{{v.email}}</td>
+                                        <td>{{v.isAtivo?"Sim":"Não"}}</td>
+                                        <td>{{v.isAdmin ? "Sim" : "Não"}}</td>
+                                        <td class='actions'>
+
+                                            <a class='btn btn-success btn-xs' href='/Usuario/Visualizar/{{v.id}}'>Visualizar</a>
+                                            <a class='btn btn-warning btn-xs' href='/Usuario/Editar/{{v.id}}'>Editar</a>
+                                            <a class='btn btn-danger btn-xs' href='' ng-click="delete(v)">Excluir</a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+
+                            <div class="col-md-12">
+
+                                <button type="button" class="btn btn-success pull-right h2" ng-click="ToExcel()">Importar para Excel</button>
+
+                            </div>
+
+
+                            <nav class="text-center">
+
+                                <ul uib-pagination boundary-links="true" ng-change="pageChanged()" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+
+                            </nav>
+
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </section>
+
+        </div>

@@ -24,7 +24,7 @@
       "wwwroot/lib/angular-animate/angular-animate.min.js",
       "wwwroot/lib/angular-bootstrap/ui-bootstrap.js",
       "wwwroot/lib/angular-bootstrap/ui-bootstrap-tpls.js",
-      
+
       "wwwroot/lib/tinycolor/dist/tinycolor-min.js",
       "wwwroot/lib/angularjs-color-picker/dist/angularjs-color-picker.js",
       "wwwroot/lib/moment/min/moment.min.js",
@@ -46,7 +46,8 @@
 
       "wwwroot/lib/echarts/build/dist/echarts-all.js",
       "wwwroot/lib/angular-echarts/dist/angular-echarts.js",
-      "wwwroot/js/date.js"
+      "wwwroot/js/date.js",
+      "wwwroot/lib/angular-validation-match/dist/angular-validation-match.min.js"
 
     ],
     // Optionally specify minification options
@@ -77,8 +78,9 @@
       "wwwroot/js/controllers/ModeloDeReceitaControl.js",
       "wwwroot/js/controllers/ResultadoSopaControl.js",
       "wwwroot/js/controllers/EstoqueControl.js",
-      "wwwroot/js/controllers/PlanejamentoControl.js"
-
+      "wwwroot/js/controllers/PlanejamentoControl.js",
+      "wwwroot/js/controllers/UsuarioControl.js",
+      "wwwroot/js/controllers/ResultadosGeraisControl.js"
 
     ],
     // Optionally specify minification options

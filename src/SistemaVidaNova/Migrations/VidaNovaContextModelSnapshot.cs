@@ -234,11 +234,15 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<int>("IdEndereco");
 
+                    b.Property<int>("IdVoluntario");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CodDoador");
 
                     b.HasIndex("IdEndereco");
+
+                    b.HasIndex("IdVoluntario");
 
                     b.ToTable("DoacaoObjeto");
                 });
@@ -715,7 +719,7 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<DateTime>("DataCurso")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2016, 10, 31, 0, 0, 0, 0, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2016, 11, 4, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<DateTime>("DataDeCadastro");
 
@@ -965,6 +969,11 @@ namespace SistemaVidaNova.Migrations
                     b.HasOne("SistemaVidaNova.Models.Endereco", "Endereco")
                         .WithMany()
                         .HasForeignKey("IdEndereco")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SistemaVidaNova.Models.Voluntario", "Voluntario")
+                        .WithMany()
+                        .HasForeignKey("IdVoluntario")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

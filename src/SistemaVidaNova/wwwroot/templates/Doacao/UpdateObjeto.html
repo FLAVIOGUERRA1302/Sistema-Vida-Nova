@@ -161,6 +161,27 @@
                                     </select>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <label>Motorista</label>
+
+                                    <input type="text"
+                                           ng-model="doacao.voluntario"
+                                           placeholder="Pesquise o Motorista aqui"
+                                           uib-typeahead="voluntario as voluntario.nome for voluntario in getMotoristas($viewValue)"
+                                           typeahead-loading="loandingMotorista"
+                                           typeahead-no-results="noResultsMotorista"
+                                           class="form-control "
+                                           typeahead-editable="false"
+                                           required>
+
+
+                                    <i ng-show="loandingMotorista" class="glyphicon glyphicon-refresh"></i>
+                                    <div ng-show="noResultsMotorista">
+                                        <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                    </div>
+                                    <lista-erro lista="erros.Voluntario"></lista-erro>
+                                </div>
+
                             </div>
 
                         </div>

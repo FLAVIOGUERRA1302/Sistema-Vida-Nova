@@ -62,11 +62,11 @@
     $scope.random = new Date().getTime();
     $scope.ufs = ufs;
     if (!($scope.voluntario.dataNascimento instanceof Date))
-        $scope.voluntario.dataNascimento = new Date.parse($scope.voluntario.dataNascimento);
+        $scope.voluntario.dataNascimento = Date.parse($scope.voluntario.dataNascimento);
     if (!($scope.voluntario.dataCurso instanceof Date))
-        $scope.voluntario.dataCurso = new Date.parse($scope.voluntario.dataCurso);
+        $scope.voluntario.dataCurso = Date.parse($scope.voluntario.dataCurso);
     if (!($scope.voluntario.dataAgendamentoCurso instanceof Date) && $scope.voluntario.dataAgendamentoCurso!= null)
-        $scope.voluntario.dataAgendamentoCurso = new Date.parse($scope.voluntario.dataAgendamentoCurso);
+        $scope.voluntario.dataAgendamentoCurso = Date.parse($scope.voluntario.dataAgendamentoCurso);
     $scope.salvar = function () {
         VoluntarioService.Update($scope.voluntario)
             .then(function (voluntario) {
@@ -213,7 +213,7 @@
 
 
     $scope.ToExcel = function () {
-        VoluntarioService.toExcel($scope.valorPesquisa)
+        VoluntarioService.toExcel($scope.valorPesquisa,$scope.diaDaSemana)
         /*.then(function () {            
         }, function (erros) {
             

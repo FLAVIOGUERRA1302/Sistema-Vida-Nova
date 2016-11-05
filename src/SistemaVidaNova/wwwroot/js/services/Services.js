@@ -58,6 +58,41 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", "$window", function (
         return deferred.promise;
     }
 
+    s.ReadMotorista = function ( skip, take, filtro) {
+        var deferred = $q.defer();
+        
+        var req = {
+            method: 'GET',
+            url: '/api/Voluntario/',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+
+        
+        req.params.funcao = 'MOTORISTA';
+        
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
     s.ReadCursoAtrasado = function () {
         var deferred = $q.defer();
         
@@ -144,12 +179,19 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", "$window", function (
     }
 
     
-    s.toExcel = function (filtro) {
+    s.toExcel = function (filtro,diaDaSemana) {
         var turl = '/api/Voluntario/excel';
+        var param = "?";
         if (filtro !== null && filtro !== undefined && filtro !== "") {
-            turl += '?filtro=' + filtro;
+            param += 'filtro=' + filtro;
         }
-        var url = encodeURI(turl)
+        if (diaDaSemana !== null && diaDaSemana !== undefined && diaDaSemana !== "") {
+            param += ((param=="?"?"":"&") + 'diaDaSemana=' + diaDaSemana);
+        }
+
+        param = param == "?" ? "" : param;
+
+        var url = encodeURI(turl + param)
         $window.open(url);
         /*
         var deferred = $q.defer();
@@ -522,6 +564,34 @@ app.factory('DoadorService', ["$http", "$q","$window", function ($http, $q,$wind
         $window.open(url);
 
     }
+    s.EnviarRelatorioEmail = function (id,start,end) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/Doador/EnviarRelatorioEmail/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = { 'start': start, 'end': end }
+        
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+
+    
 
     return s;
 
@@ -624,7 +694,7 @@ app.factory('FavorecidoService', ["$http", "$q","$window", function ($http, $q,$
         return deferred.promise;
     }
 
-    s.toExcel = function (tipo, filtro) {
+    s.toExcel = function ( filtro) {
         var turl = '/api/Favorecido/excel';
         if (filtro !== null && filtro !== undefined && filtro !== "") {
             turl += '?filtro=' + filtro;
@@ -1096,12 +1166,18 @@ app.factory('ItemService', ["$http", "$q","$window", function ($http, $q,$window
         return deferred.promise;
     }
 
-    s.toExcel = function (filtro) {
+    s.toExcel = function (filtro,destino) {
         var turl = '/api/Item/excel';
+        var query = "?"
         if (filtro !== null && filtro !== undefined && filtro !== "") {
-            turl += '?filtro=' + filtro;
+            query += 'filtro=' + filtro;
         }
-        var url = encodeURI(turl)
+        if (destino !== null && destino !== undefined && destino !== "") {
+            query += ((query=="?"?"":"&")+'destino=' + destino);
+        }
+        
+        var url = encodeURI(turl + query)
+
         $window.open(url);
 
     }
@@ -1155,6 +1231,32 @@ app.factory('DoacaoDinheiroService', ["$http", "$q", "$window", function ($http,
         if (filtro !== null && filtro !== undefined && filtro !== "") {
             req.params.filtro = filtro;
         }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.ReadPeriodo = function (start, end, idDoador) {
+        var deferred = $q.defer();        
+        var req = {
+            method: 'GET',
+            url: '/api/DoacaoDinheiro/' ,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = { start: start, end: end, idDoador: idDoador };
+        
+        
         $http(req).then(function successCallback(response) {
             s.totalItems = parseInt(response.headers('totalItems'));
             deferred.resolve(response.data);
@@ -1767,6 +1869,182 @@ app.factory('PlanejamentoService', ["$http", "$q","$window", function ($http, $q
     }
 
 
+
+    return s;
+
+
+}]);
+
+
+app.factory('AccountService', ["$http", "$q", "$window", function ($http, $q, $window) {
+    var s = {};
+
+    s.Create = function (user) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: '/api/Account',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(user),
+            dataType: 'json'
+        };
+
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Read = function (id, skip, take, filtro,isAdmin,isAtivo) {
+        var deferred = $q.defer();
+        if (id === undefined || id === null) id = "";
+        var req = {
+            method: 'GET',
+            url: '/api/Account/' + id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = {};
+        if (skip !== undefined && take !== undefined) {
+            req.params = { 'skip': skip, 'take': take };
+        }
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            req.params.filtro = filtro;
+        }
+        if (isAdmin !== null && isAdmin !== undefined && isAdmin !== "") {
+            req.params.isAdmin = isAdmin;
+        }
+
+        if (isAtivo !== null && isAtivo !== undefined && isAtivo !== "") {
+            req.params.isAtivo = isAtivo;
+        }
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+    s.Update = function (user) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'PUT',
+            url: '/api/Account/' + user.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(user),
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.Delete = function (user) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'DELETE',
+            url: '/api/Account/' + user.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        $http(req).then(function successCallback(response) {
+            deferred.resolve("OK");
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    }
+
+    s.toExcel = function (filtro,isAdmin,isAtivo) {
+        var turl = '/api/Account/excel';
+        var param = "?"
+        
+        if (filtro !== null && filtro !== undefined && filtro !== "") {
+            param += 'filtro=' + filtro;
+        }
+        if (isAdmin !== null && isAdmin !== undefined && isAdmin !== "") {
+            param += ((param == "?" ? "" : "&") + 'isAdmin=' + isAdmin);
+        }
+
+        if (isAtivo !== null && isAtivo !== undefined && isAtivo !== "") {
+            param += ((param == "?" ? "" : "&") + 'isAtivo=' + isAtivo);
+        }
+        
+
+
+        var url = encodeURI(turl + param)
+        $window.open(url);
+
+
+    }
+
+    return s;
+
+
+}]);
+
+
+app.factory('ResultadosGeraisService', ["$http", "$q", "$window", function ($http, $q, $window) {
+    var s = {};
+
+   
+    s.Read = function (start, end) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'GET',
+            url: '/api/ResultadosGerais/',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = { start: start, end: end };
+
+
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+   
+
+    s.toExcel = function (start, end) {
+        var turl = '/api/ResultadosGerais/excel?start=' + start.toISOString() + "&end=" + end.toISOString();
+        
+        var url = encodeURI(turl)
+        $window.open(url);
+    }
 
     return s;
 
