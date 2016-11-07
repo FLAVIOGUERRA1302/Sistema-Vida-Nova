@@ -1,136 +1,139 @@
-﻿  <!-- Horizontal Form -->
-<section class="content-header">
-    <h1>
-        Doador
-    </h1>
+﻿<div pdf-a4 nome-do-arquivo="'Doador'">
 
-</section>
-<section class="content">
-    
-    <div class="row">
-        <div class="col-md-11">
-            <div id="main" class="box box-warning">
+    <!-- Horizontal Form -->
+    <section class="content-header">
+        <h1>
+            Doador
+        </h1>
 
-                <!-- formulario -->
-                <!-- <div class="form-group col-md-6"> :::CLASSE DETERMINA TAMANHO DO CAMPO 'TEXT',  MAXIMO 12, 6= METADE DA TELA -->
-                <form action="">
-                    <div class="box-body">
+    </section>
+    <section class="content">
 
-                        <div class="row">
-                            
-                            <div class="col-md-4" ng-if="doador.tipo=='PF'">
-                                <p><strong>Nome:</strong></p>
-                                <p>{{doador.nomeRazaoSocial }}</p>
+        <div class="row">
+            <div class="col-md-11">
+                <div id="main" class="box box-warning">
+
+                    <!-- formulario -->
+                    <!-- <div class="form-group col-md-6"> :::CLASSE DETERMINA TAMANHO DO CAMPO 'TEXT',  MAXIMO 12, 6= METADE DA TELA -->
+                    <form action="">
+                        <div class="box-body">
+
+                            <div class="row">
+
+                                <div class="col-md-4" ng-if="doador.tipo=='PF'">
+                                    <p><strong>Nome:</strong></p>
+                                    <p>{{doador.nomeRazaoSocial }}</p>
+                                </div>
+
+                                <div class="col-md-4" ng-if="doador.tipo=='PJ'">
+                                    <p><strong>Razão Social:</strong></p>
+                                    <p>{{doador.nomeRazaoSocial }}</p>
+                                </div>
+
+
+
+                                <div class="col-md-4" ng-if="doador.tipo=='PF'">
+                                    <p><strong>CPF:</strong></p>
+                                    <p>{{doador.cpfCnpj  | brCpf}}</p>
+                                </div>
+
+                                <div class="col-md-4" ng-if="doador.tipo=='PJ'">
+                                    <p><strong>CNPJ:</strong></p>
+                                    <p>{{doador.cpfCnpj  | brCnpj}}</p>
+                                </div>
+
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Email:</strong></p>
+                                    <p>{{doador.email}}</p>
+                                </div>
+
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Telefone:</strong></p>
+                                    <p>{{doador.telefone | brPhoneNumber}}&nbsp;</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p><strong>Telefone:</strong></p>
+                                    <p>{{doador.celular | brPhoneNumber}}&nbsp;</p>
+                                </div>
+
+
+
+
+
+
+
+
+
+                                <div class="col-md-4">
+                                    <p><strong>CEP:</strong></p>
+                                    <p>{{doador.endereco.cep | brCep}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Rua,Avenida:</strong></p>
+                                    <p>{{doador.endereco.logradouro}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Número:</strong></p>
+                                    <p>{{doador.endereco.numero}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Complemento:</strong></p>
+                                    <p>{{doador.endereco.complemento}}&nbsp;</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Bairro:</strong></p>
+                                    <p>{{doador.endereco.bairro}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Cidade:</strong></p>
+                                    <p>{{doador.endereco.cidade}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p><strong>UF:</strong></p>
+                                    <p>{{doador.endereco.estado}}</p>
+                                </div>
+
+
+
+
+
+
+
                             </div>
+                            <div class="row">
+                                <div class="col-md-12" ng-include="'/templates/Charts/DoacoesPorDoadorNoPeriodo.html'">
 
-                            <div class="col-md-4" ng-if="doador.tipo=='PJ'">
-                                <p><strong>Razão Social:</strong></p>
-                                <p>{{doador.nomeRazaoSocial }}</p>
+                                </div>
                             </div>
-
-
-
-                            <div class="col-md-4" ng-if="doador.tipo=='PF'">
-                                <p><strong>CPF:</strong></p>
-                                <p>{{doador.cpfCnpj  | brCpf}}</p>
-                            </div>
-
-                            <div class="col-md-4" ng-if="doador.tipo=='PJ'">
-                                <p><strong>CNPJ:</strong></p>
-                                <p>{{doador.cpfCnpj  | brCnpj}}</p>
-                            </div>
-
-
-
-                            <div class="col-md-4">
-                                <p><strong>Email:</strong></p>
-                                <p>{{doador.email}}</p>
-                            </div>
-
-
-
-                            <div class="col-md-4">
-                                <p><strong>Telefone:</strong></p>
-                                <p>{{doador.telefone | brPhoneNumber}}&nbsp;</p>
-                            </div>
-
-                            <div class="col-md-4">
-                                <p><strong>Telefone:</strong></p>
-                                <p>{{doador.celular | brPhoneNumber}}&nbsp;</p>
-                            </div>
-
-
-
-                           
-                            
-
-
-
-
-                            <div class="col-md-4">
-                                <p><strong>CEP:</strong></p>
-                                <p>{{doador.endereco.cep | brCep}}</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>Rua,Avenida:</strong></p>
-                                <p>{{doador.endereco.logradouro}}</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>Número:</strong></p>
-                                <p>{{doador.endereco.numero}}</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>Complemento:</strong></p>
-                                <p>{{doador.endereco.complemento}}&nbsp;</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>Bairro:</strong></p>
-                                <p>{{doador.endereco.bairro}}</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>Cidade:</strong></p>
-                                <p>{{doador.endereco.cidade}}</p>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <p><strong>UF:</strong></p>
-                                <p>{{doador.endereco.estado}}</p>
-                            </div>
-
-                           
-
-                            
-
-
 
                         </div>
-                        <div class="row">
-                            <div class="col-md-12" ng-include="'/templates/Charts/DoacoesPorDoadorNoPeriodo.html'">
 
-                            </div>
+                        <div class="box-footer fora-do-pfd">
+                            <a href="/Doador" class="btn btn-primary">voltar</a>
+                            
+
                         </div>
 
-                    </div>
-
-                    <div class="box-footer">
-                        <a href="/Doador" class="btn btn-primary">voltar</a>
-                        <a class='btn btn-danger' href=""> Gerar PDF</a>
-
-                    </div>
-
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>

@@ -64,15 +64,21 @@ namespace SistemaVidaNova.Api
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(u => u.Nome.Contains(filtro) || u.Email.Contains(filtro));
 
-            if(isAdmin!=null)
-                query = query.Where(u => u.IsAtivo == isAdmin.Value);
+            IdentityRole roleAdmin = _context.Roles.Single(r => r.Name == "Administrator");
+
+            if (isAdmin != null)
+            {
+                query = query.Where(u => u.Roles.Any(r => r.RoleId == roleAdmin.Id));
+            }
+                
+
             if (isAtivo != null)
                 query = query.Where(u => u.IsAtivo == isAtivo.Value);
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
 
 
-            IdentityRole roleAdmin = _context.Roles.Single(r => r.Name == "Administrator");
+            
             var users = from u in _context.Users
                         select u;
 
@@ -264,8 +270,14 @@ namespace SistemaVidaNova.Api
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(u => u.Nome.Contains(filtro) || u.Email.Contains(filtro));
 
+            IdentityRole roleAdmin = _context.Roles.Single(r => r.Name == "Administrator");
+
             if (isAdmin != null)
-                query = query.Where(u => u.IsAtivo == isAdmin.Value);
+            {
+                query = query.Where(u => u.Roles.Any(r => r.RoleId == roleAdmin.Id));
+            }
+
+
             if (isAtivo != null)
                 query = query.Where(u => u.IsAtivo == isAtivo.Value);
 
@@ -322,7 +334,7 @@ namespace SistemaVidaNova.Api
             style.Font.Bold = true;
             style.Font.Color = ExcelKnownColors.White;
 
-            IdentityRole roleAdmin = _context.Roles.Single(r => r.Name == "Administrator");
+            
             int linha = 4;
             foreach (var q in query)
             {

@@ -314,3 +314,11 @@ input.ng-valid.ng-valid-required {
     bottom:0px;
     width:100%;
 }
+
+.page-relatorio{
+    background-color:white;
+}
+.largura-a4{
+    width : 700px;    
+    margin-left:20px;
+}

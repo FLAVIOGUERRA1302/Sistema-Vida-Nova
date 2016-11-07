@@ -485,6 +485,43 @@
             }
         })
 
+        .when('/Despesa/RelatorioAssociacao/:start/:end', {
+            templateUrl: '/templates/Despesa/RelatorioAssociacao.html',
+            controller: 'DespesaRelatorioControl',
+            resolve: {
+                dados: function (DespesaService, $route) {
+                    return DespesaService.Relatorio($route.current.params.start, $route.current.params.end, 'ASSOCIACAO');
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+        .when('/Despesa/RelatorioFavorecido/:start/:end', {
+            templateUrl: '/templates/Despesa/RelatorioFavorecido.html',
+            controller: 'DespesaRelatorioControl',
+            resolve: {
+                dados: function (DespesaService, $route) {
+                    return DespesaService.Relatorio($route.current.params.start, $route.current.params.end, 'FAVORECIDO');
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+        .when('/Despesa/RelatorioSopa/:start/:end', {
+            templateUrl: '/templates/Despesa/RelatorioSopa.html',
+            controller: 'DespesaRelatorioControl',
+            resolve: {
+                dados: function (DespesaService, $route) {
+                    return DespesaService.Relatorio($route.current.params.start, $route.current.params.end, 'SOPA');
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+
 
 
     //------------Doacao----------
@@ -586,6 +623,19 @@
             resolve: {
                 doacao: function (DoacaoSopaService, $route) {
                     return DoacaoSopaService.Read($route.current.params.id);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+
+        .when('/Doacao/RelatorioDinheiro/:start/:end', {
+            templateUrl: '/templates/Doacao/RelatorioDinheiro.html',
+            controller: 'DoacaoDinheiroRelatorioControl',
+            resolve: {
+                dados: function (DoacaoDinheiroService, $route) {
+                    return DoacaoDinheiroService.Relatorio($route.current.params.start, $route.current.params.end);
                 },
                 loadingDialod: function (ngDialog) {
                     return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
@@ -968,3 +1018,7 @@ var destinos = {
 Date.prototype.toISOString = function () {
     return this.toString('yyyy-MM-ddTHH:mm:ss')
 };
+
+String.prototype.capitalize = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1).toLocaleLowerCase();
+}

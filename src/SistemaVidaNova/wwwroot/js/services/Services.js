@@ -1063,6 +1063,32 @@ app.factory('DespesaService', ["$http", "$q","$window", function ($http, $q,$win
 
     }
 
+    s.Relatorio = function (start, end, tipo) {
+        var deferred = $q.defer();
+        
+        var req = {
+            method: 'GET',
+            url: '/api/Despesa/Relatorio',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = { 'start': Date.parseExact(start, 'dd-MM-yyy'), 'end': Date.parseExact(end, 'dd-MM-yyy'), 'tipo': tipo };
+       
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
     return s;
 
 
@@ -1319,6 +1345,32 @@ app.factory('DoacaoDinheiroService', ["$http", "$q", "$window", function ($http,
         $window.open(url);
     }
 
+    s.Relatorio = function (start, end) {
+        var deferred = $q.defer();
+
+        var req = {
+            method: 'GET',
+            url: '/api/DoacaoDinheiro/Relatorio',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = { 'start': Date.parseExact(start, 'dd-MM-yyy'), 'end': Date.parseExact(end, 'dd-MM-yyy') };
+
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+    
     return s;
 
 

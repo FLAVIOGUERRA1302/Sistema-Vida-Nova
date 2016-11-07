@@ -433,3 +433,72 @@
 
         }])
 
+.controller('DoacaoDinheiroRelatorioControl', ['$scope', 'DoacaoDinheiroService', 'dados', '$routeParams', 'loadingDialod', '$filter', function ($scope, DoacaoDinheiroService, dados, $routeParams, loadingDialod, $filter) {
+
+    var getOptions = function (labels, valores) {
+        return {
+            title: {
+                text: 'Doações por mês',
+                subtext: "Doações em Dinheiro",
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+
+
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    data: labels
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: 'R$ {value} '
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: 'Valor',
+                    type: 'bar',
+                    data: valores,
+
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                position: 'top',
+                                formatter: 'R${c}'
+                            }
+                        }
+
+                    }
+                }
+            ]
+        };
+    }
+
+    $scope.dados = {};
+    $scope.start = Date.parse($routeParams.start);
+    $scope.end = Date.parse($routeParams.end);
+
+    var labels = [];
+    var valores = [];
+
+    angular.forEach(dados, function (value, key) {
+        var mes = $filter('date')(Date.parse(key), 'MMMM-yyyy');
+        labels.push(mes);
+        valores.push(value);
+        $scope.dados[mes] = value;
+    });
+
+
+    $scope.options = getOptions(labels, valores);
+
+    loadingDialod.close();
+}]);

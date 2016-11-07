@@ -34,7 +34,7 @@ namespace SistemaVidaNova.Models.DTOs
 
         public List<VoluntarioDTOR> voluntarios { get; set; }
         public List<InteressadoDTOR> interessados { get; set; }
-        public UsuarioDTO Usuario { get; set; }
+        public UsuarioDTOR Usuario { get; set; }
 
     }
 }

@@ -56,6 +56,13 @@ namespace SistemaVidaNova.Controllers
 
             return View();
         }
+        [Route("Doacao/RelatorioDinheiro/{a}/{b}")]
+        public IActionResult RelatorioDinheiro(string a, string b)
+        {
+
+            return View();
+        }
+
 
     }
 }

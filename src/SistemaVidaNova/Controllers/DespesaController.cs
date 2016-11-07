@@ -58,5 +58,25 @@ namespace SistemaVidaNova.Controllers
             return View();
         }
 
+        [Route("Despesa/RelatorioAssociacao/{a}/{b}")]
+        public IActionResult RelatorioAssociacao(string a, string b)
+        {
+
+            return View();
+        }
+
+        [Route("Despesa/RelatorioSopa/{a}/{b}")]
+        public IActionResult RelatorioSopa(string a, string b)
+        {
+
+            return View();
+        }
+
+        [Route("Despesa/RelatorioFavorecido/{a}/{b}")]
+        public IActionResult RelatorioFavorecido(string a, string b)
+        {
+
+            return View();
+        }
     }
 }

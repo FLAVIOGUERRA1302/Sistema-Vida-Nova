@@ -192,4 +192,70 @@
         }
     });
 
+}])
+.controller('DespesaRelatorioControl', ['$scope', 'DespesaService', 'dados', '$routeParams', 'loadingDialod', function ($scope, DespesaService, dados, $routeParams, loadingDialod) {
+
+    var getOptions = function (labels, valores) {
+        return {
+            title: {
+                text: 'Despesas no período',                
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+
+
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    data: labels
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: 'R$ {value} '
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: 'Valor',
+                    type: 'bar',
+                    data: valores,
+
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                position: 'top',
+                                formatter: 'R${c}'
+                            }
+                        }
+
+                    }
+                }
+            ]
+        };
+    }
+
+    $scope.dados = dados;
+    $scope.start = Date.parse($routeParams.start);
+    $scope.end = Date.parse($routeParams.end);
+       
+    var labels = [];
+    var valores = [];
+
+    angular.forEach(dados, function (value, key) {
+        labels.push(key);
+        valores.push(value);
+    });
+
+
+    $scope.options = getOptions(labels, valores);
+
+    loadingDialod.close();
 }]);

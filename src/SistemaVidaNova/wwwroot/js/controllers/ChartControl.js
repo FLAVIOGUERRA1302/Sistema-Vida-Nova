@@ -2,6 +2,7 @@
 .controller('ChartVoluntarioDiaDaSemanaControl', ['$scope', 'ChartService', 'ngDialog', '$location', "$timeout", function ($scope, ChartService, ngDialog, $location, $timeout) {
     
     var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+    $scope.podeExibir = false;
     //$scope.chartData = {};
 
     /*
@@ -80,20 +81,35 @@
 
     ChartService.Read('VoluntarioDiaDaSemana')
     .then(function (result) {
-        labels = [];
-        valores = [];
-        for (var i = 0; i < result.data[0].datapoints.length; i++) {
-            labels.push(result.data[0].datapoints[i].x);
-            valores.push({
-                value: result.data[0].datapoints[i].y,
-                name: result.data[0].datapoints[i].x
+        dialog.close();
+        if (result.data[0].datapoints.length > 0) {
+            $scope.podeExibir = true;
+            labels = [];
+            valores = [];
+            for (var i = 0; i < result.data[0].datapoints.length; i++) {
+                labels.push(result.data[0].datapoints[i].x);
+                valores.push({
+                    value: result.data[0].datapoints[i].y,
+                    name: result.data[0].datapoints[i].x
+                });
+            }
+
+
+            $scope.options = getOptions(labels, valores);
+
+            
+        }
+        else {
+            $scope.podeExibir = false;
+            ngDialog.openConfirm({
+                template: '\
+                <div class="text-center"><h1>Nada a exibir</h1></div>\
+                <div class="ngdialog-buttons">\
+                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Ok</button>\
+                </div>',
+                plain: true
             });
         }
-
-
-        $scope.options = getOptions(labels, valores);
-
-        dialog.close();
 
     }, function (erros) {
         $scope.erros = erros;
@@ -102,8 +118,10 @@
 }])
 .controller('ChartDespesaPeriodoControl', ['$scope', 'ChartService', 'ngDialog', function ($scope, ChartService, ngDialog) {
     $scope.tipo = 'ASSOCIACAO';
+    $scope.tipoRelatorio = "Associacao";
     $scope.start = null;
     $scope.end = null;
+    $scope.podeExibir = false;
     //var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default', });
     //$scope.chartData = {};
     $scope.chartConfig = {
@@ -163,13 +181,27 @@
             var params = { filtro: $scope.tipo, start: $scope.start, end: $scope.end }
             ChartService.Read('DespesaPorItemNoPeriodo', params)
             .then(function (result) {
-                $scope.chartData = result.data;
+                if (result.data[0].datapoints.length>0) {
+                    $scope.podeExibir = true;
+                    $scope.chartData = result.data;
+                } else {
+                    $scope.podeExibir = false;
+                    ngDialog.openConfirm({
+                        template: '\
+                <div class="text-center"><h1>Nada a exibir</h1></div>\
+                <div class="ngdialog-buttons">\
+                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Ok</button>\
+                </div>',
+                        plain: true
+                    });
+                }
 
                 
                 //dialog.close();
 
             }, function (erros) {
                 $scope.erros = erros;
+                $scope.podeExibir = false;
             });
         }
     };
@@ -183,7 +215,9 @@
 
     $scope.$on('tipo', function (event, tipo) {
         $scope.tipo = tipo;
+        $scope.tipoRelatorio = tipo.capitalize();
         read();
+        
     });
 
 }])
@@ -191,7 +225,7 @@
     
     $scope.start = null;
     $scope.end = null;
-    
+    $scope.podeExibir = false;
     
     var getOptions = function (labels, valores) {
         return {
@@ -249,16 +283,31 @@
             var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
             var params = {  start: $scope.start, end: $scope.end }
             ChartService.Read('DoacoesMensaisNoPeriodo', params)
-            .then(function (result) {                
-                var labels = result.labels;
-                var valores = result.series[0];
+            .then(function (result) {       
+                dialog.close();
+                if (result.series[0].length > 0) {
+                    $scope.podeExibir = true;
+                    var labels = result.labels;
+                    var valores = result.series[0];
 
-                for (var i = 0; i < labels.length; i++)
-                    labels[i] = $filter('date')(Date.parse(labels[i]), 'MMMM-yyyy');
+                    for (var i = 0; i < labels.length; i++)
+                        labels[i] = $filter('date')(Date.parse(labels[i]), 'MMMM-yyyy');
                
 
-                $scope.options = getOptions(labels, valores);
-                dialog.close();                
+                    $scope.options = getOptions(labels, valores);
+                
+
+                } else {
+                        $scope.podeExibir = false;
+                        ngDialog.openConfirm({
+                            template: '\
+                            <div class="text-center"><h1>Nada a exibir</h1></div>\
+                            <div class="ngdialog-buttons">\
+                                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Ok</button>\
+                            </div>',
+                            plain: true
+                        });
+            }
 
             }, function (erros) {
                 $scope.erros = erros;
@@ -280,7 +329,7 @@
 
     $scope.start = null;
     $scope.end = null;
-
+    $scope.podeExibir = false;
 
     var getOptions = function (labels, valores) {
         return {
@@ -339,18 +388,33 @@
             var params = { start: $scope.start, end: $scope.end, id: $scope.doador.id };
             ChartService.Read('DoacoesMensaisPorDoadorNoPeriodo', params)
             .then(function (result) {
-                var labels = result.labels;
-                var valores = result.series[0];
-
-                for (var i = 0; i < labels.length; i++)
-                    labels[i] = $filter('date')(Date.parse(labels[i]), 'MMMM-yyyy');
-
-
-                $scope.options = getOptions(labels, valores);
                 dialog.close();
+                if (result.series[0].length > 0) {
+                    $scope.podeExibir = true;
+                    var labels = result.labels;
+                    var valores = result.series[0];
+
+                    for (var i = 0; i < labels.length; i++)
+                        labels[i] = $filter('date')(Date.parse(labels[i]), 'MMMM-yyyy');
+
+
+                    $scope.options = getOptions(labels, valores);
+                    
+                } else {
+                    $scope.podeExibir = false;
+                    ngDialog.openConfirm({
+                        template: '\
+                            <div class="text-center"><h1>Nada a exibir</h1></div>\
+                            <div class="ngdialog-buttons">\
+                                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Ok</button>\
+                            </div>',
+                        plain: true
+                    });
+                }
 
             }, function (erros) {
                 $scope.erros = erros;
+                $scope.podeExibir = false;
             });
         }
     };

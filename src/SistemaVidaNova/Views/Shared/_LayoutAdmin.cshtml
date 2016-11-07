@@ -61,7 +61,7 @@
         <div >
             <header class="main-header">
                 <!-- Logo -->
-                <a href="#" class="logo">
+                <a href="#" class="logo" target="_self">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><b>S</b>VN</span>
                     <!-- logo for regular state and mobile devices -->
@@ -86,7 +86,7 @@
                 </nav>
             </header>
 
-            @await Html.PartialAsync("_MenuPartial")
+            @await Html.PartialAsync("_MenuPartialAdmin")
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -105,6 +105,7 @@
 
     </div>
     <!-- ./wrapper -->
+
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -150,11 +151,18 @@
         <script src="~/lib/echarts/build/dist/echarts-all.js"></script>
         <script src="~/lib/angular-echarts/dist/angular-echarts.js"></script>
 
+        <script src="~/lib/angular-validation-match/dist/angular-validation-match.min.js"></script>
+
+
+        <script src="~/lib/jsPDF/jspdf.min.js"></script>
+        <script src="~/lib/html2canvas/html2canvas.js"></script>
+
+
         <script src="~/js/date.js"></script>
-        <script src="~/js/app.js" asp-append-version="false"></script>
+        <script src="~/js/app.js" asp-append-version="true"></script>
         <script src="~/js/services/Services.js" asp-append-version="true"></script>
-        <script src="~/js/directives/Directives.js" asp-append-version="true"></script>
-        <script src="~/js/controllers/HomeControl.js" asp-append-version="false"></script>
+        <script src="~/js/directives/Directives.js" asp-append-version="false"></script>
+        <script src="~/js/controllers/HomeControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/VoluntarioControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/InteressadoControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/EventoControl.js" asp-append-version="true"></script>
@@ -168,7 +176,9 @@
         <script src="~/js/controllers/ModeloDeReceitaControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/ResultadoSopaControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/EstoqueControl.js" asp-append-version="true"></script>
-        <script src="~/js/controllers/PlanejamentoControl.js" asp-append-version="false"></script>
+        <script src="~/js/controllers/PlanejamentoControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/UsuarioControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/ResultadosGeraisControl.js" asp-append-version="false"></script>
     </environment>
     <environment names="Staging,Production">
 
@@ -185,6 +195,6 @@
 
     </environment>
 
-
+    @RenderSection("scripts", required: false)
 </body>
 </html>

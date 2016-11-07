@@ -72,7 +72,7 @@ namespace SistemaVidaNova.Api
                                                      
                                                      valorArrecadado = q.ValorArrecadado,
                                                      relato = q.Relato,
-                                                       Usuario = new UsuarioDTO()
+                                                       Usuario = new UsuarioDTOR()
                                                        {
                                                             Id = q.Usuario.Id,
                                                              Email = q.Usuario.Email,
@@ -114,7 +114,7 @@ namespace SistemaVidaNova.Api
                 valorArrecadado = eve.ValorArrecadado,
                 relato = eve.Relato,
                  
-                Usuario = new UsuarioDTO()
+                Usuario = new UsuarioDTOR()
                 {
                     Id = eve.Usuario.Id,
                     Email = eve.Usuario.Email,

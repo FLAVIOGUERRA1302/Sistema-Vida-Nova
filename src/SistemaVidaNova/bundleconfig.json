@@ -47,8 +47,9 @@
       "wwwroot/lib/echarts/build/dist/echarts-all.js",
       "wwwroot/lib/angular-echarts/dist/angular-echarts.js",
       "wwwroot/js/date.js",
-      "wwwroot/lib/angular-validation-match/dist/angular-validation-match.min.js"
-
+      "wwwroot/lib/angular-validation-match/dist/angular-validation-match.min.js",
+      "wwwroot/lib/jsPDF/jspdf.min.js",
+      "wwwroot/lib/html2canvas/html2canvas.js"
     ],
     // Optionally specify minification options
     "minify": {

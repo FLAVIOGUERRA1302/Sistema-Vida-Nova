@@ -22,8 +22,7 @@
     "ng-tags-input": "3.1.1",
     "textAngular": "1.5.0",
     "angular-echarts": "0.3.5",
-    "angular-validation-match": " 1.9.0",
-    "jsPDF-html2canvas": "1.2.61"
+    "angular-validation-match": " 1.9.0"
 
   },
   "resolutions": {

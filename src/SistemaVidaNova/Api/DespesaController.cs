@@ -745,5 +745,60 @@ namespace SistemaVidaNova.Api
             return File(ms, ContentType, fileName);
 
         }
+
+        [HttpGet("Relatorio")]
+        public ActionResult Relatorio([FromQuery]DateTime? start, [FromQuery]DateTime? end, [FromQuery]string tipo)
+        {
+
+            if (start == null || end == null || String.IsNullOrEmpty(tipo))
+                return new BadRequestResult();
+
+            Dictionary<string, double> resp = new Dictionary<string, double>();
+
+            switch (tipo)
+            {
+                case "ASSOCIACAO":
+                    var query = from d in _context.DespesaAssociacao
+                                where d.DataDaCompra >= start.Value && d.DataDaCompra <= end.Value
+                                group d by d.Item into g
+                                select new
+                                {
+                                    item = g.Key.Nome,
+                                    valor = g.Sum(q => q.ValorUnitario * q.Quantidade)
+                                };
+                    foreach (var q in query)
+                        resp.Add(q.item, q.valor);
+                    break;
+                case "FAVORECIDO":
+                    var queryF = from d in _context.DespesaFavorecido
+                                where d.DataDaCompra >= start.Value && d.DataDaCompra <= end.Value
+                                group d by d.Item into g
+                                select new
+                                {
+                                    item = g.Key.Nome,
+                                    valor = g.Sum(q => q.ValorUnitario * q.Quantidade)
+                                };
+                    foreach (var q in queryF)
+                        resp.Add(q.item, q.valor);
+                    break;
+                case "SOPA":
+                    var queryS = from d in _context.DespesaSopa
+                                where d.DataDaCompra >= start.Value && d.DataDaCompra <= end.Value
+                                group d by d.Item into g
+                                select new
+                                {
+                                    item = g.Key.Nome,
+                                    valor = g.Sum(q => q.ValorUnitario * q.Quantidade)
+                                };
+                    foreach (var q in queryS)
+                        resp.Add(q.item, q.valor);
+                    break;
+            }
+
+            
+
+
+            return new ObjectResult(resp);
+        }
     }
 }

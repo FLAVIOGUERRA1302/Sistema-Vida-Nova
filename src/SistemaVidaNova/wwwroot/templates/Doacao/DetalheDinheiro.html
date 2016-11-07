@@ -1,64 +1,66 @@
 ﻿  <!-- Horizontal Form -->
-<section class="content-header">
-    <h1>
-        Doação em Dinheiro
-    </h1>
-    
+<div pdf-a4 nome-do-arquivo="'doação'">
+    <section class="content-header">
+        <h1>
+            Doação em Dinheiro
+        </h1>
 
-</section>
-<section class="content">
-    
-    <div class="row">
-        <div class="col-md-11">
-            <div id="main" class="box box-warning">
 
-                <!-- formulario -->
-                
-                <form action="">
-                    <div class="box-body">
+    </section>
+    <section class="content">
 
-                        <div class="row">
-                            
-                            <div class="col-md-4">
-                                <p><strong>Doador:</strong></p>
-                                <p>{{doacao.doador.nomeRazaoSocial}}</p>
+        <div class="row">
+            <div class="col-md-11">
+                <div id="main" class="box box-warning">
+
+                    <!-- formulario -->
+
+                    <form action="">
+                        <div class="box-body">
+
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    <p><strong>Doador:</strong></p>
+                                    <p>{{doacao.doador.nomeRazaoSocial}}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Descrição:</strong></p>
+                                    <p>{{doacao.descricao}}</p>
+                                </div>
+
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Data da Doação:</strong></p>
+                                    <p>{{doacao.dataDaDoacao| date :'dd/MM/yyyy'}}&nbsp;</p>
+                                </div>
+
+
+
+                                <div class="col-md-4">
+                                    <p><strong>Valor:</strong></p>
+                                    <p>{{doacao.valor| finance:true:2}}</p>
+                                </div>
+
+
+
+
+
+
                             </div>
-                            <div class="col-md-4">
-                                <p><strong>Descrição:</strong></p>
-                                <p>{{doacao.descricao}}</p>
-                            </div>
-
-
-
-                            <div class="col-md-4">
-                                <p><strong>Data da Doação:</strong></p>
-                                <p>{{doacao.dataDaDoacao| date :'dd/MM/yyyy'}}&nbsp;</p>
-                            </div>
-
-                           
-
-                            <div class="col-md-4">
-                                <p><strong>Valor:</strong></p>
-                                <p>{{doacao.valor| finance:true:2}}</p>
-                            </div>
-
-
-
-
-
 
                         </div>
 
-                    </div>
+                        <div class="box-footer  fora-do-pfd">
+                            <a href="/Doacao" class="btn btn-primary">voltar</a>
+                            <a class='btn btn-danger' href="" pdf-button> Gerar PDF</a>
 
-                    <div class="box-footer">
-                        <a href="/Doacao" class="btn btn-primary">voltar</a>
-                        <a class='btn btn-danger' href=""> Gerar PDF</a>
+                        </div>
 
-                    </div>
-
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>

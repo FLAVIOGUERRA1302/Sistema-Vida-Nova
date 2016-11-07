@@ -14,9 +14,13 @@
                 <label>Fim da consulta</label>
                 <input type="date" ng-model="end" class="form-control " />
             </div>
+            <div class="col-md-4">
+
+                <a class='btn btn-danger pull-right' target="_blank" href="/Doacao/RelatorioDinheiro/{{start | date :'dd-MM-yyyy'}}/{{end  | date :'dd-MM-yyyy'}}" ng-show="podeExibir">Gerar PDF</a>
+            </div>
 
         </div>
-        <div style="height:500px;">
+        <div style="height:500px;" ng-show="podeExibir">
             <div echart options="options" tema="'infographic'"></div>
         </div>
 

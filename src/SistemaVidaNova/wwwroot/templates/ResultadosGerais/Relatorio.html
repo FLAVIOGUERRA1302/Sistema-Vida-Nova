@@ -1,89 +1,90 @@
-﻿<section class="content-header">
-    <h1>
-        Resultados Gerais
-    </h1>
+﻿<div pdf-a4 nome-do-arquivo="'ResultadoGeral'">
+    <section class="content-header">
+        <h1>
+            Resultados Gerais
+        </h1>
 
-</section>
-<section class="content">
-    <div class="row">
-        <div class="col-md-12">
-            <div id="main" class="box box-warning">
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="main" class="box box-warning">
 
-                
-                
-                <div class="box-body">
 
-                    <div class="row">
-                        <div class="col-md-2">
-                            <label>Início da consulta</label>
-                            <input type="date" ng-model="start" class="form-control " />
+
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 col-sm-6">
+                                <label>Início da consulta</label>
+                                <input type="date" ng-model="start" class="form-control " />
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-sm-6">
+                                <label>Fim da consulta</label>
+                                <input type="date" ng-model="end" class="form-control " />
+                            </div>
+
+
+
                         </div>
-                        <div class="col-md-2">
-                            <label>Fim da consulta</label>
-                            <input type="date" ng-model="end" class="form-control " />
-                        </div>
+                    </div>
 
-                        
+
+                    <div class="box-footer fora-do-pfd">
+                        <button type="button" ng-click="consultar()" ng-disabled="end==null || start == null" class="btn btn-primary">Visualizar</button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div id="main" class="box box-warning">
+
+                    <!-- formulario -->
+                    <div class="box-body">
+
+                        <table class="table table-striped" cellspacing="0" cellpadding="0" ng-show="resultado!=null">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Quantidade</th>
+
+
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr ng-repeat="i in resultado.itens">
+                                    <th>{{i.item }}</th>
+                                    <th>{{i.quantidade | number:2 }} ({{unidadesDeMedida[i.unidadeDeMedida]}})</th>
+
+
+                                </tr>
+
+                                <tr>
+                                    <th>LITROS DE SOPA </th>
+                                    <th>{{resultado.totalLitrosDeSopa | number:2 }} (Litros)</th>
+                                </tr>
+
+                            </tbody>
+                        </table>
 
                     </div>
-                </div>
+                    <div class="box-footer fora-do-pfd">
+                        <a href="" go-back class="btn btn-primary">Voltar</a>
+                        
+                    </div>
+                                       
 
-                   
-                <div class="box-footer">
-                    <button type="button" ng-click="consultar()" ng-disabled="end==null || start == null" class="btn btn-primary">Visualizar</button>
                 </div>
-
 
             </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div id="main" class="box box-warning">
-
-                <!-- formulario -->
-                <div class="box-body">
-
-                    <table class="table table-striped" cellspacing="0" cellpadding="0" ng-show="resultado!=null">
-                        <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Quantidade</th>                               
-
-
-                                
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            <tr ng-repeat="i in resultado.itens">
-                                <th>{{i.item }}</th>
-                                <th>{{i.quantidade | number:2 }} ({{unidadesDeMedida[i.unidadeDeMedida]}})</th>
-                                
-
-                            </tr>
-
-                            <tr >
-                                <th>LITROS DE SOPA </th>
-                                <th>{{resultado.totalLitrosDeSopa | number:2 }} (Litros)</th>
-                            </tr>
-
-                        </tbody>
-                    </table>
-
-                    </div>
-                    <div class="box-footer">
-                        <a href="" go-back class="btn btn-primary">Voltar</a>                        
-                    </div>
-
-
-
-
-
-
-                </div>
-        </div>
-    </div>
-</section>
+    </section>
+</div>

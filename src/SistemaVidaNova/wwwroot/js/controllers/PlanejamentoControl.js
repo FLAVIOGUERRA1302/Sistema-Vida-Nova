@@ -3,7 +3,7 @@
     
     $scope.modelos = [];
     //$scope.chartData = {};
-    
+    $scope.podeExibir = false;
     var getOptions = function (labels, valoes) {
         return {
             title: {
@@ -70,20 +70,34 @@
         var dialog = ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
         PlanejamentoService.Consulta($scope.modelos)
            .then(function (result) {
-               var labels = [];
-               var valores = [];
-               angular.forEach(result, function (value, key) {
-                   labels.push(key);
-                   valores.push(value);
-
-               });
-
-
-               $scope.options = getOptions(labels, valores);
-
-
                dialog.close();
+               
+                   
+                var labels = [];
+                var valores = [];
+                angular.forEach(result, function (value, key) {
+                    labels.push(key);
+                    valores.push(value);
 
+                });
+                if (valores.length > 0) {
+                    $scope.podeExibir = true;
+                   $scope.options = getOptions(labels, valores);
+
+
+                   
+               } else {
+                   $scope.podeExibir = false;
+                   ngDialog.openConfirm({
+                        template: '\
+                            <div class="text-center"><h1>Nada a exibir</h1></div>\
+                            <div class="ngdialog-buttons">\
+                                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Ok</button>\
+                            </div>',
+                        plain: true
+                    });
+
+               }
            }, function (erros) {
                $scope.erros = erros;
            });

@@ -313,5 +313,39 @@ namespace SistemaVidaNova.Api
             return File(ms, ContentType, fileName);
 
         }
+
+        [HttpGet("Relatorio")]
+        public ActionResult Relatorio([FromQuery]DateTime? start, [FromQuery]DateTime? end)
+        {
+
+            if (start == null || end == null )
+                return new BadRequestResult();
+
+            Dictionary<DateTime, double> resp = new Dictionary<DateTime, double>();
+
+            var queryD = from q in (from dd in _context.DoacaoDinheiro
+                                    where dd.Data >= start && dd.Data <= end
+                                    select new
+                                    {
+                                        mes = new DateTime(dd.Data.Year, dd.Data.Month, 1),
+                                        valor = dd.Valor
+                                    })
+                         group q by q.mes into g
+                         orderby g.Key
+                         select new
+                         {
+                             mes = g.Key,
+                             valor = g.Sum(v => v.valor)
+                         };
+            foreach (var qd in queryD)
+            {
+                resp.Add(qd.mes, qd.valor);
+            }
+
+
+
+
+            return new ObjectResult(resp);
+        }
     }
 }

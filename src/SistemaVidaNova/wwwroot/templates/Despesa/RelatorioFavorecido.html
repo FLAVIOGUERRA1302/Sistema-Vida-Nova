@@ -1,0 +1,27 @@
+﻿<div html-to-pdf nome-do-arquivo="'DespesasFavorecido'" >
+    <div class="largura-a4" gerar-pdf-automatico>
+        
+        <div class="row text-center" >
+            <h1>Despesa com Favorecido</h1><br />
+        </div>
+
+        <div class="row">
+            <p>Data de inicio da consulta: {{start | date :'dd/MM/yyyy'}}<br />  Data final da consulta: {{end | date :'dd/MM/yyyy'}}</p>
+        </div>
+
+        <div class="row">
+            <h2><strong>Resultados Gerados</strong></h2>
+        </div>
+        <div class="row">
+            <ul>
+                <li ng-repeat="(key, value) in dados">
+                    {{key}}: R$ {{value|number:2}}
+                </li>
+            </ul>
+        </div>
+
+        <div class="row" style="height:500px;">
+            <div echart options="options" tema="'infographic'"></div>
+        </div>
+    </div>
+</div>

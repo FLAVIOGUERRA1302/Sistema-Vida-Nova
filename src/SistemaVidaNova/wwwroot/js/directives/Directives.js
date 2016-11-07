@@ -126,8 +126,17 @@ app.directive('htmlToPdf', function () {
             };
             ctrl.gerar = function () {
                 
+                html2canvas($element, {
+                    onrendered: function (canvas) {
+                        var imgData = canvas.toDataURL(
+                            'image/png');
+                        var doc = new jsPDF('p', 'mm');
+                        doc.addImage(imgData, 'PNG', 10, 10);
+                        doc.save($scope.nomeDoArquivo+'.pdf');
+                    }
+                });
 
-
+                /*
                 var pdf = new jsPDF('p', 'pt', 'letter')
 
                 // source can be HTML-formatted string, or a reference
@@ -170,22 +179,22 @@ app.directive('htmlToPdf', function () {
                     margins
                   );
 
-
+                  */
                 //doc.save($scope.nomeDoArquivo + '.pdf');
             }
 
         }],        
         link: function (scope, element, attrs, ctrls) {
-          var a = 0;
+          
         }
     }
-})
+});
 
 app.directive('gerarPdf',  function () {
     return {
         restrict: 'A',                
         require: ["^^htmlToPdf"],
-        link: function (scope, element, attrs, ctrls) { 
+        link: function (scope, element, attrs, ctrls) {             
             element.on('click', function () {
                 ctrls[0].gerar();
             });
@@ -194,8 +203,84 @@ app.directive('gerarPdf',  function () {
     }
 });
 
+app.directive('gerarPdfAutomatico',['$timeout', function ($timeout) {
+    return {
+        restrict: 'A',
+        require: ["^^htmlToPdf"],
+        link: function (scope, element, attrs, ctrls) {            
+            $timeout(function () {
+                ctrls[0].gerar()
+            },1000);
+
+        }
+    }
+}]);
+
+app.directive('pdfA4', function () {
+    return {
+        restrict: 'A',
+        scope: {
+
+            nomeDoArquivo: '=?'
+
+        },
+        controller: ['$element', '$scope', function ($element, $scope) {
+            var ctrl = this;
+
+           
+            ctrl.gerar = function () {                
+                /*var element = $element.clone().width(750);
+               
+                
+                content.css("position", "fixed");
+                content.css("left", "-750px");
+                var toRemove = element.find(".fora-do-pfd").detach();
+                element.appendTo(content);
+                content.appendTo($element);*/
+                var content = $("<div>").width(750);
+                var parent = $element.parent();
+                content.appendTo(parent);
+                $element.appendTo(content);                
+                var toHide = $element.find(".fora-do-pfd")
+                toHide.hide();
+                html2canvas($element, {
+                    onrendered: function (canvas) {
+                        $element.appendTo(parent);
+                        content.detach();
+                        toHide.show();
+                        var imgData = canvas.toDataURL(
+                            'image/png');
+                        var doc = new jsPDF('p', 'mm');
+                        doc.addImage(imgData, 'PNG', 10, 10);
+                        doc.save($scope.nomeDoArquivo + '.pdf');
+                    }
+                });
+
+               
+            }
+
+        }],
+        link: function (scope, element, attrs, ctrls) {
+            
+        }
+    }
+});
 
 
+
+
+app.directive('pdfButton', function () {
+    return {
+        restrict: 'A',
+        require: ["^^pdfA4"],
+        link: function (scope, element, attrs, ctrls) {
+            element.on('click', function () {
+                ctrls[0].gerar();
+            });
+
+        }
+    }
+});
 
 
 

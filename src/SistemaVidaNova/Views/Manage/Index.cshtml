@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Gerencie sua conta";
     ViewData["imagePath"] = "images/users/"+ Model.Id+".jpg?"+DateTime.Now.Ticks;
-    Layout = "_LayoutAccount";
+    Layout = "_LayoutAdmin";
 }
 
 <h2>@ViewData["Title"].</h2>
@@ -16,18 +16,18 @@
         <dl class="dl-horizontal">
             <dt>Foto:</dt>
             <dd>
-                <a asp-controller="Manage" asp-action="Foto" class="btn-bracketed">Altere</a>
+                <a asp-controller="Manage" asp-action="Foto" class="btn-bracketed" target="_self">Altere</a>
             </dd>
             
             <dt>Senha:</dt>
             <dd>
                 @if (Model.HasPassword)
             {
-                    <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Altere</a>
+                    <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed" target="_self">Altere</a>
                 }
                 else
                 {
-                    <a asp-controller="Manage" asp-action="SetPassword" class="btn-bracketed">Criar</a>
+                    <a asp-controller="Manage" asp-action="SetPassword" class="btn-bracketed" target="_self">Criar</a>
                 }
             </dd>
             

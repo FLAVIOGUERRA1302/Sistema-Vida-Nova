@@ -54,74 +54,23 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition skin-blue sidebar-mini fixed" ng-app="app" id="app">
-    <div class="wrapper">
-
-        <header class="main-header">
-            <!-- Logo -->
-            <a href="#" class="logo" target="_self">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>S</b>VN</span>
-                <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b></b>Sistema Vida Nova</span>
-            </a>
-            <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-static-top">
-                <!-- Sidebar toggle button-->
-                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                    <span class="sr-only">Toggle navigation</span>
-                </a>
-
-                <div class="navbar-custom-menu">
-                    <ul class="nav navbar-nav">                        
-                       
-
-                        <!-- Notifications: style can be found in dropdown.less -->
-                        <li class="dropdown notifications-menu" ng-controller="VoluntarioNotificacaoControl" ng-include="'/templates/Voluntario/Notificacao.html'">
-                        </li>
-
-                        @await Html.PartialAsync("_LoginPartial")
-
-                    </ul>
-                </div>
-            </nav>
-        </header>
-
-        <!-- Left side column. contains the logo and sidebar -->
-        @await Html.PartialAsync("_MenuPartial")
-        
-
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper" ng-view>
-
-        </div>
-        <div class="fix-footer">
-            
-            
-        </div>
-        
-        <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            
-            Copyright &copy; 2016 - Sistema Vida Nova - <b>Version</b> 1.0.0
-
-        </footer>
-
+<body  ng-app="app" id="app" class="page-relatorio">
+    <div  ng-view>
 
     </div>
-    <!-- ./wrapper -->
+
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/angular/angular.js"></script>
         <script src="~/lib/angular-route/angular-route.js"></script>
-        
+
         <script src="~/lib/angular-animate/angular-animate.min.js"></script>
         <script src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
         <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
-        
+
 
         <script src="~/lib/tinycolor/dist/tinycolor-min.js"></script>
         <script src="~/lib/angularjs-color-picker/dist/angularjs-color-picker.js"></script>
@@ -138,13 +87,13 @@
 
         <script src="~/lib/angular-br-filters/release/angular-br-filters.js"></script>
 
-        
-        
+
+
         <script src="~/lib/angular-input-masks/angular-input-masks-standalone.js"></script>
-        
+
         <script src="~/lib/ng-file-upload/ng-file-upload-shim.js"></script>
         <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
-        
+
         <script src="~/lib/ng-tags-input/ng-tags-input.min.js"></script>
 
         <script src="~/lib/textAngular/dist/textAngular-rangy.min.js"></script>
@@ -154,15 +103,15 @@
 
         <script src="~/lib/echarts/build/dist/echarts-all.js"></script>
         <script src="~/lib/angular-echarts/dist/angular-echarts.js"></script>
-                
+
         <script src="~/lib/angular-validation-match/dist/angular-validation-match.min.js"></script>
 
 
         <script src="~/lib/jsPDF/jspdf.min.js"></script>
         <script src="~/lib/html2canvas/html2canvas.js"></script>
-        
 
-        <script src="~/js/date.js" ></script>
+
+        <script src="~/js/date.js"></script>
         <script src="~/js/app.js" asp-append-version="true"></script>
         <script src="~/js/services/Services.js" asp-append-version="true"></script>
         <script src="~/js/directives/Directives.js" asp-append-version="false"></script>
@@ -185,18 +134,18 @@
         <script src="~/js/controllers/ResultadosGeraisControl.js" asp-append-version="false"></script>
     </environment>
     <environment names="Staging,Production">
-        
+
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/angular/angular.js"></script>
         <script src="~/lib/angular-route/angular-route.js"></script>
 
-        
+
 
 
         <script src="~/js/vendor.min.js" asp-append-version="true"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-        
+
     </environment>
 
 

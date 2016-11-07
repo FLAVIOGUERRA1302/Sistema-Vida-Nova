@@ -59,7 +59,7 @@
 
         <header class="main-header">
             <!-- Logo -->
-            <a href="/" class="logo">
+            <a href="/" class="logo" target="_self">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini"><b>S</b>VN</span>
                 <!-- logo for regular state and mobile devices -->
@@ -99,6 +99,7 @@
 
     
     <!-- ./wrapper -->
+
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -144,6 +145,13 @@
         <script src="~/lib/echarts/build/dist/echarts-all.js"></script>
         <script src="~/lib/angular-echarts/dist/angular-echarts.js"></script>
 
+        <script src="~/lib/angular-validation-match/dist/angular-validation-match.min.js"></script>
+
+
+        <script src="~/lib/jsPDF/jspdf.min.js"></script>
+        <script src="~/lib/html2canvas/html2canvas.js"></script>
+
+
         <script src="~/js/date.js"></script>
         <script src="~/js/app.js" asp-append-version="true"></script>
         <script src="~/js/services/Services.js" asp-append-version="true"></script>
@@ -162,7 +170,9 @@
         <script src="~/js/controllers/ModeloDeReceitaControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/ResultadoSopaControl.js" asp-append-version="true"></script>
         <script src="~/js/controllers/EstoqueControl.js" asp-append-version="true"></script>
-        <script src="~/js/controllers/PlanejamentoControl.js" asp-append-version="false"></script>
+        <script src="~/js/controllers/PlanejamentoControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/UsuarioControl.js" asp-append-version="true"></script>
+        <script src="~/js/controllers/ResultadosGeraisControl.js" asp-append-version="false"></script>
     </environment>
     <environment names="Staging,Production">
 
@@ -178,6 +188,7 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
 
     </environment>
+
 
     @RenderSection("scripts", required: false)
 </body>
