@@ -68,7 +68,10 @@ namespace SistemaVidaNova.Api
 
             if (isAdmin != null)
             {
-                query = query.Where(u => u.Roles.Any(r => r.RoleId == roleAdmin.Id));
+                if(isAdmin.Value)
+                    query = query.Where(u => u.Roles.Any(r => r.RoleId == roleAdmin.Id));
+                else
+                    query = query.Where(u => !u.Roles.Any(r => r.RoleId == roleAdmin.Id));
             }
                 
 
