@@ -267,7 +267,7 @@ namespace SistemaVidaNova.Api
         public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro, [FromQuery]bool? isAdmin, [FromQuery]bool? isAtivo)
         {
 
-            IQueryable<Usuario> query = _context.Usuario
+            IQueryable<Usuario> query = _context.Usuario.Include(q=>q.Roles)
                .OrderBy(q => q.Nome);
 
             if (!String.IsNullOrEmpty(filtro))
