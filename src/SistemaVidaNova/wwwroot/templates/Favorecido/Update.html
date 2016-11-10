@@ -17,11 +17,13 @@
                             <div class="col-md-6">
                                 <label for="nome">Nome</label>
                                 <input type="text" class="form-control" ng-model="favorecido.nome" name='nome' id="nome" required placeholder="Digite o Nome do Favorecido">
+                                <lista-erro lista="erros.Nome"></lista-erro>
                             </div>
                             <div class="col-md-6">
                                 <!--  -->
                                 <label for="cpf">Apelido</label>
                                 <input type="text" class="form-control" ng-model="favorecido.apelido ">
+                                <lista-erro lista="erros.Apelido"></lista-erro>
                             </div>
                         </div>
 
@@ -33,6 +35,7 @@
                             <div class="col-md-3">
                                 <label for="dataNascimento">Data de Nascimento</label>
                                 <input type="date" class="form-control" ng-model="favorecido.dataNascimento" name='dataNascimento' id="dataNascimento">
+                                <lista-erro lista="erros.DataNascimento"></lista-erro>
                             </div>
 
 
@@ -47,6 +50,7 @@
                             <div class="col-md-3">
                                 <label for="rg">RG</label>
                                 <input type="text" class="form-control" ng-model="favorecido.rg" name='rg' id="rg">
+                                <lista-erro lista="erros.Rg"></lista-erro>
                             </div>
 
                             <div class="col-xs-3">
@@ -58,7 +62,6 @@
                             </div>
 
                         </div>
-
                         <div class="row">
                             <div class="col-md-12">
                                 <label for="telefone">Conhecimentos Profissionais</label>

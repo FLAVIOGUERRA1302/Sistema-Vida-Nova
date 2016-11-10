@@ -4,7 +4,7 @@
 @inject UserManager<Usuario> UserManager
 @{
     
-    ViewData["imagePath"] = "images/users/" + @UserManager.GetUserId(User) + ".jpg";
+    ViewData["imagePath"] = "images/users/" + @UserManager.GetUserId(User) + ".jpg?"+DateTime.Now.Ticks;
 }
 
 

@@ -59,7 +59,7 @@ namespace SistemaVidaNova.Api
                 .OrderBy(q => q.Nome);
 
             if (!String.IsNullOrEmpty(filtro))
-                query = query.Where(q => q.Nome.Contains(filtro));
+                query = query.Where(q => q.Nome.Contains(filtro) || q.ConhecimentosProfissionais.Any(c=>c.Nome.Contains(filtro)));
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
 
@@ -374,7 +374,7 @@ namespace SistemaVidaNova.Api
                .OrderBy(q => q.Nome);
 
             if (!String.IsNullOrEmpty(filtro))
-                query = query.Where(q => q.Nome.Contains(filtro));
+                query = query.Where(q => q.Nome.Contains(filtro) || q.ConhecimentosProfissionais.Any(c => c.Nome.Contains(filtro)));
 
             if (SaveOption == null)
                 SaveOption = "ExcelXlsx";
@@ -460,21 +460,26 @@ namespace SistemaVidaNova.Api
                     sheet.Range[linha, 7].DateTime = q.DataNascimento.Value;
                 if (q.ConhecimentosProfissionais.Count>0)
                     sheet.Range[linha, 8].Text = string.Join(",", q.ConhecimentosProfissionais.Select(c=>c.Nome).ToList());
-                sheet.Range[linha, 9].Text = q.Familia.Nome;
-                sheet.Range[linha, 10].Text = q.Familia.Celular.ToTelefone();
-                sheet.Range[linha, 11].Text = q.Familia.Telefone.ToTelefone();
-                sheet.Range[linha, 12].Text = q.Familia.Email;                
-                sheet.Range[linha, 13].Text = q.Familia.Endereco.Cep;
-                sheet.Range[linha, 14].Text = q.Familia.Endereco.Logradouro;
-                sheet.Range[linha, 15].Text = q.Familia.Endereco.Numero;
-                sheet.Range[linha, 16].Text = q.Familia.Endereco.Complemento;
-                sheet.Range[linha, 17].Text = q.Familia.Endereco.Bairro;
-                sheet.Range[linha, 18].Text = q.Familia.Endereco.Cidade;
-                sheet.Range[linha, 19].Text = q.Familia.Endereco.Estado;
-                sheet.Range[linha, 20].NumberFormat = "dd/mm/yyyy";
-                sheet.Range[linha, 20].DateTime = q.DataDeCadastro;
-                sheet.Range[linha, 21].Text = q.Usuario.Nome;
-
+                if (q.Familia != null)
+                {
+                    sheet.Range[linha, 9].Text = q.Familia.Nome;
+                    sheet.Range[linha, 10].Text = q.Familia.Celular.ToTelefone();
+                    sheet.Range[linha, 11].Text = q.Familia.Telefone.ToTelefone();
+                    sheet.Range[linha, 12].Text = q.Familia.Email;
+                    if (q.Familia.Endereco != null)
+                    {
+                        sheet.Range[linha, 13].Text = q.Familia.Endereco.Cep;
+                        sheet.Range[linha, 14].Text = q.Familia.Endereco.Logradouro;
+                        sheet.Range[linha, 15].Text = q.Familia.Endereco.Numero;
+                        sheet.Range[linha, 16].Text = q.Familia.Endereco.Complemento;
+                        sheet.Range[linha, 17].Text = q.Familia.Endereco.Bairro;
+                        sheet.Range[linha, 18].Text = q.Familia.Endereco.Cidade;
+                        sheet.Range[linha, 19].Text = q.Familia.Endereco.Estado;
+                    }
+                    sheet.Range[linha, 20].NumberFormat = "dd/mm/yyyy";
+                    sheet.Range[linha, 20].DateTime = q.DataDeCadastro;
+                    sheet.Range[linha, 21].Text = q.Usuario.Nome;
+                }
                 linha++;
             }
 

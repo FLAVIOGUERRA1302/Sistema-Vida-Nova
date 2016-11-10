@@ -62,7 +62,12 @@ namespace SistemaVidaNova.Api
                 .OrderBy(q => q.Nome);
 
             if (!String.IsNullOrEmpty(filtro))
-                query = query.Where(q => q.Nome.Contains(filtro));
+            {
+                if (!String.IsNullOrEmpty(funcao))
+                    query = query.Where(q => q.Nome.Contains(filtro));
+                else
+                    query = query.Where(q => q.Nome.Contains(filtro) || q.Funcao.Contains(filtro));
+            }
 
             if (!String.IsNullOrEmpty(funcao))
                 query = query.Where(q => q.Funcao.Contains(funcao));
@@ -425,7 +430,10 @@ namespace SistemaVidaNova.Api
                .OrderBy(q => q.Nome);
 
             if (!String.IsNullOrEmpty(filtro))
-                query = query.Where(q => q.Nome.Contains(filtro));
+            {                
+                query = query.Where(q => q.Nome.Contains(filtro) || q.Funcao.Contains(filtro));
+            }
+
 
             if (!String.IsNullOrEmpty(diaDaSemana))
             {
