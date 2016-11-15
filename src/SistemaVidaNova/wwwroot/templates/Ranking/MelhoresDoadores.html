@@ -1,0 +1,86 @@
+﻿<div pdf-a4 nome-do-arquivo="'MlhoresDoadores'">
+    <section class="content-header">
+        <h1>
+            MelhoresDoadores
+        </h1>
+
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="main" class="box box-warning">
+
+
+
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 col-sm-6">
+                                <label>Início da consulta</label>
+                                <input type="date" ng-model="start" class="form-control " />
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-sm-6">
+                                <label>Fim da consulta</label>
+                                <input type="date" ng-model="end" class="form-control " />
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="box-footer fora-do-pfd">
+                        <button type="button" ng-click="consultar()" ng-disabled="end==null || start == null" class="btn btn-primary">Visualizar</button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="resultado!=null">
+            <div class="col-md-12">
+
+                <div id="main" class="box box-warning">
+
+                    <!-- formulario -->
+                    <div class="box-body">
+
+                        <table class="table table-striped" cellspacing="0" cellpadding="0" >
+                            <thead>
+                                <tr>
+                                    <th>Posição</th>
+                                    <th>Nome/Razão Social</th>
+                                    <th>Tipo</th>
+                                    <th>CNPJ/CPF</th>
+                                    <th>Quantidade de Doações</th>
+                                    
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr ng-repeat="doador in resultado">
+                                    <td>{{$index+1}}º</td>
+                                    <td><a href="/Doador/Visualizar/{{doador.id}}">{{doador.nomeRazaoSocial}} </a></td>
+                                    <td>{{doador.tipo}}</td>
+                                    <td ng-if="doador.tipo=='PF'">{{doador.cpfCnpj   | brCpf}}</td>
+                                    <td ng-if="doador.tipo=='PJ'">{{doador.cpfCnpj   | brCnpj}}</td>                                    
+                                    <td>{{doador.quantidadeDeDoacoes | number : 0}}</td>
+                                 </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    
+
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>

@@ -81,7 +81,9 @@
       "wwwroot/js/controllers/EstoqueControl.js",
       "wwwroot/js/controllers/PlanejamentoControl.js",
       "wwwroot/js/controllers/UsuarioControl.js",
-      "wwwroot/js/controllers/ResultadosGeraisControl.js"
+      "wwwroot/js/controllers/ResultadosGeraisControl.js",
+      "wwwroot/js/controllers/RankingControl.js"
+      
 
     ],
     // Optionally specify minification options

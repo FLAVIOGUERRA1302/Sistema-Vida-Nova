@@ -1,0 +1,82 @@
+﻿<div pdf-a4 nome-do-arquivo="'FavorecidosMaisBeneficiados'">
+    <section class="content-header">
+        <h1>
+            Favorecidos mais beneficiádos
+        </h1>
+
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="main" class="box box-warning">
+
+
+
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 col-sm-6">
+                                <label>Início da consulta</label>
+                                <input type="date" ng-model="start" class="form-control " />
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-sm-6">
+                                <label>Fim da consulta</label>
+                                <input type="date" ng-model="end" class="form-control " />
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="box-footer fora-do-pfd">
+                        <button type="button" ng-click="consultar()" ng-disabled="end==null || start == null" class="btn btn-primary">Visualizar</button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="resultado!=null">
+            <div class="col-md-12">
+
+                <div id="main" class="box box-warning">
+
+                    <!-- formulario -->
+                    <div class="box-body">
+
+                        <table class="table table-striped" cellspacing="0" cellpadding="0" >
+                            <thead>
+                                <tr>                                    
+                                    <th>Posição</th>
+                                    <th>Nome</th>
+                                    <th>Valor Gasto</th>
+                                    
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr ng-repeat="f in resultado">
+                                    <td>{{$index+1}}º</td>
+                                    <td><a href="/Favorecido/Visualizar/{{f.id}}">{{f.nome }}</a></td>                                   
+                                    <td>{{f.valorGasto | finance:true:2}}</td>
+
+
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>

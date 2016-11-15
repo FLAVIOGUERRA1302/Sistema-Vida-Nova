@@ -424,7 +424,7 @@ namespace SistemaVidaNova.Api
         [HttpGet("excel")]
         public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro, [FromQuery]string diaDaSemana)
         {
-
+            
             IQueryable<Voluntario> query = _context.Voluntario
                .Where(q => q.IsDeletado == false)
                .OrderBy(q => q.Nome);

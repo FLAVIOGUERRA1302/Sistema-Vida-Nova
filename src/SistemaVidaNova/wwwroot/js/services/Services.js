@@ -2102,3 +2102,144 @@ app.factory('ResultadosGeraisService', ["$http", "$q", "$window", function ($htt
 
 
 }]);
+
+
+
+app.factory('EventosMaisProcuradosService', ["$http", "$q", "$window", function ($http, $q, $window) {
+    var s = {};
+
+
+    s.Read = function (start, end) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'GET',
+            url: '/api/EventosMaisProcurados/',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = { start: start, end: end };
+
+
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            for (var i = 0; i < response.data.length; i++) {
+                response.data[i].DataInicio = Date.parse(response.data[i].DataInicio);
+                response.data[i].DataFim = Date.parse(response.data[i].DataFim);
+            }
+
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+
+
+    s.toExcel = function (start, end) {
+        var turl = '/api/EventosMaisProcurados/excel?start=' + start.toISOString() + "&end=" + end.toISOString();
+
+        var url = encodeURI(turl)
+        $window.open(url);
+    }
+
+    return s;
+
+
+}]);
+
+app.factory('MelhoresDoadoresService', ["$http", "$q", "$window", function ($http, $q, $window) {
+    var s = {};
+
+
+    s.Read = function (start, end) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'GET',
+            url: '/api/MelhoresDoadores/',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = { start: start, end: end };
+
+
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+            
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+
+
+    s.toExcel = function (start, end) {
+        var turl = '/api/MelhoresDoadores/excel?start=' + start.toISOString() + "&end=" + end.toISOString();
+
+        var url = encodeURI(turl)
+        $window.open(url);
+    }
+
+    return s;
+
+
+}]);
+
+app.factory('FavorecidoMaisBeneficiadosService', ["$http", "$q", "$window", function ($http, $q, $window) {
+    var s = {};
+
+
+    s.Read = function (start, end) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'GET',
+            url: '/api/FavorecidosComMaisGasto/',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            dataType: 'json'
+        };
+        req.params = { start: start, end: end };
+
+
+        $http(req).then(function successCallback(response) {
+            s.totalItems = parseInt(response.headers('totalItems'));
+
+            deferred.resolve(response.data);
+        }, function errorCallback(response) {
+            deferred.reject(response.data);
+        });
+
+
+
+        return deferred.promise;
+    }
+
+
+
+    s.toExcel = function (start, end) {
+        var turl = '/api/FavorecidosComMaisGasto/excel?start=' + start.toISOString() + "&end=" + end.toISOString();
+
+        var url = encodeURI(turl)
+        $window.open(url);
+    }
+
+    return s;
+
+
+}]);

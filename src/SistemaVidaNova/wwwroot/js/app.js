@@ -788,6 +788,24 @@
          controller: 'ResultadosGeraisControl'
 
      })
+    //Ranking
+     .when('/EventosMaisProcurados', {
+         templateUrl: '/templates/Ranking/EventosMaisProcurados.html',
+         controller: 'EventosMaisProcuradosControl'
+
+     })
+
+    .when('/MelhoresDoadores', {
+        templateUrl: '/templates/Ranking/MelhoresDoadores.html',
+        controller: 'MelhoresDoadoresControl'
+
+    })
+
+    .when('/FavorecidoMaisBeneficiados', {
+        templateUrl: '/templates/Ranking/FavorecidoMaisBeneficiados.html',
+        controller: 'FavorecidoMaisBeneficiadosControl'
+
+    })
 
 
     

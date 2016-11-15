@@ -36,11 +36,7 @@ namespace SistemaVidaNova.Models
 
     public class ItemFavorecido : Item
     {
-        [Required]
-        public int CodFavorecido { get; set; }
-
-        [ForeignKey("CodFavorecido")]        
-        Favorecido Favorecido { get; set; }
+        
     }
 
     public class ItemSopa : Item

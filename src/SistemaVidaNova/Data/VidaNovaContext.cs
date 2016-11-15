@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using SistemaVidaNova.Models.FromSql;
 
 namespace SistemaVidaNova.Models
 {
@@ -50,7 +51,14 @@ namespace SistemaVidaNova.Models
         
         public DbSet<ResultadoSopa> ResultadoSopa { get; set; }
 
+        public DbSet<EventoMaisProcurado> EventoMaisProcurado { get; set; }
+
+        public DbSet<DoadorComQuantidadeDeDoacoes> MelhorDoador { get; set; }
+        public DbSet<FavorecidoComGasto> FavorecidoComGasto { get; set; }
+
         
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -129,6 +137,8 @@ namespace SistemaVidaNova.Models
                .Property(b => b.DataCurso)
                .HasDefaultValue(DateTime.Today);
 
+            //modelBuilder.Ignore<EventoMaisProcurado>();
+            
 
         }
 

@@ -13,6 +13,7 @@
 /// <reference path="js/controllers/itemcontrol.js" />
 /// <reference path="js/controllers/modelodereceitacontrol.js" />
 /// <reference path="js/controllers/planejamentocontrol.js" />
+/// <reference path="js/controllers/resultadosgeraiscontrol - copy.js" />
 /// <reference path="js/controllers/resultadosgeraiscontrol.js" />
 /// <reference path="js/controllers/resultadosopacontrol.js" />
 /// <reference path="js/controllers/usuariocontrol.js" />

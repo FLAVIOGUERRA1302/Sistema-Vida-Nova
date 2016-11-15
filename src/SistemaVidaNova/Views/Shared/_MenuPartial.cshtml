@@ -110,6 +110,24 @@
                     </a>
                     
                 </li>
+
+                <li class="treeview">
+                    <a href="">
+                        <i class="fa fa-sort-amount-desc"></i> <span>Ranking</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/EventosMaisProcurados"><i class="fa fa-circle-o"></i> Eventos mais procurados</a></li>
+                        <li><a href="/MelhoresDoadores"><i class="fa fa-circle-o"></i> Melhores Doadores</a></li>
+                        <li><a href="/FavorecidoMaisBeneficiados"><i class="fa fa-circle-o"></i> Favorecidos mais beneficiados</a></li>
+
+                    </ul>
+                </li>
+
+
+                
                 @if (await UserManager.IsInRoleAsync(usuario, "Administrator"))
                 {
                 <li class="treeview">
