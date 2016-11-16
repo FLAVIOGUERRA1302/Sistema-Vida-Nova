@@ -31,7 +31,7 @@ namespace SistemaVidaNova.Models.DTOs
         public Double ValorUnitario { get; set; }
         public FavorecidoDTOR Favorecido { get; set; }
 
-        public UsuarioDTO Usuario { get; set; }
+        public UsuarioDTOR Usuario { get; set; }
 
     }
 }

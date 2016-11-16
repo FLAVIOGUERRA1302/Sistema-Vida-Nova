@@ -46,6 +46,7 @@ namespace SistemaVidaNova.Api
             {
                 resultado.Itens = (from df in _context.DespesaFavorecido
                             join item in _context.Item on df.IdItem equals item.Id
+                            where df.DataDaCompra >= start.Value && df.DataDaCompra<= end.Value
                             group df by item into g
                             select new ResultadoGeralItemDTO
                             {

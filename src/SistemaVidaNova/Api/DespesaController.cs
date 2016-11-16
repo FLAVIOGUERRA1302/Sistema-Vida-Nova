@@ -88,7 +88,7 @@ namespace SistemaVidaNova.Api
                                Nome = q.Item.Nome,
                                 UnidadeDeMedida = q.Item.UnidadeDeMedida
                         },
-                         Usuario = new UsuarioDTO()
+                         Usuario = new UsuarioDTOR()
                          {
                              Id = q.Usuario.Id,
                              Nome = q.Usuario.Nome,
@@ -132,7 +132,7 @@ namespace SistemaVidaNova.Api
                               Cpf = q.Favorecido.Cpf,
                                Nome = q.Favorecido.Nome
                        },
-                       Usuario = new UsuarioDTO()
+                       Usuario = new UsuarioDTOR()
                        {
                            Id = q.Usuario.Id,
                            Nome = q.Usuario.Nome,
@@ -167,7 +167,7 @@ namespace SistemaVidaNova.Api
                            Nome = q.Item.Nome,
                            UnidadeDeMedida = q.Item.UnidadeDeMedida
                        },
-                       Usuario = new UsuarioDTO()
+                       Usuario = new UsuarioDTOR()
                        {
                            Id = q.Usuario.Id,
                            Nome = q.Usuario.Nome,
@@ -213,7 +213,7 @@ namespace SistemaVidaNova.Api
                     Nome = despesa.Item.Nome,
                     UnidadeDeMedida = despesa.Item.UnidadeDeMedida
                 };
-                dto.Usuario = new UsuarioDTO()
+                dto.Usuario = new UsuarioDTOR()
                 {
                     Id = despesa.Usuario.Id,
                     Nome = despesa.Usuario.Nome,
@@ -234,7 +234,7 @@ namespace SistemaVidaNova.Api
                     Nome = despesa.Item.Nome,
                     UnidadeDeMedida = despesa.Item.UnidadeDeMedida
                 };
-                dto.Usuario = new UsuarioDTO()
+                dto.Usuario = new UsuarioDTOR()
                 {
                     Id = despesa.Usuario.Id,
                     Nome = despesa.Usuario.Nome,
@@ -255,7 +255,7 @@ namespace SistemaVidaNova.Api
                     Nome = despesa.Item.Nome,
                     UnidadeDeMedida = despesa.Item.UnidadeDeMedida
                 };
-                dto.Usuario = new UsuarioDTO()
+                dto.Usuario = new UsuarioDTOR()
                 {
                     Id = despesa.Usuario.Id,
                     Nome = despesa.Usuario.Nome,
