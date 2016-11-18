@@ -555,7 +555,7 @@ namespace SistemaVidaNova.Api
                 sheet.Range[linha, 6].Text =  v.Celular.ToTelefone();
                 sheet.Range[linha, 7].Text =  v.Telefone.ToTelefone();
                 sheet.Range[linha, 8].Text = v.Sexo;
-                sheet.Range[linha, 9].Text = v.Funcao;
+                sheet.Range[linha, 9].Text = v.Funcao==null?"": v.Funcao;
                 sheet.Range[linha, 10].NumberFormat = "dd/mm/yyyy";
                 sheet.Range[linha, 10].DateTime = v.DataNascimento;
                 sheet.Range[linha, 11].Text = v.SegundaFeira ? "Sim" : "Não";

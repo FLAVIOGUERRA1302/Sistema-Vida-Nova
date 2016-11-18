@@ -48,7 +48,10 @@
                 var index = $scope.voluntarios.indexOf(voluntario);
                 $scope.voluntarios.splice(index, 1);
             }, function () {
-
+                ngDialog.open({
+                template: '<h1>Não é possível apagar este voluntário</h1>',
+                plain: true
+            })
             });
         }, function () {
             //não faz nada
