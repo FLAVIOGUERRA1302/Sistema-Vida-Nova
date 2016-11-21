@@ -760,10 +760,10 @@ namespace SistemaVidaNova.Api
                 case "ASSOCIACAO":
                     var query = from d in _context.DespesaAssociacao
                                 where d.DataDaCompra >= start.Value && d.DataDaCompra <= end.Value
-                                group d by d.Item into g
+                                group d by d.Item.Nome into g
                                 select new
                                 {
-                                    item = g.Key.Nome,
+                                    item = g.Key,
                                     valor = g.Sum(q => q.ValorUnitario * q.Quantidade)
                                 };
                     foreach (var q in query)
@@ -772,10 +772,10 @@ namespace SistemaVidaNova.Api
                 case "FAVORECIDO":
                     var queryF = from d in _context.DespesaFavorecido
                                 where d.DataDaCompra >= start.Value && d.DataDaCompra <= end.Value
-                                group d by d.Item into g
+                                group d by d.Item.Nome into g
                                 select new
                                 {
-                                    item = g.Key.Nome,
+                                    item = g.Key,
                                     valor = g.Sum(q => q.ValorUnitario * q.Quantidade)
                                 };
                     foreach (var q in queryF)
@@ -784,10 +784,10 @@ namespace SistemaVidaNova.Api
                 case "SOPA":
                     var queryS = from d in _context.DespesaSopa
                                 where d.DataDaCompra >= start.Value && d.DataDaCompra <= end.Value
-                                group d by d.Item into g
+                                group d by d.Item.Nome into g
                                 select new
                                 {
-                                    item = g.Key.Nome,
+                                    item = g.Key,
                                     valor = g.Sum(q => q.ValorUnitario * q.Quantidade)
                                 };
                     foreach (var q in queryS)

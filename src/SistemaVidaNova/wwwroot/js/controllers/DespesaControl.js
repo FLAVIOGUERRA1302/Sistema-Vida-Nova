@@ -193,7 +193,7 @@
     });
 
 }])
-.controller('DespesaRelatorioControl', ['$scope', 'DespesaService', 'dados', '$routeParams', 'loadingDialod', function ($scope, DespesaService, dados, $routeParams, loadingDialod) {
+.controller('DespesaRelatorioControl', ['$scope', 'DespesaService', 'dados', '$routeParams', 'loadingDialod', '$filter', function ($scope, DespesaService, dados, $routeParams, loadingDialod, $filter) {
 
     var getOptions = function (labels, valores) {
         return {
@@ -202,7 +202,10 @@
                 x: 'center'
             },
             tooltip: {
-                trigger: 'axis'
+                trigger: 'axis',
+                formatter: function (a) {
+                    return a[0].name +"<br/>" +a[0].seriesName +" : " + $filter('currency')(a[0].value, 'R$', 2)
+                }
             },
 
 
@@ -232,7 +235,9 @@
                             label: {
                                 show: true,
                                 position: 'top',
-                                formatter: 'R${c}'
+                                formatter: function (a) {
+                                    return $filter('currency')(a.value, 'R$ ', 2)
+                                }
                             }
                         }
 

@@ -116,7 +116,7 @@
     });
 
 }])
-.controller('ChartDespesaPeriodoControl', ['$scope', 'ChartService', 'ngDialog', function ($scope, ChartService, ngDialog) {
+.controller('ChartDespesaPeriodoControl', ['$scope', 'ChartService', 'ngDialog', '$filter', function ($scope, ChartService, ngDialog, $filter) {
     $scope.tipo = 'ASSOCIACAO';
     $scope.tipoRelatorio = "Associacao";
     $scope.start = null;
@@ -144,6 +144,12 @@
             x: 'right',
             y: 'center'
         },
+        tooltip: {
+            trigger: 'axis',
+            formatter: function (a) {
+                return a[0].name + "<br/>" + a[0].seriesName + " : " + $filter('currency')(a[0].value, 'R$', 2)
+            }
+        },
        
        itemStyle: {
             normal: {
@@ -162,7 +168,9 @@
                 label: {
                     show: true,
                     position: 'top',
-                    formatter: '{b}\n{c}'
+                    formatter: function (a) {
+                        return  $filter('currency')(a.value, 'R$', 2)
+                    }
                 }
             }
         }

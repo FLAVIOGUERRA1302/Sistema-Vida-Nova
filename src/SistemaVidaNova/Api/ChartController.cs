@@ -181,8 +181,8 @@ namespace SistemaVidaNova.Api
             var query = from q in _context.Despesa
                         where q.Tipo == filtro
                         && q.DataDaCompra >= start && q.DataDaCompra <= end
-                        group q by q.Item into g
-                        orderby g.Key.Nome
+                        group q by q.Item.Nome into g
+                        orderby g.Key
                         select new
                         {
                             item = g.Key,
@@ -193,7 +193,7 @@ namespace SistemaVidaNova.Api
             {
                 serie.datapoints.Add(new DataPointString()
                 {
-                    x = q.item.Nome,
+                    x = q.item,
                     y = q.valorTotal
                 });
             }
