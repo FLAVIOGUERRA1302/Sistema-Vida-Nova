@@ -271,19 +271,22 @@ namespace SistemaVidaNova.Api
                                             where dd.Data >= start && dd.Data <= end
                                             select new
                                             {
-                                                mes = new DateTime(dd.Data.Year, dd.Data.Month, 1),
+                                                //mes = new DateTime(dd.Data.Year, dd.Data.Month, 1),
+                                                mes = dd.Data.Month,
+                                                ano = dd.Data.Year,
                                                 valor = dd.Valor
                                             })
-                                 group q by q.mes into g
-                                 orderby g.Key
+                                 group q by new { q.ano, q.mes } into g
+                                 orderby g.Key.ano, g.Key.mes
                                  select new
                                  {
-                                     mes = g.Key,
+                                     mes = g.Key.mes,
+                                     ano = g.Key.ano,
                                      valor = g.Sum(v => v.valor)
                                  };
                     foreach(var qd in queryD)
                     {
-                        chart.Labels.Add(qd.mes);
+                            chart.Labels.Add(new DateTime(qd.ano,qd.mes,1));
                         serie.Add(qd.valor);
                     }
 
@@ -305,19 +308,21 @@ namespace SistemaVidaNova.Api
                                     where dd.Data >= start && dd.Data <= end && dd.CodDoador == id
                                     select new
                                     {
-                                        mes = new DateTime(dd.Data.Year, dd.Data.Month, 1),
+                                        mes = dd.Data.Month,
+                                        ano = dd.Data.Year,
                                         valor = dd.Valor
                                     })
-                         group q by q.mes into g
-                         orderby g.Key
+                         group q by new { q.ano, q.mes } into g
+                         orderby g.Key.ano, g.Key.mes
                          select new
                          {
-                             mes = g.Key,
+                             mes = g.Key.mes,
+                             ano = g.Key.ano,
                              valor = g.Sum(v => v.valor)
                          };
             foreach (var qd in queryD)
             {
-                chart.Labels.Add(qd.mes);
+                chart.Labels.Add(new DateTime(qd.ano, qd.mes, 1));
                 serie.Add(qd.valor);
             }
 

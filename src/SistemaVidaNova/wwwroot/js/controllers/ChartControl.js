@@ -235,7 +235,10 @@
                 x: 'center'
             },
             tooltip: {
-                trigger: 'axis'
+                trigger: 'axis',
+                formatter: function (a) {
+                    return a[0].name +"<br/>" +a[0].seriesName +" : " + $filter('currency')(a[0].value, 'R$', 2)
+                }
             },
             
 
@@ -265,7 +268,10 @@
                             label: {
                                 show: true,
                                 position: 'top',
-                                formatter: 'R${c}'
+                                //formatter: 'R${c}'
+                                formatter: function (a) {
+                                    return $filter('currency')(a.value, 'R$', 2)
+                                }
                             }
                         }
                 
@@ -339,7 +345,10 @@
                 x: 'center'
             },
             tooltip: {
-                trigger: 'axis'
+                trigger: 'axis',
+                formatter: function (a) {
+                    return a[0].name + "<br/>" + a[0].seriesName + " : " + $filter('currency')(a[0].value, 'R$', 2)
+                }
             },
 
 
@@ -369,7 +378,10 @@
                             label: {
                                 show: true,
                                 position: 'top',
-                                formatter: 'R${c}'
+                                //formatter: 'R${c}'
+                                formatter: function (a) {
+                                    return $filter('currency')(a.value, 'R$', 2)
+                                }
                             }
                         }
 

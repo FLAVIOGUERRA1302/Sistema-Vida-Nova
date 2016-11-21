@@ -238,7 +238,10 @@ namespace SistemaVidaNova.Api
                         Numero = v.Endereco.Numero
 
                     };
-                }else
+
+                    _context.Voluntario.Add(voluntario);
+                }
+                else
                 {
                     voluntario.Email = v.Email;
                     voluntario.Nome = v.Nome;
@@ -261,25 +264,20 @@ namespace SistemaVidaNova.Api
                     voluntario.IdUsuario = user.Id;
                     voluntario.DataCurso = DateTime.Today;
 
-                    if (voluntario.Endereco != null)
-                    {
-                        _context.Remove(voluntario.Endereco);
-                    }
 
-                    voluntario.Endereco = new Endereco()
-                    {
-                        Bairro = v.Endereco.Bairro,
-                        Cep = v.Endereco.Cep,
-                        Cidade = v.Endereco.Cidade,
-                        Complemento = v.Endereco.Complemento,
-                        Estado = v.Endereco.Estado,
-                        Logradouro = v.Endereco.Logradouro,
-                        Numero = v.Endereco.Numero
 
-                    };
+                    voluntario.Endereco.Bairro = v.Endereco.Bairro;
+                        voluntario.Endereco.Cep = v.Endereco.Cep;
+                        voluntario.Endereco.Cidade = v.Endereco.Cidade;
+                        voluntario.Endereco.Complemento = v.Endereco.Complemento;
+                        voluntario.Endereco.Estado = v.Endereco.Estado;
+                        voluntario.Endereco.Logradouro = v.Endereco.Logradouro;
+                        voluntario.Endereco.Numero = v.Endereco.Numero;
 
+                    
+                    
                 }
-                    _context.Voluntario.Add(voluntario);
+                    
                     try
                 {
                     _context.SaveChanges();
