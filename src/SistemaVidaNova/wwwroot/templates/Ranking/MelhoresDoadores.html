@@ -1,7 +1,7 @@
 ﻿<div pdf-a4 nome-do-arquivo="'MlhoresDoadores'">
     <section class="content-header">
         <h1>
-            MelhoresDoadores
+            Melhores Doadores
         </h1>
 
     </section>
@@ -54,7 +54,7 @@
                                     <th>Nome/Razão Social</th>
                                     <th>Tipo</th>
                                     <th>CNPJ/CPF</th>
-                                    <th>Quantidade de Doações</th>
+                                    <th>Valor Doado</th>
                                     
                                 </tr>
                             </thead>
@@ -67,7 +67,7 @@
                                     <td>{{doador.tipo}}</td>
                                     <td ng-if="doador.tipo=='PF'">{{doador.cpfCnpj   | brCpf}}</td>
                                     <td ng-if="doador.tipo=='PJ'">{{doador.cpfCnpj   | brCnpj}}</td>                                    
-                                    <td>{{doador.quantidadeDeDoacoes | number : 0}}</td>
+                                    <td>{{doador.valorDoado  | finance:true:2}}</td>
                                  </tr>
 
 

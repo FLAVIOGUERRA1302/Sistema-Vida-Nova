@@ -28,6 +28,9 @@ namespace SistemaVidaNova.Models
 
         public DbSet<InteressadoEvento> InteressadoEvento { get; set; }
         public DbSet<VoluntarioEvento> VoluntarioEvento { get; set; }
+        public DbSet<DoadorEvento> DoadorEvento { get; set; }
+        
+        public DbSet<FavorecidoEvento> FavorecidoEvento { get; set; }
         public DbSet<Informativo> Informativo { get; set; }
         public DbSet<Attachment> Attachment { get; set; }
         
@@ -94,6 +97,13 @@ namespace SistemaVidaNova.Models
             modelBuilder.Entity<VoluntarioEvento>()
                 .HasKey(t => new { t.CodEvento, t.IdVoluntario });
 
+            modelBuilder.Entity<FavorecidoEvento>()
+                .HasKey(t => new { t.CodEvento, t.CodFavorecido });
+
+            modelBuilder.Entity<DoadorEvento>()
+                .HasKey(t => new { t.CodEvento, t.CodDoador });
+            
+            
             modelBuilder.Entity<InformativoDoador>()
                 .HasKey(t => new { t.CodDoador, t.IdInformativo });
 

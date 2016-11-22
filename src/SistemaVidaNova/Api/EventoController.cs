@@ -31,7 +31,7 @@ namespace SistemaVidaNova.Api
         }
 
         [HttpGet]
-        public IEnumerable<EventoDTO> Get([FromQuery]DateTime? start, [FromQuery]DateTime? end, [FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro)
+        public IEnumerable<EventoDTO> Get([FromQuery]DateTime? start, [FromQuery]DateTime? end, [FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro, [FromQuery]bool? comAgendaMotorista)
         {
 
             IQueryable<Evento> query = _context.Evento.Include(q=>q.Usuario);
@@ -77,10 +77,45 @@ namespace SistemaVidaNova.Api
                                                             Id = q.Usuario.Id,
                                                              Email = q.Usuario.Email,
                                                               Nome = q.Usuario.Nome
-                                                       }                                                   
-                                                       
-                                                     
-                                                 }).ToList();
+                                                       }     ,
+                                           Tipo="EVENTO"
+
+
+                                       }).ToList();
+
+            if(comAgendaMotorista!= null && comAgendaMotorista.Value)
+            {
+                
+                var queryDoacao = _context.DoacaoObjeto
+                    .Include(q=>q.Doador)
+                    .Include(q=>q.Voluntario)                    
+                    .Where(q => q.DataDeRetirada >= start && q.DataDeRetirada <= end);
+                foreach( var doacao in queryDoacao)
+                {
+                    string nomeRazaoSocial = doacao.Doador.GetType() == typeof(PessoaFisica) ? ((PessoaFisica)doacao.Doador).Nome : ((PessoaJuridica)doacao.Doador).RazaoSocial;
+                    EventoDTO dto = new EventoDTO
+                    {
+                        id = doacao.Id,
+                        title = doacao.Voluntario.Nome + " Buscar item com " + nomeRazaoSocial,
+                        descricao = "",
+                        color = "#FF0000",
+                        textColor ="#FFFFFF",
+                        start = doacao.DataDeRetirada,
+                        end = doacao.DataDeRetirada,
+
+                        valorArrecadado = 0,
+                        relato = "",                        
+                        Tipo = "DOACAO"
+
+
+                    };
+                    eventos.Add(dto);
+                }
+
+
+                    
+            }
+
               return eventos;
         }
 
@@ -90,17 +125,22 @@ namespace SistemaVidaNova.Api
         {
             Evento eve = _context.Evento
                     .Include(q => q.Interessados)
-                    //.ThenInclude(q=>q.Interessado)
+                    .ThenInclude(q=>q.Interessado)                    
                     .Include(q => q.Voluntarios)
+                    .ThenInclude(q => q.Voluntario)
                     .Include(q=>q.Usuario)
-                    //.ThenInclude(q=> q.Voluntario)
+                    .Include(q => q.Doadores)
+                    .ThenInclude(q => q.Doador)
+                    .Include(q => q.Favorecidos)
+                    .ThenInclude(q => q.Favorecido)
                     .SingleOrDefault(q => q.CodEvento == id);
             if (eve == null)
                 return new NotFoundResult();
-            if (eve.Interessados.Count > 0)
+            /*if (eve.Interessados.Count > 0)
                 _context.InteressadoEvento.Where(q => q.CodEvento == id).Include(q => q.Interessado).Load();
             if (eve.Voluntarios.Count > 0)
-                _context.VoluntarioEvento.Where(q => q.CodEvento == id).Include(q => q.Voluntario).Load();
+                _context.VoluntarioEvento.Where(q => q.CodEvento == id).Include(q => q.Voluntario).Load();*/
+
             EventoDTO dto = new EventoDTO
             {
                 id = eve.CodEvento,
@@ -129,9 +169,38 @@ namespace SistemaVidaNova.Api
                 {
                     Id = q.Interessado.CodInteressado,
                     Nome = q.Interessado.Nome
+                }).ToList(),
+
+                favorecidos = eve.Favorecidos.Select(q => new FavorecidoDTOR
+                {
+                    Id = q.Favorecido.CodFavorecido,
+                     Nome = q.Favorecido.Nome
                 }).ToList()
 
             };
+
+            dto.doadoresPj = new List<DoadorDTOR>();
+            dto.doadoresPf = new List<DoadorDTOR>();
+            foreach (var doadorEvento in eve.Doadores)
+            {
+                if(doadorEvento.Doador.GetType() == typeof(PessoaFisica))
+                {
+                    dto.doadoresPf.Add(new DoadorDTOR()
+                    {
+                        Id = doadorEvento.Doador.CodDoador,
+                        NomeRazaoSocial = ((PessoaFisica)doadorEvento.Doador).Nome
+                    });
+
+                } else if (doadorEvento.Doador.GetType() == typeof(PessoaJuridica))
+                {
+                    dto.doadoresPj.Add(new DoadorDTOR()
+                    {
+                        Id = doadorEvento.Doador.CodDoador,
+                        NomeRazaoSocial = ((PessoaJuridica)doadorEvento.Doador).RazaoSocial
+                    });
+                }
+            }
+
             return new ObjectResult(dto);
         }
 
@@ -190,8 +259,10 @@ namespace SistemaVidaNova.Api
 
                 Evento e = _context.Evento
                     .Include(q=>q.Interessados)
-                    .Include(q=>q.Voluntarios).
-                    Single(q => q.CodEvento == id);
+                    .Include(q=>q.Voluntarios)
+                    .Include(q => q.Favorecidos)
+                    .Include(q => q.Doadores)
+                    .Single(q => q.CodEvento == id);
 
                 e.Titulo = evento.title;
                 e.Descricao = evento.descricao;
@@ -205,10 +276,10 @@ namespace SistemaVidaNova.Api
 
 
 
-                
+                //interessados
                 if (evento.interessados != null)
                 {
-                    //verifica quem está presentee e quem saiu
+                    //verifica quem está presente e quem saiu
                     List<InteressadoEvento> corretos = new List<InteressadoEvento>();
                     foreach (var inter in evento.interessados)
                     {
@@ -222,7 +293,7 @@ namespace SistemaVidaNova.Api
 
                         }
                         corretos.Add(eventoInteressado);
-                        
+
                     }
                     //remove incorretos
                     var incorretos = e.Interessados.Except(corretos);
@@ -231,12 +302,14 @@ namespace SistemaVidaNova.Api
 
                 }
                 else
-                    evento.interessados.Clear();
+                {
+                    e.Interessados.Clear();
+                }
 
-                
+
                 if (evento.voluntarios != null)
                 {
-                    //verifica quem está presentee e quem saiu
+                    //verifica quem está presente e quem saiu
                     List<VoluntarioEvento> corretos = new List<VoluntarioEvento>();
                     foreach (var volunt in evento.voluntarios)
                     {
@@ -257,7 +330,78 @@ namespace SistemaVidaNova.Api
                         e.Voluntarios.Remove(incorreto);
                 }
                 else
-                    evento.voluntarios.Clear();
+                {
+                    e.Voluntarios.Clear();
+                }
+
+                //favorecidos
+                if (evento.favorecidos != null)
+                {
+                    //verifica quem está presente e quem saiu
+                    List<FavorecidoEvento> corretos = new List<FavorecidoEvento>();
+                    foreach (var favorecido in evento.favorecidos)
+                    {
+                        var eventoFavorecido = e.Favorecidos.SingleOrDefault(q => q.CodFavorecido == favorecido.Id);
+                        if (eventoFavorecido == null)
+                        {
+                            eventoFavorecido = new FavorecidoEvento { CodEvento = e.CodEvento,  CodFavorecido = favorecido.Id };
+                            corretos.Add(eventoFavorecido);
+                            e.Favorecidos.Add(eventoFavorecido);
+
+                        }
+                        corretos.Add(eventoFavorecido);
+
+                    }
+                    //remove incorretos
+                    var incorretos = e.Favorecidos.Except(corretos);
+                    foreach (var incorreto in incorretos.ToArray())
+                        e.Favorecidos.Remove(incorreto);
+                }
+                else
+                {
+                    e.Favorecidos.Clear();
+                }
+
+                //doadores
+                if (evento.doadoresPf == null)
+                    evento.doadoresPf = new List<DoadorDTOR>();
+                if (evento.doadoresPj == null)
+                    evento.doadoresPj = new List<DoadorDTOR>();
+                List<DoadorDTOR> doadores = evento.doadoresPf.Concat(evento.doadoresPj).ToList();
+
+                if (doadores.Count>0)
+                {
+                    
+
+                    //verifica quem está presente e quem saiu
+                    List<DoadorEvento> corretos = new List<DoadorEvento>();
+                    foreach (var doador in doadores)
+                    {
+                        var eventoDoador = e.Doadores.SingleOrDefault(q => q.CodDoador == doador.Id);
+                        if (eventoDoador == null)
+                        {
+                            eventoDoador = new DoadorEvento { CodEvento = e.CodEvento,  CodDoador = doador.Id };
+                            corretos.Add(eventoDoador);
+                            e.Doadores.Add(eventoDoador);
+
+                        }
+                        corretos.Add(eventoDoador);
+
+                    }
+                    //remove incorretos
+                    var incorretos = e.Doadores.Except(corretos);
+                    foreach (var incorreto in incorretos.ToArray())
+                        e.Doadores.Remove(incorreto);
+                }
+                else
+                {
+                    e.Doadores.Clear();
+                }
+
+
+
+
+
 
                 _context.SaveChanges();
 
@@ -296,6 +440,10 @@ namespace SistemaVidaNova.Api
                 .ThenInclude(q=>q.Interessado)
                 .Include(q=>q.Voluntarios)
                 .ThenInclude(q => q.Voluntario)
+                .Include(q => q.Favorecidos)
+                .ThenInclude(q => q.Favorecido)
+                .Include(q => q.Doadores)
+                .ThenInclude(q => q.Doador)
                .OrderByDescending(q => q.DataInicio);
 
             if (!String.IsNullOrEmpty(filtro))
@@ -332,9 +480,12 @@ namespace SistemaVidaNova.Api
             sheet.Range[1, 9].ColumnWidth = 15;
             sheet.Range[1, 10].ColumnWidth = 40;
             sheet.Range[1, 11].ColumnWidth = 40;
+            sheet.Range[1, 12].ColumnWidth = 40;
+            sheet.Range[1, 13].ColumnWidth = 40;
+            sheet.Range[1, 14].ColumnWidth = 40;
 
 
-            sheet.Range[1, 1, 1, 11].Merge(true);
+            sheet.Range[1, 1, 1, 14].Merge(true);
 
             //Inserting sample text into the first cell of the first sheet.
             sheet.Range["A1"].Text = "Eventos";
@@ -355,9 +506,12 @@ namespace SistemaVidaNova.Api
             sheet.Range[3, 9].Text = "Relato";
             sheet.Range[3, 10].Text = "Voluntários";
             sheet.Range[3, 11].Text = "Interessados";
+            sheet.Range[3, 12].Text = "Favorecidos";
+            sheet.Range[3, 13].Text = "Doadores PJ";
+            sheet.Range[3, 14].Text = "Doadores PF";
 
 
-            IStyle style = sheet[3, 1, 3, 11].CellStyle;
+            IStyle style = sheet[3, 1, 3, 14].CellStyle;
             style.VerticalAlignment = ExcelVAlign.VAlignCenter;
             style.HorizontalAlignment = ExcelHAlign.HAlignCenter;
             style.Color = Color.FromArgb(0, 0, 112, 192);
@@ -383,6 +537,24 @@ namespace SistemaVidaNova.Api
                 sheet.Range[linha, 9].Text = v.Relato;
                 sheet.Range[linha, 10].Text = string.Join(";", v.Voluntarios.Select(c => c.Voluntario.Nome).ToList()); ;
                 sheet.Range[linha, 11].Text = string.Join(";", v.Interessados.Select(c => c.Interessado.Nome).ToList()); ;
+                sheet.Range[linha, 12].Text = string.Join(";", v.Favorecidos.Select(c => c.Favorecido.Nome).ToList()); ;
+                string pjs = "";
+                string pjf = "";
+                foreach(var ed in v.Doadores)
+                {
+                    if(ed.Doador.GetType() == typeof(PessoaFisica))
+                    {
+                        pjf += ((PessoaFisica)ed.Doador).Nome+";";
+                    }
+                    else if (ed.Doador.GetType() == typeof(PessoaJuridica))
+                    {
+                        pjs += ((PessoaJuridica)ed.Doador).RazaoSocial + ";";
+                    }
+                }
+
+                sheet.Range[linha, 13].Text = pjs;
+                sheet.Range[linha, 14].Text = pjf;
+
 
                 linha++;
             }

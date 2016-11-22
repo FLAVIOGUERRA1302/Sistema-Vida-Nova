@@ -679,7 +679,7 @@ namespace SistemaVidaNova.Api
                     <b>Município:</b> São Paulo-SP<br />  
                     <b>Fone/ Fax: (11) 5533-7143</p>
                     <br />
-                    
+                    <p>O doador deve informar a transferência do valor na ficha “Doações Efetuadas” com o código “80 – Doações em espécie”</p>
                     <p><b>Atenção doador a Nota Fiscal Paulista</b></p>
                     
                     <p>Os comprovantes fiscais podem ser usados em benefício de nossa causa. 

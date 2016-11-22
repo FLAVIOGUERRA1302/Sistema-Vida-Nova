@@ -1,0 +1,32 @@
+﻿<div html-to-pdf nome-do-arquivo="'Benefícios'">
+    <div class="largura-a4" gerar-pdf-automatico>
+        <h1>Benefícios Gerais</h1>
+        <table class="table table-striped" cellspacing="0" cellpadding="0" >
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantidade</th>
+
+
+
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr ng-repeat="i in resultado.itens">
+                    <th>{{i.item }}</th>
+                    <th>{{i.quantidade | number:0 }} ({{unidadesDeMedida[i.unidadeDeMedida]}})</th>
+
+
+                </tr>
+
+                <tr>
+                    <th>LITROS DE SOPA </th>
+                    <th>{{resultado.totalLitrosDeSopa | number:2 }} (Litros)</th>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

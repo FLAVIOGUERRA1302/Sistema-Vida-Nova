@@ -57,7 +57,63 @@ namespace SistemaVidaNova.Api
 
             }
             catch { }
-           
+
+
+
+            var queryDoacoes = (from dd in _context.DoacaoDinheiro
+                                    where dd.Data >= start && dd.Data <= end
+                                    select new
+                                    {
+                                        //mes = new DateTime(dd.Data.Year, dd.Data.Month, 1),
+                                        mes = dd.Data.Month,
+                                        ano = dd.Data.Year,
+                                        doado = dd.Valor,
+                                        despesa = 0.0d
+
+                                    }).ToList();
+
+            var queryDespesas = (from dd in _context.Despesa
+                                where dd.DataDaCompra >= start && dd.DataDaCompra <= end
+                                select new
+                                {
+                                    //mes = new DateTime(dd.Data.Year, dd.Data.Month, 1),
+                                    mes = dd.DataDaCompra.Month,
+                                    ano = dd.DataDaCompra.Year,
+                                    doado = 0.0d,
+                                    despesa = dd.Quantidade * dd.ValorUnitario
+                                }).ToList();
+            var query = from q in (queryDoacoes.Concat(queryDespesas))
+                               group q by new { q.ano, q.mes } into g
+                               orderby g.Key.ano, g.Key.mes
+                               select new
+                               {
+                                   mes = g.Key.mes,
+                                   ano = g.Key.ano,
+                                   doado = g.Sum(v => v.doado),
+                                   despesa = g.Sum(v => v.despesa)
+                               };
+
+
+            //obtem todos os meses primeiro porque pode ter doação em um determinado mês sem despesa e vice versa
+           // List<DateTime> meses = queryDoacoes.Select(q => new DateTime(q.ano, q.mes, 1)).Union(queryDespesas.Select(q => new DateTime(q.ano, q.mes, 1))).OrderBy(q=>q).ToList();
+
+            List<double> serieDoacao = new List<double>();
+            List<double> serieDespesa = new List<double>();
+            resultado.ChartData.Series.Add(serieDoacao);
+            resultado.ChartData.Series.Add(serieDespesa);
+            resultado.ChartData.SeriesName.Add("Doações");
+            resultado.ChartData.SeriesName.Add("Despesas");
+
+           // Dictionary<DateTime, double> dicHelpDoacoes = new Dictionary<DateTime, double>();
+           // Dictionary<DateTime, double> dicHelpDespesa = new Dictionary<DateTime, double>();
+
+            foreach (var q in query)
+            {
+                resultado.ChartData.Labels.Add(new DateTime(q.ano, q.mes, 1));
+                serieDoacao.Add(q.doado);
+                serieDespesa.Add(q.despesa);
+
+            }
 
             return new ObjectResult(resultado);
 

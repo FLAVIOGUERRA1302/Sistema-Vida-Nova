@@ -58,7 +58,7 @@
 
                         <tbody>
                             
-                            <tr ng-repeat="v in voluntarios"  ng-class="{'text-red': v.diasEmAtraso>0}">
+                            <tr ng-repeat="v in voluntarios"  ng-class="{'text-red': v.diasEmAtraso>0 || v.diasParaVencer>0 }">
                                 <td>{{v.nome}}</td>
                                 <td>{{v.email}}</td>
                                 <td>{{v.telefone | brPhoneNumber}}</td>

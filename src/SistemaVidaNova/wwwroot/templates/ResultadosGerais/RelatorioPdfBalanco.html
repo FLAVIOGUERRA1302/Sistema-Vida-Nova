@@ -1,0 +1,12 @@
+﻿<div html-to-pdf nome-do-arquivo="'Balanço'" orientacao="'landscape'">
+    <div class="a4-landscape" gerar-pdf-automatico>
+        <div ng-show="podeExibir">
+
+            <div echart options="options" tema="'infographic'" style="height:500px;width:100%" ></div>
+
+        </div>
+        <div ng-show="!podeExibir">
+            <p>Nada para exibir</p>
+        </div>
+    </div>
+</div>

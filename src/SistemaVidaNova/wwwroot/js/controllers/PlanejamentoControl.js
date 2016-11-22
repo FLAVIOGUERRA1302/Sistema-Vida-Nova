@@ -4,7 +4,7 @@
     $scope.modelos = [];
     //$scope.chartData = {};
     $scope.podeExibir = false;
-    var getOptions = function (labels, valoes) {
+    var getOptions = function (labels, valores) {
         return {
             title: {
                 text: 'Planejamento',
@@ -22,7 +22,10 @@
             xAxis: [
                 {
                     type: 'value',
-                    boundaryGap: [0, 0.01]
+                    boundaryGap: [0, 0.01],
+                    axisLabel: {
+                        formatter: '{value} dias'
+                    }
                 }
             ],
             yAxis: [
@@ -35,7 +38,7 @@
                 {
                     name: 'Dias',
                     type: 'bar',
-                    data: valoes
+                    data: valores
                 }
             ]
         };

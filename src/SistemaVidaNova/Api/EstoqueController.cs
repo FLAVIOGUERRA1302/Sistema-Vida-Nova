@@ -53,7 +53,7 @@ namespace SistemaVidaNova.Api
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(q => q.Nome.Contains(filtro));
             if (somenteNegativos.Value)
-                query = query.Where(q => q.QuantidadeEmEstoque < 0);
+                query = query.Where(q => q.QuantidadeEmEstoque <= 0);
 
             
 

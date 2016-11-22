@@ -4,8 +4,7 @@ app.directive('calendar', function () {
         restrict: 'A',
         scope: {
             editable: '=?',
-            events: '=?',
-            eventClickEndPoint: "=?"
+            events: '=?'
         },
         link: function (scope, element, attrs, ctrl) {
             element.fullCalendar({
@@ -21,7 +20,10 @@ app.directive('calendar', function () {
                 events: scope.events,
                 eventClick: function (calEvent, jsEvent, view) {
 
-                    window.location.href = scope.eventClickEndPoint + calEvent.id;
+                    if (calEvent.tipo == "DOACAO")
+                        window.location.href = '/Doacao/Objeto/Visualizar/' + calEvent.id;
+                    else
+                        window.location.href = '/Evento/Visualizar/' + calEvent.id;
 
                 }
             });
@@ -54,37 +56,42 @@ app.directive('goBack', ['$window',function ($window) {
 }]);
 
 
-app.directive('echart', ['theme',  function (theme) {
+app.directive('echart', ['theme','$timeout',  function (theme,$timeout) {
     return {
         restrict: 'EA',
-        template: '<div></div>',
+        //template: '<div></div>',
         scope: {
             
             options: '=?',
             tema: '=?',
-            events: '=?'
+            events: '=?',
+            api: '='
         },
         link: function (scope, element, attrs) {
             var ndWrapper = element.find('div')[0],
-            ndParent = element.parent()[0],
-            parentWidth = ndParent.clientWidth,
-            parentHeight = ndParent.clientHeight,
+            
+            
             width, height, chart;
 
             function getSizes() {
+                var parentWidth = element.width(),
+                parentHeight = element.height();
                 width =  parseInt(attrs.width) || parentWidth || 320;
                 height = parseInt(attrs.height) || parentHeight || 240;
 
-                ndWrapper.style.width = width + 'px';
+                ndWrapper.style.width = '100%';
                 ndWrapper.style.height = height + 'px';
             }
 
             function aplicarOptions() {
                 if (scope.options) {
-                    getSizes();
+                    //getSizes();
                     if (!chart) {
-                        chart = echarts.init(ndWrapper, theme.get(scope.tema || 'macarons'));
+                        chart = echarts.init(element[0], theme.get(scope.tema || 'macarons'));
                     }
+                    if(scope.api)
+                        scope.api.chart = chart;
+
                     chart.clear();
                     if (scope.events) {
                         for (var i = 0; i < scope.events.length; i++) {
@@ -93,11 +100,19 @@ app.directive('echart', ['theme',  function (theme) {
                     }
                     chart.setOption(scope.options);
                     chart.resize();
+                    window.onresize = chart.resize;
+                    
                 }
             }
 
+            
+
             scope.$watch('options', function (newValue, oldValue) {
-                aplicarOptions();
+                $timeout(function () {
+                    aplicarOptions();
+                }, 500
+               );
+                
             });
             
 
@@ -114,7 +129,8 @@ app.directive('htmlToPdf', function () {
         restrict: 'A',
         scope: {
 
-            nomeDoArquivo: '=?'
+            nomeDoArquivo: '=?',
+            orientacao: '=?'
           
         },
         controller: ['$element', '$scope', function ($element, $scope) {
@@ -125,12 +141,15 @@ app.directive('htmlToPdf', function () {
                 }
             };
             ctrl.gerar = function () {
-                
+                var tipo = 'p';
+                if ($scope.orientacao =='landscape')
+                    tipo = 'l';
+
                 html2canvas($element, {
                     onrendered: function (canvas) {
                         var imgData = canvas.toDataURL(
                             'image/png');
-                        var doc = new jsPDF('p', 'mm');
+                        var doc = new jsPDF(tipo, 'mm');
                         doc.addImage(imgData, 'PNG', 10, 10);
                         doc.save($scope.nomeDoArquivo+'.pdf');
                     }

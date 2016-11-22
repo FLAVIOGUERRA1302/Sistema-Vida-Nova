@@ -645,7 +645,7 @@
 
 
      //------------ModeloDeReceita----------
-    .when('/ModeloDeReceita', {
+    .when('/ModeloDeDistribuicao', {
         templateUrl: '/templates/ModeloDeReceita/List.html',
         controller: 'ModeloDeReceitaControl',
         resolve: {
@@ -788,6 +788,48 @@
          controller: 'ResultadosGeraisControl'
 
      })
+
+    .when('/ResultadosGerais/Beneficios/:start/:end', {
+        templateUrl: '/templates/ResultadosGerais/RelatorioPdfBeneficios.html',
+        controller: 'ResultadosGeraisRelatorioControl',
+        resolve: {
+            dados: function (ResultadosGeraisService, $route) {
+                return ResultadosGeraisService.Read(Date.parseExact($route.current.params.start, 'dd-MM-yyyy'),Date.parseExact($route.current.params.end, 'dd-MM-yyyy') );
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            }
+        }
+
+    })
+
+    .when('/ResultadosGerais/Balanco/:start/:end', {
+        templateUrl: '/templates/ResultadosGerais/RelatorioPdfBalanco.html',
+        controller: 'ResultadosGeraisRelatorioControl',
+        resolve: {
+            dados: function (ResultadosGeraisService, $route) {
+                return ResultadosGeraisService.Read(Date.parseExact($route.current.params.start, 'dd-MM-yyyy'), Date.parseExact($route.current.params.end, 'dd-MM-yyyy'));
+            },
+            loadingDialod: function (ngDialog) {
+                return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+            }
+        }
+
+    })
+
+        .when('/Doacao/RelatorioDinheiro/:start/:end', {
+            templateUrl: '/templates/Doacao/RelatorioDinheiro.html',
+            controller: 'DoacaoDinheiroRelatorioControl',
+            resolve: {
+                dados: function (DoacaoDinheiroService, $route) {
+                    return DoacaoDinheiroService.Relatorio($route.current.params.start, $route.current.params.end);
+                },
+                loadingDialod: function (ngDialog) {
+                    return ngDialog.open({ template: '/templates/loading.html', className: 'ngdialog-theme-default' });
+                }
+            }
+        })
+
     //Ranking
      .when('/EventosMaisProcurados', {
          templateUrl: '/templates/Ranking/EventosMaisProcurados.html',

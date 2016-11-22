@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace SistemaVidaNova.Controllers
 {
     [Authorize]
-    public class ModeloDeReceitaController : Controller
+    public class ModeloDeDistribuicaoController : Controller
     {
         // GET: /<controller>/
         

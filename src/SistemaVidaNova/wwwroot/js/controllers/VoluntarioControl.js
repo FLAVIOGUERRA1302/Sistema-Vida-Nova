@@ -176,19 +176,33 @@
 
 }])
 .controller('VoluntarioNotificacaoControl', ['$scope', 'VoluntarioService',  function ($scope, VoluntarioService) {
-    $scope.voluntarios = [];
+    $scope.voluntariosComVencimento = [];
+    $scope.voluntariosSemVencimento = [];
     $scope.semAgendamento = "";
+    $scope.vencendo = "";
+    $scope.vencendo = 0;
+    $scope.venceu = 0;
 
     var read = function () {
         VoluntarioService.ReadCursoAtrasado()
         .then(function (voluntarios) {            
-            $scope.voluntarios = voluntarios;
+            $scope.voluntariosComVencimento = [];
+            $scope.voluntariosSemVencimento = [];
+            $scope.vencendo = 0;
+            $scope.venceu = 0;
             $scope.semAgendamento = VoluntarioService.totalItemsAtrasado;
             //corrige de texto para Date as datas
             var umAnoAtras = Date.today().addYears(-1);
             angular.forEach(voluntarios, function (voluntario, key) {
-                voluntario.dataCurso = Date.parse(voluntario.dataCurso);
-                
+                //voluntario.dataCurso = Date.parse(voluntario.dataCurso);                
+                if (voluntario.diasEmAtraso > 0) {
+                    $scope.voluntariosComVencimento.push(voluntario)
+                    $scope.venceu++;
+                }
+                else {
+                    $scope.voluntariosSemVencimento.push(voluntario)
+                    $scope.vencendo++;
+                }
             });
 
         }, function (erros) {

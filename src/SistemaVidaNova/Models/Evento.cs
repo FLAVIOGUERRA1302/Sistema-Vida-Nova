@@ -39,5 +39,10 @@ namespace SistemaVidaNova.Models
         public List<VoluntarioEvento> Voluntarios { get; set; }
         public List<InteressadoEvento> Interessados { get; set; }
 
+        public List<DoadorEvento> Doadores { get; set; }
+
+        public List<FavorecidoEvento> Favorecidos { get; set; }
+
+
     }
 }

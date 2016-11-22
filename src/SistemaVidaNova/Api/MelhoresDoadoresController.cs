@@ -34,25 +34,16 @@ namespace SistemaVidaNova.Api
                 return melhores;
 
             melhores = _context.MelhorDoador
-                .FromSql<DoadorComQuantidadeDeDoacoes>(@"select top 10 doador.CodDoador as Id, CONCAT(doador.Nome,doador.RazaoSocial) as NomeRazaoSocial, doador.doador_type as Tipo, CONCAT(doador.Cpf,doador.Cnpj) as CpfCnpj, QuantidadeDeDoacoes
-	                                    from Doador as doador inner join
-	                                    (
-	                                    select CodDoador, count(*) as QuantidadeDeDoacoes
-	                                    from (select CodDoador
-	                                    from DoacaoObjeto
-	                                    where DataDaDoacao between {0} and {1}
-	                                    union all
-	                                    select CodDoador
-	                                    from DoacaoSopa
-	                                    where Data between {0} and {1}
-	                                    ) as u 
-	                                    group by CodDoador
-	                                    ) as doacoes on doador.CodDoador = doacoes.CodDoador
-	
-	                                    order by doacoes.QuantidadeDeDoacoes desc, doador.Nome, doador.RazaoSocial  "
+                .FromSql<DoadorComQuantidadeDeDoacoes>(@"select top 10 Id,NomeRazaoSocial,Tipo,CpfCnpj,sum(ValorDoado) as ValorDoado
+	                    from (select doador.CodDoador as Id, CONCAT(doador.Nome,doador.RazaoSocial) as NomeRazaoSocial, doador.doador_type as Tipo, CONCAT(doador.Cpf,doador.Cnpj) as CpfCnpj,dd.Valor as ValorDoado
+	                    from Doador as doador inner join
+	                    DoacaoDinheiro as dd on doador.CodDoador = dd.CodDoador
+	                    where dd.Data between {0} and {1}) as q	
+	                    group by Id,NomeRazaoSocial,Tipo,CpfCnpj
+	                    order by sum(ValorDoado) desc,NomeRazaoSocial  "
                                         , start.Value,end.Value)
-                                                                                                .AsNoTracking()
-                                                                                                .ToList();
+                                        .AsNoTracking()
+                                        .ToList();
 
 
          

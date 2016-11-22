@@ -105,8 +105,9 @@ namespace SistemaVidaNova.Api
                 
 
             DateTime umAnoAtras = DateTime.Today.AddYears(-1);
+            DateTime umAnoAtrasmaisUmMes = DateTime.Today.AddYears(-1).AddMonths(1);
             if (semCurso.Value)
-                query = query.Where(q => q.DataCurso <= umAnoAtras );
+                query = query.Where(q => q.DataCurso <= umAnoAtrasmaisUmMes);
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
 
@@ -134,9 +135,15 @@ namespace SistemaVidaNova.Api
                     DataDeCadastro = v.DataDeCadastro,
                     DataCurso = v.DataCurso
                 }).ToList();
-            
+
             foreach (var dto in voluntarios)
+            {
+                if(dto.DataCurso < umAnoAtras)
                     dto.DiasEmAtraso = ((TimeSpan)(umAnoAtras - dto.DataCurso)).Days;
+                else
+                    dto.DiasParaVencer = ((TimeSpan)(umAnoAtrasmaisUmMes - dto.DataCurso)).Days;
+
+            }
             return voluntarios;
         }
 

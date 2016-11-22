@@ -147,7 +147,19 @@ namespace SistemaVidaNova.Api
 
 
                 //corrige fuso horario do js
-                dto.DataDaDoacao = dto.DataDaDoacao.AddHours(-dto.DataDaDoacao.Hour);
+                //dto.DataDaDoacao = dto.DataDaDoacao.AddHours(-dto.DataDaDoacao.Hour);
+
+
+                //regra
+                //o voluntario tem que ter uma folga de 2 horas entre as retiradas de doações
+                DateTime duasHorasAntes = dto.DataDeRetirada.AddHours(-2);
+                DateTime duasHorasDepois = dto.DataDeRetirada.AddHours(2);
+                if(_context.DoacaoObjeto.Where(q=>q.DataDeRetirada>= duasHorasAntes && q.DataDeRetirada <= duasHorasDepois && q.Voluntario.Id == voluntario.Id).Any())
+                {
+                    ModelState.AddModelError("Voluntario", "O voluntário tem outra retirada muito próxima deste horario");
+                    return new BadRequestObjectResult(ModelState);
+                }
+
                 DoacaoObjeto novo = new DoacaoObjeto()
                 {
                     Doador = doador,
@@ -197,7 +209,7 @@ namespace SistemaVidaNova.Api
             if (ModelState.IsValid)
             {
                 //corrige fuso horario do js
-                dto.DataDaDoacao = dto.DataDaDoacao.AddHours(-dto.DataDaDoacao.Hour);
+                //dto.DataDaDoacao = dto.DataDaDoacao.AddHours(-dto.DataDaDoacao.Hour);
                 DoacaoObjeto dd = _context.DoacaoObjeto.Include(q=>q.Endereco).Single(q => q.Id == id);
 
                 Doador doador = _context.Doador.SingleOrDefault(q => q.CodDoador == dto.Doador.Id);
@@ -213,6 +225,17 @@ namespace SistemaVidaNova.Api
                     ModelState.AddModelError("Voluntario", "Voluntario inválido");
                     return new BadRequestObjectResult(ModelState);
                 }
+
+                //regra
+                //o voluntario tem que ter uma folga de 2 horas entre as retiradas de doações
+                DateTime duasHorasAntes = dto.DataDeRetirada.AddHours(-2);
+                DateTime duasHorasDepois = dto.DataDeRetirada.AddHours(2);
+                if (_context.DoacaoObjeto.Where(q =>q.Id!=id && q.DataDeRetirada >= duasHorasAntes && q.DataDeRetirada <= duasHorasDepois && q.Voluntario.Id == voluntario.Id).Any())
+                {
+                    ModelState.AddModelError("Voluntario", "O voluntário tem outra retirada muito próxima deste horario");
+                    return new BadRequestObjectResult(ModelState);
+                }
+
 
                 dd.Doador = doador;
                 dd.DataDaDoacao = dto.DataDaDoacao;

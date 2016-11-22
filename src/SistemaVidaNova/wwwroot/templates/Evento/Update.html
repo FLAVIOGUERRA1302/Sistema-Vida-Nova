@@ -76,11 +76,11 @@
                         <div class="row">
 
                             <div class="col-md-6">
-                                
+
 
                                 <label class="control-label">Voluntários</label>
                                 <div class="box box-solid ">
-                                    
+
                                     <div class="box-header with-border bg-blue">
                                         <div class="input-group">
                                             <input type="text"
@@ -106,11 +106,12 @@
                                     </div>
                                     <!-- /.box-header -->
                                     <div class="box-body">
-                                        
+
                                         <ul class="list-unstyled">
                                             <li class="list-group-item" ng-repeat="voluntario in evento.voluntarios">
                                                 <span class="badge glyphicon glyphicon-remove" ng-click="removerVoluntario(voluntario)">&nbsp;</span>
-                                            {{voluntario.nome}} - {{voluntario.cpf| brCpf}} </li>
+                                                {{voluntario.nome}} - {{voluntario.cpf| brCpf}}
+                                            </li>
                                         </ul>
                                     </div>
                                     <!-- /.box-body -->
@@ -153,13 +154,146 @@
                                         <ul class="list-unstyled">
                                             <li class="list-group-item" ng-repeat="interessado in evento.interessados">
                                                 <span class="badge glyphicon glyphicon-remove" ng-click="removerInteressado(interessado)">&nbsp;</span>
-                                                {{interessado.nome}}                                                 
+                                                {{interessado.nome}}
                                             </li>
                                         </ul>
                                     </div>
                                     <!-- /.box-body -->
                                 </div>
                                 <lista-erro lista="erros.interessados"></lista-erro>
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <label class="control-label">Doadores Pessoa Jurídica</label>
+
+
+                                <div class="box box-solid">
+                                    <div class="box-header with-border bg-blue">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   ng-model="pjSelected"
+                                                   placeholder="Pesquise um doador para adicionar ao evento"
+                                                   uib-typeahead="doador as doador.nomeRazaoSocial for doador in getDoadoresPj($viewValue)"
+                                                   typeahead-loading="loandingPj"
+                                                   typeahead-no-results="noResultsPj"
+                                                   class="form-control"
+                                                   typeahead-editable="false"
+                                                   typeahead-on-select="addPj($item, $model, $label, $event)">
+
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary" ng-click="addPj()">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </span>
+                                            <i ng-show="loandingPj" class="glyphicon glyphicon-refresh"></i>
+                                            <div ng-show="noResultsPj">
+                                                <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+
+                                        <ul class="list-unstyled">
+                                            <li class="list-group-item" ng-repeat="doador in evento.doadoresPj">
+                                                <span class="badge glyphicon glyphicon-remove" ng-click="removerPj(doador)">&nbsp;</span>
+                                                {{doador.nomeRazaoSocial}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <lista-erro lista="erros.pj"></lista-erro>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="control-label">Doadores Pessoa Física</label>
+
+
+                                <div class="box box-solid">
+                                    <div class="box-header with-border bg-blue">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   ng-model="pfSelected"
+                                                   placeholder="Pesquise um doador para adicionar ao evento"
+                                                   uib-typeahead="doador as doador.nomeRazaoSocial for doador in getDoadoresPf($viewValue)"
+                                                   typeahead-loading="loandingPf"
+                                                   typeahead-no-results="noResultsPf"
+                                                   class="form-control"
+                                                   typeahead-editable="false"
+                                                   typeahead-on-select="addPf($item, $model, $label, $event)">
+
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary" ng-click="addPj()">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </span>
+                                            <i ng-show="loandingPf" class="glyphicon glyphicon-refresh"></i>
+                                            <div ng-show="noResultsPf">
+                                                <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+
+                                        <ul class="list-unstyled">
+                                            <li class="list-group-item" ng-repeat="doador in evento.doadoresPf">
+                                                <span class="badge glyphicon glyphicon-remove" ng-click="removerPf(doador)">&nbsp;</span>
+                                                {{doador.nomeRazaoSocial}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <lista-erro lista="erros.pf"></lista-erro>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label">Favorecidos</label>
+
+
+                                <div class="box box-solid">
+                                    <div class="box-header with-border bg-blue">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   ng-model="favorecidoSelected"
+                                                   placeholder="Pesquise um favorecido para adicionar ao evento"
+                                                   uib-typeahead="favorecido as favorecido.nome for favorecido in getFavorecidos($viewValue)"
+                                                   typeahead-loading="loandingFavorecidos"
+                                                   typeahead-no-results="noResultsFav"
+                                                   class="form-control"
+                                                   typeahead-editable="false"
+                                                   typeahead-on-select="addFavorecido($item, $model, $label, $event)">
+
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary" ng-click="addFavorecido()">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </span>
+                                            <i ng-show="loandingFavorecidos" class="glyphicon glyphicon-refresh"></i>
+                                            <div ng-show="noResultsFav">
+                                                <i class="glyphicon glyphicon-remove"></i> Não encontrato
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+
+                                        <ul class="list-unstyled">
+                                            <li class="list-group-item" ng-repeat="favorecido in evento.favorecidos">
+                                                <span class="badge glyphicon glyphicon-remove" ng-click="removerFavorecido(favorecido)">&nbsp;</span>
+                                                {{favorecido.nome}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <lista-erro lista="erros.favorecidos"></lista-erro>
                             </div>
 
 

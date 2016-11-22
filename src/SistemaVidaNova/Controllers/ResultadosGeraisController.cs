@@ -21,6 +21,18 @@ namespace SistemaVidaNova.Controllers
             return View();
         }
 
-       
+        [Route("ResultadosGerais/Balanco/{a}/{b}")]
+        public IActionResult Balanco()
+        {
+            return View();
+        }
+
+        [Route("ResultadosGerais/Beneficios/{a}/{b}")]
+        public IActionResult Beneficios()
+        {
+            return View();
+        }
+
+
     }
 }

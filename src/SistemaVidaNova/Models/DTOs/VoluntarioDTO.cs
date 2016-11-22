@@ -54,5 +54,6 @@ namespace SistemaVidaNova.Models.DTOs
         public DateTime DataCurso { get; set; }
         
         public int DiasEmAtraso { get; set; }
+        public int DiasParaVencer { get; set; }
     }
 }

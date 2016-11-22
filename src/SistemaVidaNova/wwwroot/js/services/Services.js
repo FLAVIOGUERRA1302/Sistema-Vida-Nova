@@ -1075,7 +1075,7 @@ app.factory('DespesaService', ["$http", "$q","$window", function ($http, $q,$win
 
             dataType: 'json'
         };
-        req.params = { 'start': Date.parseExact(start, 'dd-MM-yyy'), 'end': Date.parseExact(end, 'dd-MM-yyy'), 'tipo': tipo };
+        req.params = { 'start': Date.parseExact(start, 'dd-MM-yyyy'), 'end': Date.parseExact(end, 'dd-MM-yyyy'), 'tipo': tipo };
        
         $http(req).then(function successCallback(response) {
             s.totalItems = parseInt(response.headers('totalItems'));
@@ -2074,6 +2074,9 @@ app.factory('ResultadosGeraisService', ["$http", "$q", "$window", function ($htt
 
             dataType: 'json'
         };
+
+        
+
         req.params = { start: start, end: end };
 
 

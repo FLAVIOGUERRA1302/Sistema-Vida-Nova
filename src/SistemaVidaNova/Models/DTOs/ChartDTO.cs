@@ -51,10 +51,13 @@ namespace SistemaVidaNova.Models.DTOs
         public List<T> Labels { get; set; }
         public List<List<double>> Series { get; set; }
 
+        public List<string> SeriesName { get; set; }
+
         public SimpleCharDataDTO()
         {
             Labels = new List<T>();
             Series = new List<List<double>>();
+            SeriesName = new List<string>();
         }
 
     }

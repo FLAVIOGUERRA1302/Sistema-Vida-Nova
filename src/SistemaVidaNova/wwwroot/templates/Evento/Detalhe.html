@@ -58,6 +58,18 @@
                                     <p><strong>Interessados:</strong></p>
                                     <p ng-repeat="interessado in evento.interessados">{{interessado.nome}}</p>
                                 </div>
+                                <div class="col-md-4">
+                                    <p><strong>Favorecidos:</strong></p>
+                                    <p ng-repeat="f in evento.favorecidos">{{f.nome}}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Doadores Pessoa Jurídica:</strong></p>
+                                    <p ng-repeat="d in evento.doadoresPj">{{d.NomeRazaoSocial}}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Doadores Pessoa Física:</strong></p>
+                                    <p ng-repeat="d in evento.doadoresPf">{{d.NomeRazaoSocial}}</p>
+                                </div>
                                 <div class="col-md-12">
                                     <p><strong>Relato:</strong></p>
                                     <p>{{evento.relato }}</p>

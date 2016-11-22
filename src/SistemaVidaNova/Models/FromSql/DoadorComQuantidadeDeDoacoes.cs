@@ -19,6 +19,6 @@ namespace SistemaVidaNova.Models.FromSql
 
         public string CpfCnpj { get; set; }
 
-        public int QuantidadeDeDoacoes { get; set; }
+        public double ValorDoado { get; set; }
     }
 }

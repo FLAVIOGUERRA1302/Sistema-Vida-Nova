@@ -21,9 +21,12 @@ namespace SistemaVidaNova.Models.DTOs
         {
             TotalLitrosDeSopa = 0;
             Itens = new List<ResultadoGeralItemDTO>();
+            ChartData = new SimpleCharDataDTO<DateTime>();
         }
         public double TotalLitrosDeSopa { get; set; }
         public List<ResultadoGeralItemDTO> Itens { get; set; }
+
+        public SimpleCharDataDTO<DateTime> ChartData { get; set; }
     }
     
 }

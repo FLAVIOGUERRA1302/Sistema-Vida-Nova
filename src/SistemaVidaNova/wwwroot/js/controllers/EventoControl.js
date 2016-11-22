@@ -88,13 +88,23 @@ angular.module('app')
 
 
 }])
-.controller('EventoUpdateControl', ['$scope', 'EventoService', 'evento', 'loadingDialod', '$location', 'VoluntarioService', 'InteressadoService', function ($scope, EventoService, evento, loadingDialod, $location, VoluntarioService, InteressadoService) {
+.controller('EventoUpdateControl', ['$scope', 'EventoService', 'evento', 'loadingDialod', '$location', 'VoluntarioService', 'InteressadoService','FavorecidoService','DoadorService',
+    function ($scope, EventoService, evento, loadingDialod, $location, VoluntarioService, InteressadoService, FavorecidoService, DoadorService) {
     loadingDialod.close();
     $scope.evento = evento;//angular.copy(evento);
     if ($scope.evento.voluntarios == null)
         $scope.evento.voluntarios = [];
     if ($scope.evento.interessados == null)
         $scope.evento.interessados = [];
+
+    if ($scope.evento.favorecidos == null)
+        $scope.evento.favorecidos = [];
+
+    if ($scope.evento.doadoresPj == null)
+        $scope.evento.doadoresPj = [];
+
+    if ($scope.evento.doadoresPf == null)
+        $scope.evento.doadoresPf = [];
     $scope.random = new Date().getTime();
 
 
@@ -142,6 +152,21 @@ angular.module('app')
         });
     };
 
+    $scope.getFavorecidos = function (val) {
+        return FavorecidoService.Read(null, 0, 10, val)//id,skip,take,filtro
+        
+    };
+
+    $scope.getDoadoresPf = function (val) {
+        return DoadorService.Read(null, 0, 10,'PF', val)//id, skip, take,tipo, filtro
+
+    };
+
+    $scope.getDoadoresPj = function (val) {
+        return DoadorService.Read(null, 0, 10, 'PJ', val)//id, skip, take,tipo, filtro
+
+    };
+
     $scope.addVoluntario = function ($item, $model, $label, $event) {
         var v = $scope.voluntarioSelected;
         $scope.voluntarioSelected = null;
@@ -162,6 +187,36 @@ angular.module('app')
         $scope.evento.interessados.push(v);
     }
 
+    $scope.addFavorecido= function ($item, $model, $label, $event) {
+        var v = $scope.favorecidoSelected;
+        $scope.favorecidoSelected = null;
+        for (var i = 0; i < $scope.evento.favorecidos.length; i++) {
+            if ($scope.evento.favorecidos[i].id == $item.id)
+                return;
+        }
+        $scope.evento.favorecidos.push(v);
+    }
+
+    $scope.addPj = function ($item, $model, $label, $event) {
+        var v = $scope.pjSelected;
+        $scope.pjSelected = null;
+        for (var i = 0; i < $scope.evento.doadoresPj.length; i++) {
+            if ($scope.evento.doadoresPj[i].id == $item.id)
+                return;
+        }
+        $scope.evento.doadoresPj.push(v);
+    }
+
+    $scope.addPf = function ($item, $model, $label, $event) {
+        var v = $scope.pfSelected;
+        $scope.pfSelected = null;
+        for (var i = 0; i < $scope.evento.doadoresPf.length; i++) {
+            if ($scope.evento.doadoresPf[i].id == $item.id)
+                return;
+        }
+        $scope.evento.doadoresPf.push(v);
+    }
+
     $scope.removerVoluntario = function (voluntario) {
         var index = $scope.evento.voluntarios.indexOf(voluntario);
         $scope.evento.voluntarios.splice(index, 1);
@@ -170,6 +225,21 @@ angular.module('app')
     $scope.removerInteressado = function (interessado) {
         var index = $scope.evento.interessados.indexOf(interessado);
         $scope.evento.interessados.splice(index, 1);
+    }
+
+    $scope.removerFavorecido = function (favorecido) {
+        var index = $scope.evento.favorecidos.indexOf(favorecido);
+        $scope.evento.favorecidos.splice(index, 1);
+    }
+
+    $scope.removerPj = function (pj) {
+        var index = $scope.evento.doadoresPj.indexOf(pj);
+        $scope.evento.doadoresPj.splice(index, 1);
+    }
+
+    $scope.removerPf = function (pf) {
+        var index = $scope.evento.doadoresPf.indexOf(pf);
+        $scope.evento.doadoresPf.splice(index, 1);
     }
 
 

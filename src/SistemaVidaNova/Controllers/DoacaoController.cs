@@ -50,8 +50,8 @@ namespace SistemaVidaNova.Controllers
 
             return View();
         }
-        [Route("Doacao/Obejto/{a}/{b}")]
-        public IActionResult Obejto(string a, string b, string c)
+        [Route("Doacao/Objeto/{a}/{b}")]
+        public IActionResult Objeto(string a, string b, string c)
         {
 
             return View();

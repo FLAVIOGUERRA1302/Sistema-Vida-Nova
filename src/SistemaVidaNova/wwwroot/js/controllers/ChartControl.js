@@ -54,6 +54,18 @@
             calculable: true,
             series: [
                 {
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                formatter: function (params) {
+                                    return params.name +' : '+ params.value + ' voluntário(s)';
+                                }/*,
+                                textStyle: {
+                                    baseline: 'top'
+                                }*/
+                            }
+                        }
+                    },
                     name: 'Disponibilidade',
                     type: 'pie',
                     radius: '80%',

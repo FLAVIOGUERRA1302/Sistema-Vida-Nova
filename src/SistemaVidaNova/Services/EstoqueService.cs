@@ -27,6 +27,7 @@ namespace SistemaVidaNova.Services
         {
 
             item.QuantidadeEmEstoque -= quantidade;
+            if (item.QuantidadeEmEstoque < 0) item.QuantidadeEmEstoque = 0;
 
                 _context.SaveChanges();
   
@@ -56,7 +57,10 @@ namespace SistemaVidaNova.Services
         public void DarSaida(Usuario user, Dictionary<Item, double> list)
         {
             foreach (Item item in list.Keys)
+            {
                 item.QuantidadeEmEstoque -= list[item];
+                if (item.QuantidadeEmEstoque < 0) item.QuantidadeEmEstoque = 0;
+            }
             _context.SaveChanges();
         }
     }
