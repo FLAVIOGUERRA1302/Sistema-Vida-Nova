@@ -43,17 +43,20 @@ namespace SistemaVidaNova.Api
                                                 union all
                                                 select CodEvento
                                                 from InteressadoEvento
-
+												union all
+                                                select CodEvento
+                                                from FavorecidoEvento
+												union all
+                                                select CodEvento
+                                                from DoadorEvento
                                                 union all
-
                                                 select CodEvento
                                                 from Evento
-
                                                 ) as u 
                                                 group by CodEvento
                                                 ) as pessoas on evento.CodEvento = pessoas .CodEvento
                                                 where DataInicio between {0} and {1}
-                                                order by pessoas.QuantidadeDePessoas desc",start.Value,end.Value)
+                                                order by pessoas.QuantidadeDePessoas desc", start.Value,end.Value)
                                                                                                 .AsNoTracking()
                                                                                                 .ToList();
 
