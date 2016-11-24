@@ -34,8 +34,14 @@ namespace SistemaVidaNova.Api
         public IEnumerable<EventoDTO> Get([FromQuery]DateTime? start, [FromQuery]DateTime? end, [FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro, [FromQuery]bool? comAgendaMotorista)
         {
 
-            IQueryable<Evento> query = _context.Evento.Include(q=>q.Usuario);
-             if(start!=null && end != null)//busca pelo calendario
+            IQueryable<Evento> query = _context.Evento
+                .Include(q => q.Usuario)
+            .Include(q => q.Voluntarios)
+            .Include(q => q.Interessados)
+            .Include(q => q.Favorecidos)
+            .Include(q => q.Doadores);
+
+            if (start!=null && end != null)//busca pelo calendario
             {
                 query = query.Where(q => q.DataInicio >= start && q.DataInicio <= end);
             }
@@ -78,7 +84,8 @@ namespace SistemaVidaNova.Api
                                                              Email = q.Usuario.Email,
                                                               Nome = q.Usuario.Nome
                                                        }     ,
-                                           Tipo="EVENTO"
+                                           Tipo="EVENTO",
+                                           participantes= q.Favorecidos.Count+ q.Interessados.Count+ q.Voluntarios.Count+ q.Doadores.Count
 
 
                                        }).ToList();
@@ -96,7 +103,7 @@ namespace SistemaVidaNova.Api
                     EventoDTO dto = new EventoDTO
                     {
                         id = doacao.Id,
-                        title = doacao.Voluntario.Nome + " Buscar item com " + nomeRazaoSocial,
+                        title = "Retirada de Doação.",
                         descricao = "",
                         color = "#FF0000",
                         textColor ="#FFFFFF",

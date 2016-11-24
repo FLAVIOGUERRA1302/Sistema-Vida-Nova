@@ -4,12 +4,17 @@ angular.module('app')
     
     var itensPorPagina = 10;
     $scope.eventos = eventos;
+
+
+    var hoje = new Date();
     for (var i = 0; i < $scope.eventos.length; i++) {
         if (!($scope.eventos[i].start instanceof Date))
             $scope.eventos[i].start = Date.parse($scope.eventos[i].start);
 
         if (!($scope.eventos[i].end instanceof Date))
             $scope.eventos[i].end = Date.parse($scope.eventos[i].end);
+
+        $scope.eventos[i].semParticipantes =  $scope.eventos[i].participantes==0 && (Math.floor( $scope.eventos[i].start - hoje ) / (1000*60*60*24) <7)
     }
     loadingDialod.close();
 

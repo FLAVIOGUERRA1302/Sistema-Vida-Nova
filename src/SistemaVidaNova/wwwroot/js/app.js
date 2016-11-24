@@ -18,8 +18,10 @@
 
     $routeProvider
 
-
-
+        //inicio
+        .when('/', {
+            templateUrl: '/templates/Dashboard.html'
+        })
         //------------Usuario----------
     .when('/Usuario', {
         templateUrl: '/templates/Usuario/List.html',

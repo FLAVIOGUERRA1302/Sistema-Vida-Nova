@@ -42,6 +42,7 @@ namespace SistemaVidaNova.Models.DTOs
         public UsuarioDTOR Usuario { get; set; }
 
         public string Tipo { get; set; }
+        public int participantes { get; set; }
 
     }
 }
