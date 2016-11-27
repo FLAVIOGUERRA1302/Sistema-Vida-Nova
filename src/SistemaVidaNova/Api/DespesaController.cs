@@ -314,7 +314,7 @@ namespace SistemaVidaNova.Api
                             _context.SaveChanges();
                             dto.Id = da.Id;
                         }
-                        catch (Exception e)
+                        catch 
                         {
                             //ModelState.AddModelError("Item", "Este item já está cadastrado");
                             return new BadRequestObjectResult(ModelState);
@@ -342,7 +342,7 @@ namespace SistemaVidaNova.Api
                             _context.SaveChanges();
                             dto.Id = df.Id;
                         }
-                        catch (Exception e)
+                        catch 
                         {
                             ModelState.AddModelError("Favorecido", "Este favorecido não existe mais");
                             return new BadRequestObjectResult(ModelState);
@@ -371,7 +371,7 @@ namespace SistemaVidaNova.Api
                             _estoqueManager.DarEntrada(user, isopa, ds.Quantidade);
                             dto.Id = ds.Id;
                         }
-                        catch (Exception e)
+                        catch 
                         {
                             //ModelState.AddModelError("Item", "Este item já está cadastrado");
                             return new BadRequestObjectResult(ModelState);
@@ -427,7 +427,7 @@ namespace SistemaVidaNova.Api
                         _context.SaveChanges();
                         return new ObjectResult(dto);
                     }
-                    catch (Exception e)
+                    catch 
                     {
                         return new BadRequestObjectResult(ModelState);
                     }
@@ -442,7 +442,7 @@ namespace SistemaVidaNova.Api
                         _context.SaveChanges();
                         return new ObjectResult(dto);
                     }
-                    catch (Exception e)
+                    catch 
                     {
                         ModelState.AddModelError("Favorecido", "Favorecido incorreto");
                         return new BadRequestObjectResult(ModelState);
@@ -464,7 +464,7 @@ namespace SistemaVidaNova.Api
 
                         return new ObjectResult(dto);
                     }
-                    catch (Exception e)
+                    catch 
                     {
                         return new BadRequestObjectResult(ModelState);
                     }

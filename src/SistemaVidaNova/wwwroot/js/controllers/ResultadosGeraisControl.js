@@ -37,6 +37,11 @@
                     text: 'Doações x Despesas por mês',
                     x: 'center'
                 },
+                legend: {
+                    orient: 'horizontal',
+                    x: 'left',
+                    data: seriesName
+                },
                 tooltip: {
                     trigger: 'axis',
                     formatter: function (a,b,c,d) {

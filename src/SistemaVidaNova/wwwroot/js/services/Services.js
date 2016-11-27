@@ -23,7 +23,7 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", "$window", function (
         return deferred.promise;
     }
 
-    s.Read = function (id,skip,take,filtro,diaDaSemana) {
+    s.Read = function (id,skip,take,filtro,diaDaSemana,semCurso) {
         var deferred = $q.defer();
         if (id === undefined || id === null) id = "";
         var req = {
@@ -46,6 +46,11 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", "$window", function (
         if (diaDaSemana !== null && diaDaSemana !== undefined && diaDaSemana !== "") {
             req.params.diaDaSemana = diaDaSemana;
         }
+        if (semCurso !== null && semCurso !== undefined && semCurso !== "") {
+            req.params.semCurso = semCurso;
+        }
+
+        
         $http(req).then(function successCallback(response) {
             s.totalItems = parseInt(response.headers('totalItems'));
             deferred.resolve(response.data);
@@ -179,7 +184,7 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", "$window", function (
     }
 
     
-    s.toExcel = function (filtro,diaDaSemana) {
+    s.toExcel = function (filtro,diaDaSemana,semCurso) {
         var turl = '/api/Voluntario/excel';
         var param = "?";
         if (filtro !== null && filtro !== undefined && filtro !== "") {
@@ -187,6 +192,9 @@ app.factory('VoluntarioService', ["$http", "$q", "Upload", "$window", function (
         }
         if (diaDaSemana !== null && diaDaSemana !== undefined && diaDaSemana !== "") {
             param += ((param=="?"?"":"&") + 'diaDaSemana=' + diaDaSemana);
+        }
+        if (semCurso !== null && semCurso !== undefined && semCurso !== "") {
+            param += ((param == "?" ? "" : "&") + 'semCurso=' + semCurso);
         }
 
         param = param == "?" ? "" : param;
@@ -374,7 +382,7 @@ app.factory('EventoService', ["$http", "$q","$window", function ($http, $q,$wind
         return deferred.promise;
     }
 
-    s.Read = function (id, skip, take, filtro) {
+    s.Read = function (id, skip, take, filtro,comParticipantes) {
         var deferred = $q.defer();
         if (id === undefined || id === null) id = "";
         var req = {
@@ -393,8 +401,26 @@ app.factory('EventoService', ["$http", "$q","$window", function ($http, $q,$wind
         if (filtro !== null && filtro !== undefined && filtro !== "") {
             req.params.filtro = filtro;
         }
+
+        if (comParticipantes !== null && comParticipantes !== undefined && comParticipantes !== "") {
+            req.params.comParticipantes = comParticipantes;
+        }
+
+
         $http(req).then(function successCallback(response) {
             s.totalItems = parseInt(response.headers('totalItems'));
+            var hoje = new Date();
+            for (var i = 0; i < response.data.length; i++) {
+                if (!(response.data[i].start instanceof Date))
+                    response.data[i].start = Date.parse(response.data[i].start);
+
+                if (!(response.data[i].end instanceof Date))
+                    response.data[i].end = Date.parse(response.data[i].end);
+
+                response.data[i].semParticipantes = response.data[i].participantes == 0 && (Math.floor(response.data[i].start - hoje) / (1000 * 60 * 60 * 24) < 7)
+            }
+
+
             deferred.resolve(response.data);
         }, function errorCallback(response) {
             deferred.reject(response.data);
@@ -443,12 +469,20 @@ app.factory('EventoService', ["$http", "$q","$window", function ($http, $q,$wind
         return deferred.promise;
     }
 
-    s.toExcel = function (filtro) {
+    s.toExcel = function (filtro, comParticipantes) {
         var turl = '/api/Evento/excel';
+        var param = "?";
         if (filtro !== null && filtro !== undefined && filtro !== "") {
-            turl += '?filtro=' + filtro;
+            param += 'filtro=' + filtro;
         }
-        var url = encodeURI(turl)
+        
+        if (comParticipantes !== null && comParticipantes !== undefined && comParticipantes !== "") {
+            param += ((param == "?" ? "" : "&") + 'comParticipantes=' + comParticipantes);
+        }
+
+        param = param == "?" ? "" : param;
+
+        var url = encodeURI(turl + param)
         $window.open(url);
     }
 

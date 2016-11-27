@@ -31,7 +31,7 @@ namespace SistemaVidaNova.Api
         }
 
         [HttpGet]
-        public IEnumerable<EventoDTO> Get([FromQuery]DateTime? start, [FromQuery]DateTime? end, [FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro, [FromQuery]bool? comAgendaMotorista)
+        public IEnumerable<EventoDTO> Get([FromQuery]DateTime? start, [FromQuery]DateTime? end, [FromQuery]int? skip, [FromQuery]int? take, [FromQuery]string orderBy, [FromQuery]string orderDirection, [FromQuery]string filtro, [FromQuery]bool? comAgendaMotorista, [FromQuery]bool? comParticipantes)
         {
 
             IQueryable<Evento> query = _context.Evento
@@ -40,6 +40,15 @@ namespace SistemaVidaNova.Api
             .Include(q => q.Interessados)
             .Include(q => q.Favorecidos)
             .Include(q => q.Doadores);
+
+            if (comParticipantes != null)
+            {
+                if (comParticipantes.Value)
+                    query = query.Where(q => q.Voluntarios.Count + q.Interessados.Count + q.Favorecidos.Count + q.Doadores.Count > 0);
+                else
+                    query = query.Where(q => q.Voluntarios.Count + q.Interessados.Count + q.Favorecidos.Count + q.Doadores.Count == 0);
+
+            }
 
             if (start!=null && end != null)//busca pelo calendario
             {
@@ -438,7 +447,7 @@ namespace SistemaVidaNova.Api
         }
 
         [HttpGet("excel")]
-        public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro)
+        public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro, [FromQuery]bool? comParticipantes)
         {
 
             IQueryable<Evento> query = _context.Evento
@@ -455,6 +464,17 @@ namespace SistemaVidaNova.Api
 
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(q => q.Titulo.Contains(filtro));
+
+
+            if (comParticipantes != null)
+            {
+                if (comParticipantes.Value)
+                    query = query.Where(q => q.Voluntarios.Count + q.Interessados.Count + q.Favorecidos.Count + q.Doadores.Count > 0);
+                else
+                    query = query.Where(q => q.Voluntarios.Count + q.Interessados.Count + q.Favorecidos.Count + q.Doadores.Count == 0);
+
+            }
+
 
             if (SaveOption == null)
                 SaveOption = "ExcelXlsx";

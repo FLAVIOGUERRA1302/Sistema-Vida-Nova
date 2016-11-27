@@ -13,8 +13,7 @@ namespace SistemaVidaNova.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.1")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "1.0.1");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
                 {
@@ -192,7 +191,7 @@ namespace SistemaVidaNova.Migrations
 
                     b.ToTable("Despesa");
 
-                    b.HasDiscriminator<string>("Tipo").HasValue("Despesa");
+                    b.HasDiscriminator<string>("Tipo").HasValue("BASE");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.DoacaoDinheiro", b =>
@@ -299,7 +298,7 @@ namespace SistemaVidaNova.Migrations
 
                     b.ToTable("Doador");
 
-                    b.HasDiscriminator<string>("doador_type").HasValue("Doador");
+                    b.HasDiscriminator<string>("doador_type").HasValue("BASE");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.DoadorEvento", b =>
@@ -657,7 +656,7 @@ namespace SistemaVidaNova.Migrations
 
                     b.ToTable("Item");
 
-                    b.HasDiscriminator<string>("Destino").HasValue("Item");
+                    b.HasDiscriminator<string>("Destino").HasValue("BASE");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.ModeloDeReceita", b =>
@@ -809,7 +808,7 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<DateTime>("DataCurso")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2016, 11, 22, 0, 0, 0, 0, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2016, 11, 27, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<DateTime>("DataDeCadastro");
 

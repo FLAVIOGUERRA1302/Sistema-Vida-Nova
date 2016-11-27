@@ -53,8 +53,8 @@ namespace SistemaVidaNova.Api
                 skip = 0;
             if (take == null)
                 take = 1000;
-            if (semCurso == null)
-                semCurso = false;
+            //if (semCurso == null)
+                //semCurso = false;
 
 
             IQueryable<Voluntario> query = _context.Voluntario
@@ -106,14 +106,25 @@ namespace SistemaVidaNova.Api
 
             DateTime umAnoAtras = DateTime.Today.AddYears(-1);
             DateTime umAnoAtrasmaisUmMes = DateTime.Today.AddYears(-1).AddMonths(1);
-            if (semCurso.Value)
-                query = query.Where(q => q.DataCurso <= umAnoAtrasmaisUmMes);
+            if (semCurso != null)
+            {
+                if (semCurso.Value)
+                    query = query.Where(q => q.DataCurso <= umAnoAtrasmaisUmMes);
+                else
+                    query = query.Where(q => q.DataCurso > umAnoAtrasmaisUmMes);
+
+            }
 
             this.Response.Headers.Add("totalItems", query.Count().ToString());
+            List<VoluntarioDTO> voluntarios = new List<VoluntarioDTO>();
+            
+                List<Voluntario> vs = query
+                    .Skip(skip.Value)
+                    .Take(take.Value)
+                    //.Take(1)
+                   .ToList();
 
-            List<VoluntarioDTO> voluntarios = query
-                .Skip(skip.Value)
-                .Take(take.Value).Select(v => new VoluntarioDTO
+                voluntarios = vs.Select(v => new VoluntarioDTO
                 {
                     Id = v.Id,
                     Email = v.Email,
@@ -136,14 +147,17 @@ namespace SistemaVidaNova.Api
                     DataCurso = v.DataCurso
                 }).ToList();
 
-            foreach (var dto in voluntarios)
-            {
-                if(dto.DataCurso < umAnoAtras)
-                    dto.DiasEmAtraso = ((TimeSpan)(umAnoAtras - dto.DataCurso)).Days;
-                else
-                    dto.DiasParaVencer = ((TimeSpan)(umAnoAtrasmaisUmMes - dto.DataCurso)).Days;
 
-            }
+                foreach (var dto in voluntarios)
+                {
+                    if (dto.DataCurso < umAnoAtras)
+                        dto.DiasEmAtraso = ((TimeSpan)(umAnoAtras - dto.DataCurso)).Days;
+                    else
+                        dto.DiasParaVencer = ((TimeSpan)(umAnoAtrasmaisUmMes - dto.DataCurso)).Days;
+
+                }
+            
+            
             return voluntarios;
         }
 
@@ -427,7 +441,7 @@ namespace SistemaVidaNova.Api
 
 
         [HttpGet("excel")]
-        public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro, [FromQuery]string diaDaSemana)
+        public ActionResult CreateExcel([FromQuery]string SaveOption, [FromQuery]string filtro, [FromQuery]string diaDaSemana, [FromQuery]bool? semCurso)
         {
             
             IQueryable<Voluntario> query = _context.Voluntario
@@ -467,6 +481,17 @@ namespace SistemaVidaNova.Api
                         break;
 
                 }
+            }
+
+            DateTime umAnoAtras = DateTime.Today.AddYears(-1);
+            DateTime umAnoAtrasmaisUmMes = DateTime.Today.AddYears(-1).AddMonths(1);
+            if (semCurso != null)
+            {
+                if (semCurso.Value)
+                    query = query.Where(q => q.DataCurso <= umAnoAtrasmaisUmMes);
+                else
+                    query = query.Where(q => q.DataCurso > umAnoAtrasmaisUmMes);
+
             }
 
             if (SaveOption == null)

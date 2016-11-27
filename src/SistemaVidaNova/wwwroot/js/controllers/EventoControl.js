@@ -6,23 +6,16 @@ angular.module('app')
     $scope.eventos = eventos;
 
 
-    var hoje = new Date();
-    for (var i = 0; i < $scope.eventos.length; i++) {
-        if (!($scope.eventos[i].start instanceof Date))
-            $scope.eventos[i].start = Date.parse($scope.eventos[i].start);
+    
+    
 
-        if (!($scope.eventos[i].end instanceof Date))
-            $scope.eventos[i].end = Date.parse($scope.eventos[i].end);
-
-        $scope.eventos[i].semParticipantes =  $scope.eventos[i].participantes==0 && (Math.floor( $scope.eventos[i].start - hoje ) / (1000*60*60*24) <7)
-    }
     loadingDialod.close();
 
     $scope.totalItems = EventoService.totalItems;
     $scope.currentPage = 1;
 
     $scope.ToExcel = function () {
-        EventoService.toExcel( $scope.valorPesquisa)
+        EventoService.toExcel($scope.valorPesquisa, $scope.comParticipantes)
         /*.then(function () {            
         }, function (erros) {
             
@@ -31,16 +24,10 @@ angular.module('app')
 
 
     $scope.pageChanged = function () {
-        EventoService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa)//id,skip,take,filtro
+        EventoService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa, $scope.comParticipantes)//id,skip,take,filtro,comParticipantes
         .then(function (eventos) {
             $scope.eventos = eventos;
-            for (var i = 0; i < $scope.eventos.length; i++) {
-                if (!($scope.eventos[i].start instanceof Date))
-                    $scope.eventos[i].start =  Date.parse($scope.eventos[i].start);
-
-                if (!($scope.eventos[i].end instanceof Date))
-                    $scope.eventos[i].end =  Date.parse($scope.eventos[i].end);
-            }
+            
             $scope.totalItems = EventoService.totalItems;
         }, function (erros) {
 

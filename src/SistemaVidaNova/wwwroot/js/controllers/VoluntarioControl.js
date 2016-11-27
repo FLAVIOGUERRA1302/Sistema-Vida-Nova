@@ -11,7 +11,7 @@
        
 
     $scope.ToExcel = function () {
-        VoluntarioService.toExcel($scope.valorPesquisa)
+        VoluntarioService.toExcel($scope.valorPesquisa, null, $scope.semCurso)
         /*.then(function () {            
         }, function (erros) {
             
@@ -19,7 +19,7 @@
     };
 
     $scope.pageChanged = function () {
-        VoluntarioService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa)//id,skip,take,filtro
+        VoluntarioService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa, null, $scope.semCurso)//id,skip,take,filtro,diaDaSemana,semCurso
         .then(function (voluntarios) {
             $scope.voluntarios = voluntarios;
             $scope.totalItems = VoluntarioService.totalItems;
@@ -230,7 +230,7 @@
 
 
     $scope.ToExcel = function () {
-        VoluntarioService.toExcel($scope.valorPesquisa,$scope.diaDaSemana)
+        VoluntarioService.toExcel($scope.valorPesquisa, $scope.diaDaSemana, $scope.semCurso)
         /*.then(function () {            
         }, function (erros) {
             
@@ -238,7 +238,7 @@
     };
 
     $scope.pageChanged = function () {
-        VoluntarioService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa, $scope.diaDaSemana)//id,skip,take,filtro
+        VoluntarioService.Read(null, ($scope.currentPage - 1) * itensPorPagina, itensPorPagina, $scope.valorPesquisa, $scope.diaDaSemana, $scope.semCurso)//id,skip,take,filtro,diaDaSemana,semCurso
         .then(function (voluntarios) {
             $scope.voluntarios = voluntarios;
             $scope.totalItems = VoluntarioService.totalItems;

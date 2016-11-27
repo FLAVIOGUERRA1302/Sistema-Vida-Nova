@@ -80,6 +80,7 @@ namespace SistemaVidaNova.Models
 
             modelBuilder.Entity<Doador>()
                 .HasDiscriminator<string>("doador_type")
+                .HasValue<Doador>("BASE")
                 .HasValue<PessoaFisica>("PF")
                 .HasValue<PessoaJuridica>("PJ");
 
@@ -119,12 +120,14 @@ namespace SistemaVidaNova.Models
 
             modelBuilder.Entity<Item>()
                .HasDiscriminator<string>("Destino")
+               .HasValue<Item>("BASE")
                .HasValue<ItemAssociacao>("ASSOCIACAO")
                .HasValue<ItemFavorecido>("FAVORECIDO")
                .HasValue<ItemSopa>("SOPA");
 
             modelBuilder.Entity<Despesa>()
               .HasDiscriminator<string>("Tipo")
+              .HasValue<Despesa>("BASE")
               .HasValue<DespesaAssociacao>("ASSOCIACAO")
               .HasValue<DespesaFavorecido>("FAVORECIDO")
               .HasValue<DespesaSopa>("SOPA");
@@ -148,8 +151,8 @@ namespace SistemaVidaNova.Models
                .HasDefaultValue(DateTime.Today);
 
             //modelBuilder.Ignore<EventoMaisProcurado>();
-            
 
+            
         }
 
     }

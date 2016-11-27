@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using SistemaVidaNova.Services;
 using SistemaVidaNova.Models;
 using Microsoft.AspNetCore.Identity;
+//using MySQL.Data.EntityFrameworkCore.Extensions;
 
 namespace SistemaVidaNova
 {
@@ -50,7 +51,8 @@ namespace SistemaVidaNova
 
             
             var connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<VidaNovaContext>(options => options.UseSqlServer(connection));
+            //services.AddDbContext<VidaNovaContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<VidaNovaContext>(options => options.UseMySql(connection));
 
             services.AddIdentity<Usuario, IdentityRole>()
                 .AddEntityFrameworkStores<VidaNovaContext>()
@@ -148,7 +150,8 @@ namespace SistemaVidaNova
                         Nome = "Admin",
                         UserName = "admin@admin.com",
                         Email = "admin@admin.com",
-                        Cpf = "83577880171"
+                        Cpf = "83577880171",
+                        IsAtivo=true
                     };
                     var result = await _userManager.CreateAsync(user, "Admin1@");
                     await _userManager.AddToRoleAsync(user, "Administrator");
