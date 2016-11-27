@@ -8,9 +8,10 @@ using SistemaVidaNova.Models;
 namespace SistemaVidaNova.Migrations
 {
     [DbContext(typeof(VidaNovaContext))]
-    partial class VidaNovaContextModelSnapshot : ModelSnapshot
+    [Migration("20161007182120_M9")]
+    partial class M9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -165,112 +166,23 @@ namespace SistemaVidaNova.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DataDaCompra");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 200);
 
                     b.Property<int>("IdItem");
-
-                    b.Property<string>("IdUsuario")
-                        .IsRequired();
-
-                    b.Property<double>("Quantidade");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 10);
 
-                    b.Property<double>("ValorUnitario");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdItem");
-
-                    b.HasIndex("IdUsuario");
 
                     b.ToTable("Despesa");
 
                     b.HasDiscriminator<string>("Tipo").HasValue("Despesa");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DoacaoDinheiro", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CodDoador");
-
-                    b.Property<DateTime>("Data");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
-
-                    b.Property<double>("Valor");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CodDoador");
-
-                    b.ToTable("DoacaoDinheiro");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DoacaoObjeto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CodDoador");
-
-                    b.Property<DateTime>("DataDaDoacao");
-
-                    b.Property<DateTime>("DataDeRetirada");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
-
-                    b.Property<int>("IdEndereco");
-
-                    b.Property<int>("IdVoluntario");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CodDoador");
-
-                    b.HasIndex("IdEndereco");
-
-                    b.HasIndex("IdVoluntario");
-
-                    b.ToTable("DoacaoObjeto");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DoacaoSopa", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CodDoador");
-
-                    b.Property<DateTime>("Data");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
-
-                    b.Property<int>("IdItem");
-
-                    b.Property<double>("Quantidade");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CodDoador");
-
-                    b.HasIndex("IdItem");
-
-                    b.ToTable("DoacaoSopa");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Doador", b =>
@@ -300,21 +212,6 @@ namespace SistemaVidaNova.Migrations
                     b.ToTable("Doador");
 
                     b.HasDiscriminator<string>("doador_type").HasValue("Doador");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DoadorEvento", b =>
-                {
-                    b.Property<int>("CodEvento");
-
-                    b.Property<int>("CodDoador");
-
-                    b.HasKey("CodEvento", "CodDoador");
-
-                    b.HasIndex("CodDoador");
-
-                    b.HasIndex("CodEvento");
-
-                    b.ToTable("DoadorEvento");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Endereco", b =>
@@ -451,81 +348,6 @@ namespace SistemaVidaNova.Migrations
                     b.ToTable("Favorecido");
                 });
 
-            modelBuilder.Entity("SistemaVidaNova.Models.FavorecidoEvento", b =>
-                {
-                    b.Property<int>("CodEvento");
-
-                    b.Property<int>("CodFavorecido");
-
-                    b.HasKey("CodEvento", "CodFavorecido");
-
-                    b.HasIndex("CodEvento");
-
-                    b.HasIndex("CodFavorecido");
-
-                    b.ToTable("FavorecidoEvento");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.FromSql.DoadorComQuantidadeDeDoacoes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CpfCnpj");
-
-                    b.Property<string>("NomeRazaoSocial");
-
-                    b.Property<string>("Tipo");
-
-                    b.Property<double>("ValorDoado");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MelhorDoador");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.FromSql.EventoMaisProcurado", b =>
-                {
-                    b.Property<int>("CodEvento")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Cor");
-
-                    b.Property<string>("CorDaFonte");
-
-                    b.Property<DateTime>("DataFim");
-
-                    b.Property<DateTime>("DataInicio");
-
-                    b.Property<string>("Descricao");
-
-                    b.Property<int>("QuantidadeDePessoas");
-
-                    b.Property<string>("Relato");
-
-                    b.Property<string>("Titulo");
-
-                    b.Property<double>("ValorArrecadado");
-
-                    b.HasKey("CodEvento");
-
-                    b.ToTable("EventoMaisProcurado");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.FromSql.FavorecidoComGasto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Nome");
-
-                    b.Property<double>("ValorGasto");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FavorecidoComGasto");
-                });
-
             modelBuilder.Entity("SistemaVidaNova.Models.Informativo", b =>
                 {
                     b.Property<int>("Id")
@@ -642,13 +464,9 @@ namespace SistemaVidaNova.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 200);
 
-                    b.Property<double>("QuantidadeEmEstoque")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0.0);
-
                     b.Property<string>("UnidadeDeMedida")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 10);
+                        .HasAnnotation("MaxLength", 4);
 
                     b.HasKey("Id");
 
@@ -658,83 +476,6 @@ namespace SistemaVidaNova.Migrations
                     b.ToTable("Item");
 
                     b.HasDiscriminator<string>("Destino").HasValue("Item");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.ModeloDeReceita", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Nome")
-                        .IsUnique();
-
-                    b.ToTable("ModeloDeReceita");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.ModeloDeReceitaItem", b =>
-                {
-                    b.Property<int>("IdItem");
-
-                    b.Property<int>("IdModeloDeReceita");
-
-                    b.Property<double>("Quantidade");
-
-                    b.HasKey("IdItem", "IdModeloDeReceita");
-
-                    b.HasIndex("IdItem");
-
-                    b.HasIndex("IdModeloDeReceita");
-
-                    b.ToTable("ModeloDeReceitaItem");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.ResultadoSopa", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Data");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
-
-                    b.Property<int>("IdModeloDeReceita");
-
-                    b.Property<double>("LitrosProduzidos");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdModeloDeReceita");
-
-                    b.ToTable("ResultadoSopa");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.ResultadoSopaItem", b =>
-                {
-                    b.Property<int>("IdItem");
-
-                    b.Property<int>("IdResultadoSopa");
-
-                    b.Property<double>("Quantidade");
-
-                    b.HasKey("IdItem", "IdResultadoSopa");
-
-                    b.HasIndex("IdItem");
-
-                    b.HasIndex("IdResultadoSopa");
-
-                    b.ToTable("ResultadoSopaItem");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Usuario", b =>
@@ -806,10 +547,6 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<string>("Cpf")
                         .IsRequired();
-
-                    b.Property<DateTime>("DataCurso")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2016, 11, 22, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<DateTime>("DataDeCadastro");
 
@@ -897,8 +634,6 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<int>("CodFavorecido");
 
-                    b.HasIndex("CodFavorecido");
-
                     b.ToTable("DespesaFavorecido");
 
                     b.HasDiscriminator().HasValue("FAVORECIDO");
@@ -958,6 +693,7 @@ namespace SistemaVidaNova.Migrations
                 {
                     b.HasBaseType("SistemaVidaNova.Models.Item");
 
+                    b.Property<int>("CodFavorecido");
 
                     b.ToTable("ItemFavorecido");
 
@@ -1033,50 +769,6 @@ namespace SistemaVidaNova.Migrations
                         .WithMany()
                         .HasForeignKey("IdItem")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DoacaoDinheiro", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Doador", "Doador")
-                        .WithMany()
-                        .HasForeignKey("CodDoador")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DoacaoObjeto", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Doador", "Doador")
-                        .WithMany()
-                        .HasForeignKey("CodDoador")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.Endereco", "Endereco")
-                        .WithMany()
-                        .HasForeignKey("IdEndereco")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.Voluntario", "Voluntario")
-                        .WithMany()
-                        .HasForeignKey("IdVoluntario")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DoacaoSopa", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Doador", "Doador")
-                        .WithMany()
-                        .HasForeignKey("CodDoador")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("IdItem")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Doador", b =>
@@ -1084,19 +776,6 @@ namespace SistemaVidaNova.Migrations
                     b.HasOne("SistemaVidaNova.Models.Endereco", "Endereco")
                         .WithMany()
                         .HasForeignKey("EnderecoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DoadorEvento", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Doador", "Doador")
-                        .WithMany()
-                        .HasForeignKey("CodDoador")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.Evento", "Evento")
-                        .WithMany("Doadores")
-                        .HasForeignKey("CodEvento")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1134,19 +813,6 @@ namespace SistemaVidaNova.Migrations
                     b.HasOne("SistemaVidaNova.Models.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.FavorecidoEvento", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Evento", "Evento")
-                        .WithMany("Favorecidos")
-                        .HasForeignKey("CodEvento")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.Favorecido", "Favorecido")
-                        .WithMany()
-                        .HasForeignKey("CodFavorecido")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1209,40 +875,6 @@ namespace SistemaVidaNova.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SistemaVidaNova.Models.ModeloDeReceitaItem", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("IdItem")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.ModeloDeReceita", "ModeloDeReceita")
-                        .WithMany("Itens")
-                        .HasForeignKey("IdModeloDeReceita")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.ResultadoSopa", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.ModeloDeReceita", "ModeloDeReceita")
-                        .WithMany()
-                        .HasForeignKey("IdModeloDeReceita")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.ResultadoSopaItem", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("IdItem")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.ResultadoSopa", "ResultadoSopa")
-                        .WithMany("Itens")
-                        .HasForeignKey("IdResultadoSopa")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SistemaVidaNova.Models.Voluntario", b =>
                 {
                     b.HasOne("SistemaVidaNova.Models.Endereco", "Endereco")
@@ -1264,14 +896,6 @@ namespace SistemaVidaNova.Migrations
                     b.HasOne("SistemaVidaNova.Models.Voluntario", "Voluntario")
                         .WithMany()
                         .HasForeignKey("IdVoluntario")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DespesaFavorecido", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Favorecido", "Favorecido")
-                        .WithMany()
-                        .HasForeignKey("CodFavorecido")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

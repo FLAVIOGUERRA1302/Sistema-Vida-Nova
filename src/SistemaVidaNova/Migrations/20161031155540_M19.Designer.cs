@@ -8,9 +8,10 @@ using SistemaVidaNova.Models;
 namespace SistemaVidaNova.Migrations
 {
     [DbContext(typeof(VidaNovaContext))]
-    partial class VidaNovaContextModelSnapshot : ModelSnapshot
+    [Migration("20161031155540_M19")]
+    partial class M19
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -234,15 +235,11 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<int>("IdEndereco");
 
-                    b.Property<int>("IdVoluntario");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CodDoador");
 
                     b.HasIndex("IdEndereco");
-
-                    b.HasIndex("IdVoluntario");
 
                     b.ToTable("DoacaoObjeto");
                 });
@@ -300,21 +297,6 @@ namespace SistemaVidaNova.Migrations
                     b.ToTable("Doador");
 
                     b.HasDiscriminator<string>("doador_type").HasValue("Doador");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DoadorEvento", b =>
-                {
-                    b.Property<int>("CodEvento");
-
-                    b.Property<int>("CodDoador");
-
-                    b.HasKey("CodEvento", "CodDoador");
-
-                    b.HasIndex("CodDoador");
-
-                    b.HasIndex("CodEvento");
-
-                    b.ToTable("DoadorEvento");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Endereco", b =>
@@ -449,81 +431,6 @@ namespace SistemaVidaNova.Migrations
                     b.HasIndex("IdUsuario");
 
                     b.ToTable("Favorecido");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.FavorecidoEvento", b =>
-                {
-                    b.Property<int>("CodEvento");
-
-                    b.Property<int>("CodFavorecido");
-
-                    b.HasKey("CodEvento", "CodFavorecido");
-
-                    b.HasIndex("CodEvento");
-
-                    b.HasIndex("CodFavorecido");
-
-                    b.ToTable("FavorecidoEvento");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.FromSql.DoadorComQuantidadeDeDoacoes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CpfCnpj");
-
-                    b.Property<string>("NomeRazaoSocial");
-
-                    b.Property<string>("Tipo");
-
-                    b.Property<double>("ValorDoado");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MelhorDoador");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.FromSql.EventoMaisProcurado", b =>
-                {
-                    b.Property<int>("CodEvento")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Cor");
-
-                    b.Property<string>("CorDaFonte");
-
-                    b.Property<DateTime>("DataFim");
-
-                    b.Property<DateTime>("DataInicio");
-
-                    b.Property<string>("Descricao");
-
-                    b.Property<int>("QuantidadeDePessoas");
-
-                    b.Property<string>("Relato");
-
-                    b.Property<string>("Titulo");
-
-                    b.Property<double>("ValorArrecadado");
-
-                    b.HasKey("CodEvento");
-
-                    b.ToTable("EventoMaisProcurado");
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.FromSql.FavorecidoComGasto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Nome");
-
-                    b.Property<double>("ValorGasto");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FavorecidoComGasto");
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.Informativo", b =>
@@ -809,7 +716,7 @@ namespace SistemaVidaNova.Migrations
 
                     b.Property<DateTime>("DataCurso")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2016, 11, 22, 0, 0, 0, 0, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2016, 10, 31, 0, 0, 0, 0, DateTimeKind.Local));
 
                     b.Property<DateTime>("DataDeCadastro");
 
@@ -958,6 +865,7 @@ namespace SistemaVidaNova.Migrations
                 {
                     b.HasBaseType("SistemaVidaNova.Models.Item");
 
+                    b.Property<int>("CodFavorecido");
 
                     b.ToTable("ItemFavorecido");
 
@@ -1059,11 +967,6 @@ namespace SistemaVidaNova.Migrations
                         .WithMany()
                         .HasForeignKey("IdEndereco")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.Voluntario", "Voluntario")
-                        .WithMany()
-                        .HasForeignKey("IdVoluntario")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SistemaVidaNova.Models.DoacaoSopa", b =>
@@ -1084,19 +987,6 @@ namespace SistemaVidaNova.Migrations
                     b.HasOne("SistemaVidaNova.Models.Endereco", "Endereco")
                         .WithMany()
                         .HasForeignKey("EnderecoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.DoadorEvento", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Doador", "Doador")
-                        .WithMany()
-                        .HasForeignKey("CodDoador")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.Evento", "Evento")
-                        .WithMany("Doadores")
-                        .HasForeignKey("CodEvento")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1134,19 +1024,6 @@ namespace SistemaVidaNova.Migrations
                     b.HasOne("SistemaVidaNova.Models.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVidaNova.Models.FavorecidoEvento", b =>
-                {
-                    b.HasOne("SistemaVidaNova.Models.Evento", "Evento")
-                        .WithMany("Favorecidos")
-                        .HasForeignKey("CodEvento")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVidaNova.Models.Favorecido", "Favorecido")
-                        .WithMany()
-                        .HasForeignKey("CodFavorecido")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

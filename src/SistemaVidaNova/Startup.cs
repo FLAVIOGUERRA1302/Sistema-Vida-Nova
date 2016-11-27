@@ -51,8 +51,8 @@ namespace SistemaVidaNova
 
             
             var connection = Configuration.GetConnectionString("DefaultConnection");
-            //services.AddDbContext<VidaNovaContext>(options => options.UseSqlServer(connection));
-            services.AddDbContext<VidaNovaContext>(options => options.UseMySql(connection));
+            services.AddDbContext<VidaNovaContext>(options => options.UseSqlServer(connection));
+            //services.AddDbContext<VidaNovaContext>(options => options.UseMySql(connection));
 
             services.AddIdentity<Usuario, IdentityRole>()
                 .AddEntityFrameworkStores<VidaNovaContext>()
