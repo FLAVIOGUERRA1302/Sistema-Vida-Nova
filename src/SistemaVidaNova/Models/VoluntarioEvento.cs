@@ -9,9 +9,9 @@ namespace SistemaVidaNova.Models
 {
     public class VoluntarioEvento
     {
-        [Key]
+        
         public int IdVoluntario { get; set; }
-        [Key]
+        
         public int CodEvento { get; set; }
 
         [ForeignKey("IdVoluntario")]

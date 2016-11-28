@@ -275,6 +275,7 @@ namespace SistemaVidaNova.Api
 
                 Evento e = _context.Evento
                     .Include(q=>q.Interessados)
+                    .ThenInclude(q=>q.Interessado)
                     .Include(q=>q.Voluntarios)
                     .Include(q => q.Favorecidos)
                     .Include(q => q.Doadores)
@@ -293,126 +294,112 @@ namespace SistemaVidaNova.Api
 
 
                 //interessados
-                if (evento.interessados != null)
+                if (evento.interessados == null)
+                    evento.interessados = new List<InteressadoDTOR>();
+                //verifica quem está presente e quem saiu
+                List<InteressadoEvento> corretos = new List<InteressadoEvento>();
+                foreach (var inter in evento.interessados)
                 {
-                    //verifica quem está presente e quem saiu
-                    List<InteressadoEvento> corretos = new List<InteressadoEvento>();
-                    foreach (var inter in evento.interessados)
+                    var eventoInteressado = e.Interessados.SingleOrDefault(q => q.CodInteressado == inter.Id);
+                    if (eventoInteressado == null)
                     {
-                        var eventoInteressado = e.Interessados.SingleOrDefault(q => q.CodInteressado == inter.Id);
-                        if (eventoInteressado == null)
-                        {
-                            eventoInteressado = new InteressadoEvento { CodEvento = e.CodEvento, CodInteressado = inter.Id };
-                            corretos.Add(eventoInteressado);
-                            e.Interessados.Add(eventoInteressado);
-
-
-                        }
+                        Interessado interessado = _context.Interessado.Single(q => q.CodInteressado == inter.Id);
+                        eventoInteressado = new InteressadoEvento { CodEvento = e.CodEvento, CodInteressado = interessado.CodInteressado };//,Evento =e,Interessado=interessado };
+                        _context.InteressadoEvento.Add(eventoInteressado);
                         corretos.Add(eventoInteressado);
+                        e.Interessados.Add(eventoInteressado);
+
 
                     }
-                    //remove incorretos
-                    var incorretos = e.Interessados.Except(corretos);
-                    foreach (var incorreto in incorretos.ToArray())
-                        e.Interessados.Remove(incorreto);
+                    corretos.Add(eventoInteressado);
 
                 }
-                else
-                {
-                    e.Interessados.Clear();
-                }
+                //remove incorretos
+                var incorretos = e.Interessados.Except(corretos);
+                foreach (var incorreto in incorretos.ToArray())
+                    e.Interessados.Remove(incorreto);
 
 
-                if (evento.voluntarios != null)
+
+
+                if (evento.voluntarios == null)
+                    evento.voluntarios = new List<VoluntarioDTOR>();
+                //verifica quem está presente e quem saiu
+                List<VoluntarioEvento> voluntariosCorretos = new List<VoluntarioEvento>();
+                foreach (var volunt in evento.voluntarios)
                 {
-                    //verifica quem está presente e quem saiu
-                    List<VoluntarioEvento> corretos = new List<VoluntarioEvento>();
-                    foreach (var volunt in evento.voluntarios)
+                    var eventoVoluntario = e.Voluntarios.SingleOrDefault(q => q.IdVoluntario == volunt.Id);
+                    if (eventoVoluntario == null)
                     {
-                        var eventoVoluntario = e.Voluntarios.SingleOrDefault(q => q.IdVoluntario == volunt.Id);
-                        if (eventoVoluntario == null)
-                        {
-                            eventoVoluntario = new VoluntarioEvento { CodEvento = e.CodEvento, IdVoluntario = volunt.Id };
-                            corretos.Add(eventoVoluntario);
-                            e.Voluntarios.Add(eventoVoluntario);
-
-                        }
-                        corretos.Add(eventoVoluntario);
+                        eventoVoluntario = new VoluntarioEvento { CodEvento = e.CodEvento, IdVoluntario = volunt.Id };
+                        _context.VoluntarioEvento.Add(eventoVoluntario);
+                        voluntariosCorretos.Add(eventoVoluntario);
+                        e.Voluntarios.Add(eventoVoluntario);
 
                     }
-                    //remove incorretos
-                    var incorretos = e.Voluntarios.Except(corretos);
-                    foreach (var incorreto in incorretos.ToArray())
-                        e.Voluntarios.Remove(incorreto);
+                    voluntariosCorretos.Add(eventoVoluntario);
+
                 }
-                else
-                {
-                    e.Voluntarios.Clear();
-                }
+                //remove incorretos
+                var voluntariosIncorretos = e.Voluntarios.Except(voluntariosCorretos);
+                foreach (var incorreto in voluntariosIncorretos.ToArray())
+                    e.Voluntarios.Remove(incorreto);
+
 
                 //favorecidos
-                if (evento.favorecidos != null)
-                {
+                if (evento.favorecidos == null)
+                    evento.favorecidos = new List<FavorecidoDTOR>();
+
                     //verifica quem está presente e quem saiu
-                    List<FavorecidoEvento> corretos = new List<FavorecidoEvento>();
+                List<FavorecidoEvento> favorecidosCorretos = new List<FavorecidoEvento>();
                     foreach (var favorecido in evento.favorecidos)
                     {
                         var eventoFavorecido = e.Favorecidos.SingleOrDefault(q => q.CodFavorecido == favorecido.Id);
                         if (eventoFavorecido == null)
                         {
-                            eventoFavorecido = new FavorecidoEvento { CodEvento = e.CodEvento,  CodFavorecido = favorecido.Id };
-                            corretos.Add(eventoFavorecido);
+                            eventoFavorecido = new FavorecidoEvento { CodEvento = e.CodEvento,  CodFavorecido = favorecido.Id, Evento=e };
+                        _context.FavorecidoEvento.Add(eventoFavorecido);
+                        favorecidosCorretos.Add(eventoFavorecido);
                             e.Favorecidos.Add(eventoFavorecido);
 
                         }
-                        corretos.Add(eventoFavorecido);
+                    favorecidosCorretos.Add(eventoFavorecido);
 
                     }
-                    //remove incorretos
-                    var incorretos = e.Favorecidos.Except(corretos);
-                    foreach (var incorreto in incorretos.ToArray())
+                //remove incorretos
+                var favorecidosIncorretos = e.Favorecidos.Except(favorecidosCorretos);
+                    foreach (var incorreto in favorecidosIncorretos.ToArray())
                         e.Favorecidos.Remove(incorreto);
-                }
-                else
-                {
-                    e.Favorecidos.Clear();
-                }
-
+               
                 //doadores
                 if (evento.doadoresPf == null)
                     evento.doadoresPf = new List<DoadorDTOR>();
                 if (evento.doadoresPj == null)
                     evento.doadoresPj = new List<DoadorDTOR>();
                 List<DoadorDTOR> doadores = evento.doadoresPf.Concat(evento.doadoresPj).ToList();
+                
 
-                if (doadores.Count>0)
+                //verifica quem está presente e quem saiu
+                List<DoadorEvento> doadoresCorretos = new List<DoadorEvento>();
+                foreach (var doador in doadores)
                 {
-                    
-
-                    //verifica quem está presente e quem saiu
-                    List<DoadorEvento> corretos = new List<DoadorEvento>();
-                    foreach (var doador in doadores)
+                    var eventoDoador = e.Doadores.SingleOrDefault(q => q.CodDoador == doador.Id);
+                    if (eventoDoador == null)
                     {
-                        var eventoDoador = e.Doadores.SingleOrDefault(q => q.CodDoador == doador.Id);
-                        if (eventoDoador == null)
-                        {
-                            eventoDoador = new DoadorEvento { CodEvento = e.CodEvento,  CodDoador = doador.Id };
-                            corretos.Add(eventoDoador);
-                            e.Doadores.Add(eventoDoador);
-
-                        }
-                        corretos.Add(eventoDoador);
+                        eventoDoador = new DoadorEvento { CodEvento = e.CodEvento,  CodDoador = doador.Id };
+                        _context.DoadorEvento.Add(eventoDoador);
+                        doadoresCorretos.Add(eventoDoador);
+                        e.Doadores.Add(eventoDoador);
 
                     }
-                    //remove incorretos
-                    var incorretos = e.Doadores.Except(corretos);
-                    foreach (var incorreto in incorretos.ToArray())
-                        e.Doadores.Remove(incorreto);
+                    doadoresCorretos.Add(eventoDoador);
+
                 }
-                else
-                {
-                    e.Doadores.Clear();
-                }
+                //remove incorretos
+                var DoadoresIncorretos = e.Doadores.Except(doadoresCorretos);
+                foreach (var incorreto in DoadoresIncorretos.ToArray())
+                    e.Doadores.Remove(incorreto);
+                
 
 
 
